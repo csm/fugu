@@ -249,7 +249,7 @@
 		0971F3FB03F2DFC700A8002B /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/SCP.strings; sourceTree = "<group>"; };
 		0977864F0430BF2000BEE8BF /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
 		097786500430BF2000BEE8BF /* keychain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain.c; sourceTree = "<group>"; };
-		097EE2D0070BA9ED00305C66 /* externaleditor */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = externaleditor; path = build/externaleditor; sourceTree = "<group>"; };
+		097EE2D0070BA9ED00305C66 /* externaleditor */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = externaleditor; path = build/Development/externaleditor; sourceTree = "<group>"; };
 		0981B76604F81AC900000102 /* disconnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disconnect.png; sourceTree = "<group>"; };
 		0981B76D04FA546F00000102 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		09830E5504B4AABA00F63E62 /* Danish */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Danish; path = Danish.lproj/HelpMenu.strings; sourceTree = "<group>"; };
