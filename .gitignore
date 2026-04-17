@@ -196,3 +196,14 @@ DerivedData/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,xcode,osx,macos,c++,c,linux
+
+# vexp AI coding assistant
+.vexp/
+.derived-data-log-*
+
+# Carthage
+Carthage/Build/
+
+# Xcode user state (already covered above, belt-and-suspenders)
+Fugu.xcodeproj/xcuserdata/
+Fugu.xcodeproj/project.xcworkspace/xcuserdata/
