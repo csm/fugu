@@ -134,9 +134,6 @@
 		0968302A07C5528A00210847 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E8A371042F6F8F009BCCF8 /* Security.framework */; };
 		0968302C07C5528A00210847 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E0A0F304C06B1600D5EA79 /* CoreServices.framework */; };
 		0968302D07C5528A00210847 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0984006B05DB103E00EEA2D5 /* CoreFoundation.framework */; };
-		09AE981E06F3781D005A54B4 /* aevent.c in Sources */ = {isa = PBXBuildFile; fileRef = 09AE981B06F3781D005A54B4 /* aevent.c */; };
-		09AE981F06F3781D005A54B4 /* aevent.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AE981C06F3781D005A54B4 /* aevent.h */; };
-		09AE982006F3781D005A54B4 /* ee.c in Sources */ = {isa = PBXBuildFile; fileRef = 09AE981D06F3781D005A54B4 /* ee.c */; };
 		1D74F2191E0DAC91009B37B9 /* SCP.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D74F2181E0DAC91009B37B9 /* SCP.xib */; };
 		1D74F21B1E0DAE1E009B37B9 /* SSHTunnel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D74F21A1E0DAE1E009B37B9 /* SSHTunnel.xib */; };
 		1DBF164B1E0DAFE3008FCCF2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DBF164A1E0DAFE3008FCCF2 /* MainMenu.xib */; };
@@ -154,16 +151,6 @@
 			);
 		};
 /* End PBXBuildRule section */
-
-/* Begin PBXContainerItemProxy section */
-		0968303207C552F200210847 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 09AE97F306F37702005A54B4;
-			remoteInfo = externaleditor;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0916ACC104F728EA00000102 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
@@ -215,7 +202,6 @@
 		099BE67805222CDA0038D787 /* NSCalendarDate(ConvertToSeconds).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCalendarDate(ConvertToSeconds).m"; sourceTree = "<group>"; };
 		09AE0F7204812A6300A8002B /* SFTPPrefTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFTPPrefTableView.h; sourceTree = "<group>"; };
 		09AE0F7304812A6300A8002B /* SFTPPrefTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFTPPrefTableView.m; sourceTree = "<group>"; };
-		09AE97F406F37702005A54B4 /* externaleditor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = externaleditor; sourceTree = BUILT_PRODUCTS_DIR; };
 		09AE981B06F3781D005A54B4 /* aevent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aevent.c; sourceTree = "<group>"; };
 		09AE981C06F3781D005A54B4 /* aevent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aevent.h; sourceTree = "<group>"; };
 		09AE981D06F3781D005A54B4 /* ee.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ee.c; sourceTree = "<group>"; };
@@ -393,13 +379,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		09AE97F206F37702005A54B4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -458,7 +437,6 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				09AE97F406F37702005A54B4 /* externaleditor */,
 				0968303007C5528A00210847 /* Fugu.app */,
 			);
 			name = Products;
@@ -704,14 +682,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		09AE97EF06F37702005A54B4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				09AE981F06F3781D005A54B4 /* aevent.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -729,31 +699,12 @@
 				0968302F07C5528A00210847 /* PBXBuildRule */,
 			);
 			dependencies = (
-				0968303307C552F200210847 /* PBXTargetDependency */,
 			);
 			name = Fugu;
 			productInstallPath = "$(HOME)/Applications";
 			productName = ScruFTP;
 			productReference = 0968303007C5528A00210847 /* Fugu.app */;
 			productType = "com.apple.product-type.application";
-		};
-		09AE97F306F37702005A54B4 /* externaleditor */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 701B7AEC12AD904F003D5274 /* Build configuration list for PBXNativeTarget "externaleditor" */;
-			buildPhases = (
-				09AE97EF06F37702005A54B4 /* Headers */,
-				09AE97F006F37702005A54B4 /* Sources */,
-				09AE97F106F37702005A54B4 /* Rez */,
-				09AE97F206F37702005A54B4 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = externaleditor;
-			productName = Untitled;
-			productReference = 09AE97F406F37702005A54B4 /* externaleditor */;
-			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -785,7 +736,6 @@
 			projectRoot = "";
 			targets = (
 				09682FA507C5528A00210847 /* Fugu */,
-				09AE97F306F37702005A54B4 /* externaleditor */,
 			);
 		};
 /* End PBXProject section */
@@ -844,16 +794,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXRezBuildPhase section */
-		09AE97F106F37702005A54B4 /* Rez */ = {
-			isa = PBXRezBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXRezBuildPhase section */
-
 /* Begin PBXShellScriptBuildPhase section */
 		1D00836C1E0D881C004F3EE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -865,6 +805,7 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
 			shellScript = "
 ";
 		};
@@ -919,24 +860,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		09AE97F006F37702005A54B4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				09AE981E06F3781D005A54B4 /* aevent.c in Sources */,
-				09AE982006F3781D005A54B4 /* ee.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0968303307C552F200210847 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 09AE97F306F37702005A54B4 /* externaleditor */;
-			targetProxy = 0968303207C552F200210847 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		09448C5E03F052C200A8002B /* Localizable.strings */ = {
@@ -1315,104 +1239,6 @@
 			};
 			name = Default;
 		};
-		701B7AE812AD904F003D5274 /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 8J58VWJG83;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				INSTALL_PATH = /usr/local/bin;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-					"-framework",
-					ApplicationServices,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = externaleditor;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "-Wmost";
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		701B7AE912AD904F003D5274 /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = YES;
-				DEVELOPMENT_TEAM = 8J58VWJG83;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				INSTALL_PATH = /usr/local/bin;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-					"-framework",
-					ApplicationServices,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = externaleditor;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "-Wmost";
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		701B7AEA12AD904F003D5274 /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8J58VWJG83;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				INSTALL_PATH = /usr/local/bin;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-					"-framework",
-					ApplicationServices,
-				);
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = externaleditor;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REZ_EXECUTABLE = YES;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "-Wmost";
-			};
-			name = Default;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1422,16 +1248,6 @@
 				701B7AE212AD904F003D5274 /* Development */,
 				701B7AE312AD904F003D5274 /* Deployment */,
 				701B7AE412AD904F003D5274 /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
-		701B7AEC12AD904F003D5274 /* Build configuration list for PBXNativeTarget "externaleditor" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				701B7AE812AD904F003D5274 /* Development */,
-				701B7AE912AD904F003D5274 /* Deployment */,
-				701B7AEA12AD904F003D5274 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;

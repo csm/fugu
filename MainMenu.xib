@@ -2057,7 +2057,7 @@ Gw
                         <action selector="remoteCdDotDot:" target="209" id="1218"/>
                     </connections>
                 </button>
-                <popUpButton autoresizesSubviews="NO" toolTip="Pfad zum aktuellen Ordner." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="885" customClass="AMPathPopUpButton">
+                <popUpButton autoresizesSubviews="NO" toolTip="Pfad zum aktuellen Ordner." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="885">
                     <rect key="frame" x="8" y="328" width="202" height="26"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title=" " bezelStyle="rounded" alignment="left" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="887" id="1803">

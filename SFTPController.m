@@ -4859,7 +4859,7 @@ didClickTableColumn: ( NSTableColumn * )tableColumn
 {
   NSArray		*columns = [ table tableColumns ];
   int			i, sortdirection;
-  int			( *sortFunction )( id, id, void * );
+  NSComparisonResult			( *sortFunction )( id, id, void * );
   unsigned		context;
   id			identifier;
   NSImage		*image = nil;
