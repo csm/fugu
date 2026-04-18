@@ -54,7 +54,7 @@ int		master = 0;
     [ serverObject release ];
     
     [[ NSRunLoop currentRunLoop ] run ];  
-    [ pool release ];
+    [ pool drain ];
 }
 
 - ( id )init
@@ -779,7 +779,7 @@ DOT_OR_DOTDOT:
             }
         }
 
-        [ p release ];
+        [ p drain ];
         p = nil;
         if ( cancelflag ) break;
     }

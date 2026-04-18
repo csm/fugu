@@ -11,6 +11,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // \"\"'); case \"$f\" in *CLAUDE.md|*README.md) exit 0;; esac; printf '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"If this change affects architecture, build commands, or documented behavior, update .claude/CLAUDE.md and README.md.\"}}\n'"
+          }
+        ]
+      }
     ]
   }
 }

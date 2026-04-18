@@ -191,7 +191,6 @@ now()
             icon = [ NSImage iconForType: @"'doc '" ];
         }
     }
-    [ icon setScalesWhenResized: YES ];
     [ icon setSize: NSMakeSize( 16.0, 16.0 ) ];
     
     [ dict setObject: icon forKey: @"icon" ];
@@ -220,13 +219,18 @@ now()
     [ dict setObject: type forKey: @"type" ];
     
     theDate = [ NSDate dateWithTimeIntervalSince1970: st.st_mtime ];
-    if (( sixmo_in_secs() - st.st_mtime ) < now() &&
-                ( sixmo_in_secs() + st.st_mtime ) > now()) {
-        date = [ theDate descriptionWithCalendarFormat: @"%b %e %H:%M"
-                            timeZone: [ NSTimeZone defaultTimeZone ] locale: nil ];
-    } else {
-        date = [ theDate descriptionWithCalendarFormat: @"%b %e %Y"
-                        timeZone: [ NSTimeZone defaultTimeZone ]  locale: nil ];
+    {
+        NSDateFormatter *fmt = [[ NSDateFormatter alloc ] init ];
+        [ fmt setLocale: [ NSLocale currentLocale ]];
+        [ fmt setTimeZone: [ NSTimeZone defaultTimeZone ]];
+        if (( sixmo_in_secs() - st.st_mtime ) < now() &&
+                    ( sixmo_in_secs() + st.st_mtime ) > now()) {
+            [ fmt setDateFormat: @"MMM d HH:mm" ];
+        } else {
+            [ fmt setDateFormat: @"MMM d yyyy" ];
+        }
+        date = [ fmt stringFromDate: theDate ];
+        [ fmt release ];
     }
     [ dict setObject: [ NSString stringWithFormat: @"%lld", st.st_size ]
                             forKey: @"size" ];
@@ -268,7 +272,7 @@ now()
         }
         [ items addObject: item ];
     }
-    [ pool release ];
+    [ pool drain ];
     [ tpath release ];
     
     return( [ items autorelease ] );

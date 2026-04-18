@@ -239,24 +239,26 @@ static long		SCPTYPE = 0;
     if ( ! [ self firstPasswordPrompt ] && [ self gotPasswordFromKeychain ] ) {
         NSInteger	rc;
         
-        rc = NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
+        {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText:
                 NSLocalizedString( @"The password in the keychain was rejected "
-                                    @"by this server. Would "
-                                    @"you like to open Keychain Access to edit it?",
-                                    @"The password in the keychain was rejected "
-                                    @"by this server. Would "
-                                    @"you like to open Keychain Access to edit it?" ),
-                NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" ),
-                NSLocalizedString( @"Cancel", @"Cancel" ), @"" );
-                
-        switch ( rc ) {
-        case NSAlertDefaultReturn:
-            if ( ! [[ NSWorkspace sharedWorkspace ] openFile:
-                        @"/Applications/Utilities/Keychain Access.app" ] ) {
-                NSLog( @"couldn't open keychain access." );
+                                   @"by this server. Would "
+                                   @"you like to open Keychain Access to edit it?",
+                                   @"The password in the keychain was rejected "
+                                   @"by this server. Would "
+                                   @"you like to open Keychain Access to edit it?" )];
+            [ alert addButtonWithTitle:
+                NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" )];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
+            NSModalResponse rc = [ alert runModal ];
+            [ alert release ];
+            if ( rc == NSAlertFirstButtonReturn ) {
+                [[ NSWorkspace sharedWorkspace ] openURL:
+                    [ NSURL fileURLWithPath:
+                        @"/Applications/Utilities/Keychain Access.app" ]];
             }
-        case NSAlertAlternateReturn:
-            break;
         }
     }
     
@@ -276,10 +278,15 @@ static long		SCPTYPE = 0;
     return;
     
 WRITE_ERR:
-    NSRunAlertPanel( NSLocalizedString(
-                        @"Write failed: Did not write correct number of bytes!",
-                        @"Write failed: Did not write correct number of bytes!" ),
-        @"", NSLocalizedString( @"Exit", @"Exit" ), @"", @"" );
+    {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText:
+            NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
+                               @"Write failed: Did not write correct number of bytes!" )];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Exit", @"Exit" )];
+        [ alert runModal ];
+        [ alert release ];
+    }
     exit( 2 );
 }
 
@@ -313,8 +320,12 @@ WRITE_ERR:
 
 - ( void )sessionError: ( NSString * )err
 {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ), @"%@", err,
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+    [ alert setInformativeText: err ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+    [ alert runModal ];
+    [ alert release ];
 }
 
 - ( IBAction )beginSCP: ( id )sender
@@ -331,10 +342,14 @@ WRITE_ERR:
     if ( snprintf( userathost, MAXPATHLEN, "%s@%s:",
                 ( char * )[[ destUserNameField stringValue ] UTF8String ],
                 ( char * )[[ destServerField stringValue ] UTF8String ] ) > ( MAXPATHLEN - 1 )) {
-        NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                        NSLocalizedString( @"Parameter length exceeds bounds. Try again.",
-                                @"Parameter length exceeds bounds. Try again." ),
-                        NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+        [ alert setInformativeText:
+            NSLocalizedString( @"Parameter length exceeds bounds. Try again.",
+                               @"Parameter length exceeds bounds. Try again." )];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+        [ alert runModal ];
+        [ alert release ];
         return;
     }
     if ( [[ destPathField stringValue ] length ] ) {
@@ -343,10 +358,14 @@ WRITE_ERR:
                 ( SCPTYPE == DOWNLOAD ? ( char * )[[ localFileField stringValue ] UTF8String ]
                     : ( char * )[[ destPathField stringValue ] UTF8String ] ))
                     > ( MAXPATHLEN - 1 )) {
-            NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                        NSLocalizedString( @"Parameter length exceeds bounds. Try again.",
-                                @"Parameter length exceeds bounds. Try again." ),
-                        NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText:
+                NSLocalizedString( @"Parameter length exceeds bounds. Try again.",
+                                   @"Parameter length exceeds bounds. Try again." )];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+            [ alert runModal ];
+            [ alert release ];
             return;
         }
     }
@@ -423,7 +442,6 @@ WRITE_ERR:
 
 - ( void )secureCopyFinishedWithStatus: ( int )status
 {
-    int			rc;
 
     [ scpSheet orderOut: nil ];
     [ NSApp endSheet: scpSheet ];
@@ -433,29 +451,34 @@ WRITE_ERR:
     }
     
     if ( status ) {
-        NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    @"scp exited with abnormal status %d", @"OK", @"", @"", status );
+        NSAlert *errAlert = [[ NSAlert alloc ] init ];
+        [ errAlert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+        [ errAlert setInformativeText: [ NSString stringWithFormat:
+            @"scp exited with abnormal status %d", status ]];
+        [ errAlert addButtonWithTitle: @"OK" ];
+        [ errAlert runModal ];
+        [ errAlert release ];
         return;
     }
-    rc = NSRunAlertPanel( [ NSString stringWithFormat: @"%@ copied successfully %@ %@",
-        [ localFileField stringValue ],
-        ( SCPTYPE == DOWNLOAD ? @"from" : @"to" ), [ destServerField stringValue ]],
-        @"",
-        @"Done", @"New Secure Copy", @"" );
-    [ progBar setIndeterminate: YES ];
-    [ progBar stopAnimation: nil ];
-    [ percentDoneField setStringValue: @"" ];
-    [ etaField setStringValue: @"" ];
-    [ bytesCopiedField setStringValue: @"" ];
-    [ scpWindow setTitle: @"Secure Copy" ];
-    
-    switch ( rc ) {
-    case NSAlertDefaultReturn:
-        [ scpWindow close ];
-        return;
-    default:
-    case NSAlertAlternateReturn:
-        break;
+    {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: [ NSString stringWithFormat: @"%@ copied successfully %@ %@",
+            [ localFileField stringValue ],
+            ( SCPTYPE == DOWNLOAD ? @"from" : @"to" ), [ destServerField stringValue ]]];
+        [ alert addButtonWithTitle: @"Done" ];
+        [ alert addButtonWithTitle: @"New Secure Copy" ];
+        NSModalResponse rc = [ alert runModal ];
+        [ alert release ];
+        [ progBar setIndeterminate: YES ];
+        [ progBar stopAnimation: nil ];
+        [ percentDoneField setStringValue: @"" ];
+        [ etaField setStringValue: @"" ];
+        [ bytesCopiedField setStringValue: @"" ];
+        [ scpWindow setTitle: @"Secure Copy" ];
+        if ( rc == NSAlertFirstButtonReturn ) {
+            [ scpWindow close ];
+            return;
+        }
     }
     
     [ self setFirstPasswordPrompt: YES ];
@@ -485,27 +508,25 @@ WRITE_ERR:
 
 - ( IBAction )cancelSCP: ( id )sender
 {
-    NSInteger			rc;
-    
-    rc = NSRunAlertPanel( @"Cancel SCP:",
-            NSLocalizedString( @"Are you sure you want to cancel this copy?",
-                                @"Are you sure you want to cancel this copy?" ),
-            NSLocalizedString( @"Don't Cancel", @"Don't Cancel" ),
-            NSLocalizedString( @"Cancel", @"Cancel" ), @"" );
-            
-    switch( rc ) {
-    default:
-    case NSAlertDefaultReturn:
-        return;
-        
-    case NSAlertAlternateReturn:
-        break;
-    }
-    
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: @"Cancel SCP:" ];
+    [ alert setInformativeText:
+        NSLocalizedString( @"Are you sure you want to cancel this copy?",
+                           @"Are you sure you want to cancel this copy?" )];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Don't Cancel", @"Don't Cancel" )];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
+    NSModalResponse rc = [ alert runModal ];
+    [ alert release ];
+    if ( rc != NSAlertSecondButtonReturn ) return;
+
     if ( kill( scppid, SIGINT ) < 0 ) {
-        NSRunAlertPanel( @"Couldn't kill scp process:",
-            [ NSString stringWithFormat: @"kill %d: %s", scppid, strerror( errno ) ],
-            @"OK", @"", @"" );
+        NSAlert *errAlert = [[ NSAlert alloc ] init ];
+        [ errAlert setMessageText: @"Couldn't kill scp process:" ];
+        [ errAlert setInformativeText: [ NSString stringWithFormat:
+            @"kill %d: %s", scppid, strerror( errno )]];
+        [ errAlert addButtonWithTitle: @"OK" ];
+        [ errAlert runModal ];
+        [ errAlert release ];
         return;
     }
 }
@@ -518,39 +539,24 @@ WRITE_ERR:
 
 - ( IBAction )chooseLocalFile: ( id )sender
 {
-    NSOpenPanel		*op = [ NSOpenPanel openPanel ];
-    NSString		*dir = [[ NSUserDefaults standardUserDefaults ]
-                                    objectForKey: @"NSDefaultOpenDirectory" ];
-    
+    NSOpenPanel *op = [ NSOpenPanel openPanel ];
+    NSString    *dir = [[ NSUserDefaults standardUserDefaults ]
+                            objectForKey: @"NSDefaultOpenDirectory" ];
     if ( dir == nil ) dir = NSHomeDirectory();
-    
+
     [ op setCanChooseDirectories: YES ];
     [ op setTitle: @"Choose an Item to Secure Copy" ];
     [ op setPrompt: @"Choose" ];
-    [ op beginSheetForDirectory: dir
-            file: nil
-            types: nil
-            modalForWindow: scpWindow
-            modalDelegate: self
-            didEndSelector: @selector( chooseLocalFileOpenPanelDidEnd:returnCode:contextInfo: )
-            contextInfo: nil ];
-}
-
-- ( void )chooseLocalFileOpenPanelDidEnd: ( NSOpenPanel * )sheet returnCode: ( int )rc
-    contextInfo: ( void * )contextInfo
-{
-    switch ( rc ) {
-    case NSOKButton:
-        [ localFileField setStringValue: [[ sheet filenames ] objectAtIndex: 0 ]];
+    [ op setDirectoryURL: [ NSURL fileURLWithPath: dir isDirectory: YES ]];
+    [ op beginSheetModalForWindow: scpWindow completionHandler: ^( NSModalResponse result ) {
+        if ( result != NSModalResponseOK ) return;
+        NSURL   *url  = [[ op URLs ] objectAtIndex: 0 ];
+        NSString *path = [ url path ];
+        [ localFileField setStringValue: path ];
         [ localFileImageView setImage:
-            [[ NSWorkspace sharedWorkspace ] iconForFile: [[ sheet filenames ] objectAtIndex: 0 ]]];
-        scpFileName = [[ sheet filenames ] objectAtIndex: 0 ];
-        break;
-        
-    default:
-    case NSCancelButton:
-        return;
-    }
+            [[ NSWorkspace sharedWorkspace ] iconForFile: path ]];
+        scpFileName = path;
+    }];
 }
 
 - ( IBAction )selectFromRecentSCPs: ( id )sender

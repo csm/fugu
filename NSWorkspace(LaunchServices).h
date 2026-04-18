@@ -4,30 +4,15 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#include <ApplicationServices/ApplicationServices.h>
-#include <Carbon/Carbon.h>
-#include <CoreFoundation/CoreFoundation.h>
 
 @interface NSWorkspace(LaunchServices)
 
-- ( BOOL )launchServicesOpenFileRef: ( FSRef * )fileref
-	    withApplicationRef: ( FSRef * )appref
-	    passThruParams: ( AERecord * )params
-	    launchFlags: ( LSLaunchFlags )flags;
-	    
-- ( BOOL )launchServicesFindApplicationForCreatorType: ( OSType )creator
-	bundleID: ( CFStringRef )bundleID
-	appName: ( CFStringRef )appName
-	foundAppRef: ( FSRef * )foundRef
-	foundAppURL: ( CFURLRef * )appURL;
-	
-- ( BOOL )launchServicesFindApplication: ( CFStringRef )appName
-	foundAppRef: ( FSRef * )foundRef;
-        
-- ( BOOL )launchServicesFindApplicationWithCreatorType: ( OSType )creator
-        foundAppRef: ( FSRef * )foundRef;
-        
-- ( BOOL )launchServicesFindApplicationWithBundleID: ( CFStringRef )bundleID
-        foundAppURL: ( CFURLRef * )foundURL;
+- ( NSURL * )findApplicationNamed: ( NSString * )name
+                         bundleID: ( NSString * )bundleID;
+
+- ( void )openFileURL: ( NSURL * )fileURL
+   withApplicationURL: ( NSURL * )appURL
+            odbParams: ( NSAppleEventDescriptor * )params
+    completionHandler: ( void (^)( NSError * ) )handler;
 
 @end

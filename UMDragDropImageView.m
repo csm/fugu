@@ -35,21 +35,17 @@
 
 - ( void )awakeFromNib
 {
-    [ self registerForDraggedTypes: [ NSArray arrayWithObjects:
-	    NSFilenamesPboardType, NSURLPboardType, nil ]];
+    [ self registerForDraggedTypes: @[ NSPasteboardTypeFileURL ]];
 }
 
 - ( NSDragOperation )draggingEntered: ( id <NSDraggingInfo> )sender
 {
-    NSPasteboard	*pb = [ sender draggingPasteboard ];
-    NSString		*type = nil;
-    
-    type = [ pb availableTypeFromArray: [ NSArray arrayWithObjects:
-		    NSFilenamesPboardType, NSURLPboardType, nil ]];
-    if ( type == nil ) {
-	return( NSDragOperationNone );
+    NSPasteboard *pb = [ sender draggingPasteboard ];
+    NSArray *urls = [ pb readObjectsForClasses: @[ [ NSURL class ] ]
+                         options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES } ];
+    if ( [ urls count ] == 0 ) {
+        return( NSDragOperationNone );
     }
-    
     return( NSDragOperationCopy );
 }
 
@@ -59,34 +55,26 @@
 
 - ( BOOL )performDragOperation: ( id <NSDraggingInfo> )sender
 {
-    NSPasteboard	*pb = [ sender draggingPasteboard ];
-    NSArray		*plist = nil;
-    NSImage		*icon = nil;
-    NSString		*type = nil;
-    id			path = nil;
-    
-    type = [ pb availableTypeFromArray: [ NSArray arrayWithObjects:
-		    NSFilenamesPboardType, NSURLPboardType, nil ]];
-    if ( type == nil ) {
-	return( NO );
+    NSPasteboard *pb = [ sender draggingPasteboard ];
+    NSArray *urls = [ pb readObjectsForClasses: @[ [ NSURL class ] ]
+                         options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES } ];
+    if ( [ urls count ] == 0 ) {
+        return( NO );
     }
-    
-    path = [ pb stringForType: type ];
-    plist = [ path propertyList ];
-    path = [ plist objectAtIndex: 0 ];
-    
+
+    NSString *path = [[ urls objectAtIndex: 0 ] path ];
+
     if ( [[ self delegate ] respondsToSelector:
-	    @selector( dropImageViewChanged: ) ] ) {
-	[[ self delegate ] dropImageViewChanged:
-		[ NSDictionary dictionaryWithObjectsAndKeys:
-		self, @"UMDragDropImageView",
-		path, @"UMDragDropPath", nil ]];
+            @selector( dropImageViewChanged: ) ] ) {
+        [[ self delegate ] dropImageViewChanged:
+            [ NSDictionary dictionaryWithObjectsAndKeys:
+                self, @"UMDragDropImageView",
+                path, @"UMDragDropPath", nil ]];
     }
-    
-    icon = [[ NSWorkspace sharedWorkspace ] iconForFile: path ];
-    
+
+    NSImage *icon = [[ NSWorkspace sharedWorkspace ] iconForFile: path ];
     [ self setImage: icon ];
-    
+
     return( YES );
 }
 

@@ -10,12 +10,22 @@
 
 - ( void )runErrorPanel: ( NSString * )theError
 {
-    NSRunAlertPanel( @"Error", @"%@", theError, @"OK", @"", @"" );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: @"Error" ];
+    [ alert setInformativeText: theError ];
+    [ alert addButtonWithTitle: @"OK" ];
+    [ alert runModal ];
+    [ alert release ];
 }
 
 - ( void )fatalErrorPanel: ( NSString * )fatalError
 {
-    NSRunAlertPanel( @"Fatal Error", @"%@", fatalError, @"Quit", @"", @"" );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: @"Fatal Error" ];
+    [ alert setInformativeText: fatalError ];
+    [ alert addButtonWithTitle: @"Quit" ];
+    [ alert runModal ];
+    [ alert release ];
     exit( 2 );
 }
 

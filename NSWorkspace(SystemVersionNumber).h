@@ -4,7 +4,6 @@
  */
 
 #import <AppKit/AppKit.h>
-#include <Carbon/Carbon.h>
 
 @interface NSWorkspace(SystemVersionNumber)
 + ( SInt32 )systemVersion;

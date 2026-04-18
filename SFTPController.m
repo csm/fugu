@@ -24,7 +24,6 @@
 #import "NSString(FSRefAdditions).h"
 #import "NSString-UnknownEncoding.h"
 #import "NSWorkspace(LaunchServices).h"
-#import "NSWorkspace(SystemVersionNumber).h"
 
 #include <ApplicationServices/ApplicationServices.h>
 #include <Carbon/Carbon.h>
@@ -92,9 +91,9 @@ datecmp( id ob1, id ob2, void *context )
   NSComparisonResult	result = NSOrderedSame;
   off_t		d1, d2;
   
-  d1 = [ NSCalendarDate secondsFromFormattedDateString:
+  d1 = [ NSDate secondsFromFormattedDateString:
         [ ob1 objectForKey: @"date" ]];
-  d2 = [ NSCalendarDate secondsFromFormattedDateString:
+  d2 = [ NSDate secondsFromFormattedDateString:
         [ ob2 objectForKey: @"date" ]];
   
   if ( d1 < d2 ) {
@@ -696,10 +695,8 @@ NSComparisonResult
   
   /* get images for display */
   dirImage = [[[ NSWorkspace sharedWorkspace ] iconForFileType: @"'fldr'" ] retain ];
-  //    [ dirImage setScalesWhenResized: YES ];
   [ dirImage setSize: NSMakeSize( 16.0, 16.0 ) ];
   fileImage = [[[ NSWorkspace sharedWorkspace ] iconForFileType: @"'doc '" ] retain ];
-  //    [ fileImage setScalesWhenResized: YES ];
   [ fileImage setSize: NSMakeSize( 16.0, 16.0 ) ];
   linkImage = [[ NSImage imageNamed: @"symlink" ] retain ];
   
@@ -903,15 +900,10 @@ NSComparisonResult
   
   [ self toolbarSetup ];
   
-  /* search for rendezvous-enabled ssh servers */
+  /* search for rendezvous-enabled ssh servers (always supported on macOS 11+) */
   [ rendezvousPopUp setEnabled: NO ];
-  
-  if ( [ NSWorkspace systemVersion ] >= 0x00001023 ) {
-    [[ rendezvousPopUp itemAtIndex: 0 ] setImage: [ NSImage imageNamed: @"zeroconf.png" ]];
-    [ self scanForSSHServers: nil ];
-  } else {
-    NSLog( @"system doesn't support rendezvous, disabling." );
-  }
+  [[ rendezvousPopUp itemAtIndex: 0 ] setImage: [ NSImage imageNamed: @"zeroconf.png" ]];
+  [ self scanForSSHServers: nil ];
 }
 
 - ( IBAction )toggleDots: ( id )sender
@@ -1550,7 +1542,6 @@ WRITE_ERR:
   for ( i = 0; i < [ lpath count ]; i++ ) {
     img = [[ NSWorkspace sharedWorkspace ] iconForFile: componentpath ];
     
-    [ img setScalesWhenResized: YES ];
     [ img setSize: NSMakeSize( 16.0, 16.0 ) ];
     
     item = [[ NSMenuItem alloc ] initWithTitle: [ lpath objectAtIndex: i ]
@@ -1771,7 +1762,7 @@ WRITE_ERR:
     }
     [ marray addObject: d ];
   }
-  [ p release ];
+  [ p drain ];
   [ self downloadFiles: marray toDirectory: localDirPath ];
   [ marray release ];
 }
@@ -2076,7 +2067,7 @@ WRITE_ERR:
     selectedlines[ i ] = [ tobj intValue ];
     i++;
   }
-  [ p release ];
+  [ p drain ];
   
   switch ( [ items count ] ) {
     case 0:
@@ -2149,7 +2140,7 @@ WRITE_ERR:
                         [ remoteDirContents objectAtIndex: [ dobj intValue ]] :
                         [ dotlessRDir objectAtIndex: [ dobj intValue ]] ) ];
   }
-  [ p release ];
+  [ p drain ];
   
   switch ( [ items count ] ) {
     case 0:
@@ -2196,7 +2187,7 @@ WRITE_ERR:
     deleteCommand = [ NSString stringWithFormat: @"%s \"%@\"", delcmd, item ];
     [ removeQueue addObject: deleteCommand ];
   }
-  [ p release ];
+  [ p drain ];
   [ self writeCommand: " " ];
   [ remoteProgBar setIndeterminate: NO ];
   [ remoteProgBar setMinValue: 0.0 ];
@@ -2917,7 +2908,7 @@ CHMOD_ERROR:
     NSLog( @"fts_close: %s", strerror( errno ));
   }
   
-  [ p release ];
+  [ p drain ];
 }
 
 - ( void )showUploadProgress
@@ -3530,7 +3521,6 @@ CHMOD_ERROR:
         image = [[ NSWorkspace sharedWorkspace ] iconForFileType: extension ];
       }
     }
-    [ image setScalesWhenResized: YES ];
     [ image setSize: NSMakeSize( 128.0, 128.0 ) ];
     [ image retain ];
   } else {
@@ -3551,7 +3541,6 @@ CHMOD_ERROR:
   cellorigin = [ table originOfSelectedCell ];
   
   imageSize = [ image size ];
-  [ image setScalesWhenResized: YES ];
   
   [ imagePreviewPanel setTitle: [ NSString stringWithFormat: @"Preview: %@", name ]];
   [ imagePreviewTextField setStringValue:
@@ -3609,45 +3598,41 @@ CHMOD_ERROR:
 
 - ( IBAction )openLocalFileInEditor: ( id )sender
 {
-  FSRef		editorref;
-  OSType		creator = 'R*ch';
-  unsigned int	row = [ localBrowser selectedRow ];
-  NSString		*filepath = [[ ( dotflag ? localDirContents : dotlessLDir )
-                             objectAtIndex: row ] objectForKey: @"name" ];
-  NSString		*editorpath;
-  NSString		*editor = [[ NSUserDefaults standardUserDefaults ] objectForKey: @"ODBTextEditor" ];
-  
-  if ( editor == nil ) {
-    editor = @"BBEdit.app";
-  }
-  
-  if ( [[ NSWorkspace sharedWorkspace ]
-        launchServicesFindApplication: ( CFStringRef )editor
-        foundAppRef: &editorref ] == NO ) {
-    if ( [[ NSWorkspace sharedWorkspace ]
-          launchServicesFindApplicationWithCreatorType: creator
-          foundAppRef: &editorref  ] == NO ) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"Couldn't find %@ to launch %@.",
-                                        @"Couldn't find %@ to launch %@." ),
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                      editor, [ filepath lastPathComponent ] );
-      return;
+  unsigned int  row = [ localBrowser selectedRow ];
+  NSString      *filepath = [[ ( dotflag ? localDirContents : dotlessLDir )
+                               objectAtIndex: row ] objectForKey: @"name" ];
+  NSString      *editor = [[ NSUserDefaults standardUserDefaults ] objectForKey: @"ODBTextEditor" ];
+
+  if ( editor == nil ) editor = @"BBEdit";
+
+  NSBundle *bundle = [ NSBundle bundleForClass: [ self class ]];
+  NSDictionary *plist = [ NSDictionary dictionaryWithContentsOfFile:
+                          [ bundle pathForResource: @"ODBEditors" ofType: @"plist" ]];
+  NSString *bundleID = nil;
+  for ( NSDictionary *info in [ plist objectForKey: @"ODBEditors" ] ) {
+    if ( [[ info objectForKey: @"ODBEditorName" ] isEqualToString: editor ] ) {
+      bundleID = [ info objectForKey: @"ODBEditorBundleID" ];
+      break;
     }
   }
-  
-  if (( editorpath = [ NSString stringWithFSRef: &editorref ] ) == nil ) {
-    NSLog( @"failed to convert FSRef to NSString" );
+
+  NSURL *appURL = [[ NSWorkspace sharedWorkspace ] findApplicationNamed: editor bundleID: bundleID ];
+  if ( !appURL ) {
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+    [ alert setInformativeText: [ NSString stringWithFormat:
+        NSLocalizedString( @"Couldn't find %@ to launch %@.", @"Couldn't find %@ to launch %@." ),
+        editor, [ filepath lastPathComponent ]]];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+    [ alert runModal ];
+    [ alert release ];
     return;
   }
-  
-  if ( [[ NSWorkspace sharedWorkspace ] openFile: filepath
-                                 withApplication: editorpath andDeactivate: YES ] == NO ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    @"Couldn't open %@ in %@", NSLocalizedString( @"OK", @"OK" ),
-                    @"", @"", [ filepath lastPathComponent ], [ editorpath lastPathComponent ] );
-    return;
-  }
+
+  [[ NSWorkspace sharedWorkspace ] openFileURL: [ NSURL fileURLWithPath: filepath ]
+                             withApplicationURL: appURL
+                                      odbParams: nil
+                             completionHandler: nil ];
 }
 
 - ( IBAction )openRemoteFileInEditor: ( id )sender
@@ -3692,155 +3677,123 @@ CHMOD_ERROR:
 - ( void )ODBEditFile: ( NSString * )filepath remotePath: ( NSString * )remotePath
 {
   int                 i;
-  OSErr		err = ( OSErr )0;
-  AEKeyword		keyServerID = 'Fugu';
-  NSString		*appname = nil, *failedCall = @"";
-  NSString            *bundleID = nil, *sig = nil;
-  OSType		creator = 'R*ch', ct;
-  const char		*custompath;
-  FSRef		fileref, editorref;
-  AERecord		rec = { typeNull, NULL };
+  NSString            *appname = nil, *bundleID = nil;
   NSBundle            *bundle = [ NSBundle bundleForClass: [ self class ]];
   NSDictionary        *dict = [ NSDictionary dictionaryWithContentsOfFile:
                                [ bundle pathForResource: @"ODBEditors" ofType: @"plist" ]];
   NSDictionary        *odbEditorInfo = nil;
-  
+
   if (( appname = [[ NSUserDefaults standardUserDefaults ]
                    objectForKey: @"ODBTextEditor" ] ) == nil ) {
     appname = @"BBEdit";
   }
-  
+
   /* find the entry for the given editor */
   for ( i = 0; i < [[ dict objectForKey: @"ODBEditors" ] count ]; i++ ) {
     if ( [[[[ dict objectForKey: @"ODBEditors" ] objectAtIndex: i ]
            objectForKey: @"ODBEditorName" ] isEqualToString: appname ] ) {
       odbEditorInfo = [[ dict objectForKey: @"ODBEditors" ] objectAtIndex: i ];
       bundleID = [ odbEditorInfo objectForKey: @"ODBEditorBundleID" ];
-      sig = [ odbEditorInfo objectForKey: @"ODBEditorCreatorCode" ];
       break;
     }
   }
-  if ( i >= [[ dict objectForKey: @"ODBEditors" ] count ] ) {
-    /* XXX error handling */
-    return;
-  }
-  
+  if ( !odbEditorInfo ) return;
+
   /* check to see if the editor is run on the CLI */
   if ( [[ odbEditorInfo objectForKey: @"ODBEditorLaunchStyle" ] intValue ] == 1 ) {
-    UMFileLauncher          *launch = [[ UMFileLauncher alloc ] init ];
-    NSString                *editorPath = [ odbEditorInfo objectForKey: @"ODBEditorPath" ];
-    
+    UMFileLauncher *launch = [[ UMFileLauncher alloc ] init ];
+    NSString *editorPath = [ odbEditorInfo objectForKey: @"ODBEditorPath" ];
+
     [[ NSAppleEventManager sharedAppleEventManager ] setEventHandler: self
                                                          andSelector: @selector( handleODBFileClosedEvent:andReplyWithEvent: )
                                                        forEventClass: kODBEditorSuite andEventID: kAEClosedFile ];
-    
     [[ NSAppleEventManager sharedAppleEventManager ] setEventHandler: self
                                                          andSelector: @selector( handleODBFileModifiedEvent:andReplyWithEvent: )
                                                        forEventClass: kODBEditorSuite andEventID: kAEModifiedFile ];
-    
-    if ( ! [ launch externalEditFile: filepath withCLIEditor: editorPath
-                         contextInfo: ( void * )remotePath ] ) {
+
+    if ( ![ launch externalEditFile: filepath withCLIEditor: editorPath
+                        contextInfo: ( void * )remotePath ] ) {
       NSLog( @"FAILED" );
     }
     [ launch release ];
     return;
   }
-  
-  if ( sig ) {
-    ct = *( OSType * )[ sig UTF8String ];
-  } else {
-    ct = kLSUnknownCreator;
-  }
-  
-  if ( [ filepath makeFSRefRepresentation: &fileref ] != noErr ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    @"Failed to create FSRef from %@: error %d",
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"", filepath, err );
+
+  /* Find the editor application */
+  NSURL *appURL = [[ NSWorkspace sharedWorkspace ] findApplicationNamed: appname bundleID: bundleID ];
+  if ( !appURL ) {
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+    [ alert setInformativeText: [ NSString stringWithFormat:
+        NSLocalizedString( @"Couldn't find %@ to launch %@.", @"Couldn't find %@ to launch %@." ),
+        appname, [ filepath lastPathComponent ]]];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+    [ alert runModal ];
+    [ alert release ];
     return;
   }
-  
-  if ( ! [[ NSWorkspace sharedWorkspace ]
-          launchServicesFindApplicationForCreatorType: ct
-          bundleID: ( CFStringRef )bundleID appName: ( CFStringRef )appname
-          foundAppRef: &editorref foundAppURL: NULL ] ) {
-    if ( [[ NSWorkspace sharedWorkspace ]
-          launchServicesFindApplicationWithCreatorType: creator
-          foundAppRef: &editorref  ] == NO ) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"Couldn't find %@ to launch %@.",
-                                        @"Couldn't find %@ to launch %@." ),
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                      appname, [ filepath lastPathComponent ] );
-      return;
-    }
-  }
-  
-  if (( err = AECreateList( NULL, 0, TRUE, &rec )) != 0 ) {
-    failedCall = @"AECreateList";
-    goto AECallErr;
-  }
-  
-  if (( err = AEPutParamPtr( &rec, keyFileSender,
-                            typeType, ( Ptr )&keyServerID, sizeof( AEKeyword ))) != 0 ) {
-    failedCall = @"AEPutParamPtr";
-    goto AECallErr;
-  }
-  
-  custompath = [[ NSString stringWithFormat: @"sftp://%@@%@%@", [ userName stringValue ],
-                 [ remoteHost stringValue ], remotePath ] UTF8String ];
-  
-  if (( err = AEPutParamPtr( &rec, keyFileCustomPath,
-                            typeChar, custompath, strlen( custompath ))) != 0 ) {
-    failedCall = @"AEPutParamPtr";
-    goto AECallErr;
-  }
-  
+
   if ( [ remotePath length ] >= MAXPATHLEN ) {
     NSLog( @"%@: path exceeds MAXPATHLEN!", remotePath );
     return;
   }
-  
-  if (( err = AEPutParamPtr( &rec, keyFileSenderToken,
-                            typeChar, [ remotePath UTF8String ], strlen( [ remotePath UTF8String ] ))) != 0 ) {
-    failedCall = @"AEPutParamPtr";
-    goto AECallErr;
-  }
-  
+
+  /* Build odoc Apple Event with ODB params */
+  NSURL *fileURL = [ NSURL fileURLWithPath: filepath ];
+  NSData *urlData = [[ fileURL absoluteString ] dataUsingEncoding: NSUTF8StringEncoding ];
+
+  NSAppleEventDescriptor *fileList = [ NSAppleEventDescriptor listDescriptor ];
+  [ fileList insertDescriptor: [ NSAppleEventDescriptor descriptorWithDescriptorType: typeFileURL
+                                                                                data: urlData ]
+                      atIndex: 1 ];
+
+  NSAppleEventDescriptor *event = [ NSAppleEventDescriptor
+      appleEventWithEventClass: kCoreEventClass
+                       eventID: kAEOpenDocuments
+              targetDescriptor: [ NSAppleEventDescriptor nullDescriptor ]
+                      returnID: kAutoGenerateReturnID
+                 transactionID: kAnyTransactionID ];
+  [ event setParamDescriptor: fileList forKeyword: keyDirectObject ];
+
+  /* ODB sender ID ('Fugu') */
+  AEKeyword senderID = 'Fugu';
+  [ event setParamDescriptor: [ NSAppleEventDescriptor descriptorWithDescriptorType: typeType
+                                                                               data: [ NSData dataWithBytes: &senderID
+                                                                                                    length: sizeof( senderID ) ]]
+                  forKeyword: keyFileSender ];
+
+  /* Custom SFTP URL shown in editor title bar */
+  NSString *customPath = [ NSString stringWithFormat: @"sftp://%@@%@%@",
+                          [ userName stringValue ], [ remoteHost stringValue ], remotePath ];
+  [ event setParamDescriptor: [ NSAppleEventDescriptor descriptorWithString: customPath ]
+                  forKeyword: keyFileCustomPath ];
+
+  /* Sender token echoed back in kAEModifiedFile / kAEClosedFile callbacks */
+  [ event setParamDescriptor: [ NSAppleEventDescriptor descriptorWithString: remotePath ]
+                  forKeyword: keyFileSenderToken ];
+
   [[ NSAppleEventManager sharedAppleEventManager ] setEventHandler: self
                                                        andSelector: @selector( handleODBFileClosedEvent:andReplyWithEvent: )
                                                      forEventClass: kODBEditorSuite andEventID: kAEClosedFile ];
-  
   [[ NSAppleEventManager sharedAppleEventManager ] setEventHandler: self
                                                        andSelector: @selector( handleODBFileModifiedEvent:andReplyWithEvent: )
                                                      forEventClass: kODBEditorSuite andEventID: kAEModifiedFile ];
-  
-  if ( [[ NSWorkspace sharedWorkspace ] launchServicesOpenFileRef: &fileref
-                                               withApplicationRef: &editorref
-                                                   passThruParams: &rec
-                                                      launchFlags: kLSLaunchDefaults ] == NO ) {
-    goto LaunchFailed;
-  }
-  
-  /* successful */
-  if ( rec.dataHandle != NULL ) {
-    ( void )AEDisposeDesc( &rec );
-  }
-  return;
-  
-AECallErr:
-  NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                  @"%@ failed: error %d", NSLocalizedString( @"OK", @"OK" ),
-                  @"", @"", failedCall, err );
-  if ( rec.dataHandle != NULL ) {
-    ( void )AEDisposeDesc( &rec );
-  }
-  return;
-  
-LaunchFailed:
-  NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                  @"Failed to open %@ with %@.", NSLocalizedString( @"OK", @"OK" ),
-                  @"", @"", [ filepath lastPathComponent ], appname );
-  return;
+
+  [[ NSWorkspace sharedWorkspace ] openFileURL: fileURL
+                             withApplicationURL: appURL
+                                      odbParams: event
+                              completionHandler: ^( NSError *err ) {
+    if ( !err ) return;
+    dispatch_async( dispatch_get_main_queue(), ^{
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat:
+          @"Failed to open %@ with %@.", [ filepath lastPathComponent ], appname ]];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    });
+  }];
 }
 
 - ( void )testHandleEvent: ( NSAppleEventDescriptor * )inEvent
@@ -3872,14 +3825,17 @@ LaunchFailed:
   
   indtype = [ fssDesc descriptorType ];
   NSLog( @"indtype: %s", &indtype );
-  fssDesc = [ fssDesc coerceToDescriptorType: typeFSRef ];
-  
+  if ( indtype != typeFileURL ) {
+    fssDesc = [ fssDesc coerceToDescriptorType: typeFileURL ];
+  }
+
   if ( fssDesc == nil ) {
     NSBeep();
     return;
   }
-  
-  filename = [ NSString stringWithFSSpec: ( FSSpec * )[[ fssDesc data ] bytes ]];
+
+  filename = [[ NSURL URLWithString: [[[ NSString alloc ] initWithData: [ fssDesc data ]
+                                                            encoding: NSUTF8StringEncoding ] autorelease ]] path ];
   NSLog( @"filename: %@", filename );
 }
 
@@ -3902,16 +3858,17 @@ LaunchFailed:
   }
   
   indtype = [ fssDesc descriptorType ];
-  
-  if ( indtype != typeFSRef ) {
-    fssDesc = [ fssDesc coerceToDescriptorType: typeFSRef ];
+
+  if ( indtype != typeFileURL ) {
+    fssDesc = [ fssDesc coerceToDescriptorType: typeFileURL ];
     if ( fssDesc == nil ) {
-      NSLog( @"Couldn't coerce descriptor to typeFSRef" );
+      NSLog( @"Couldn't coerce descriptor to typeFileURL" );
       return;
     }
   }
-  
-  filename = [ NSString stringWithFSSpec: ( FSSpec * )[[ fssDesc data ] bytes ]];
+
+    filename = [[ NSURL URLWithString: [[[ NSString alloc ] initWithData: [ fssDesc data ]
+                                                             encoding: NSUTF8StringEncoding ] autorelease ]] path ];
   [ self performSelector: @selector( removeFromEditedDocuments: )
               withObject: filename afterDelay: 1.0 ];
   
@@ -4795,7 +4752,7 @@ INVALID_CONNECTION_SETTINGS:
     
     [ a addObject: name ];
   }
-  [ pool release ];
+  [ pool drain ];
   
   if ( [ a count ] ) {
     promisedNames = [ NSArray arrayWithArray: a ];

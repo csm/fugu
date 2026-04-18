@@ -4,28 +4,12 @@
  */
 
 #import "NSAttributedString-Ellipsis.h"
-#include <Carbon/Carbon.h>
-#include <CoreFoundation/CoreFoundation.h>
 
 @implementation NSAttributedString(Ellipsis)
 
 - ( NSAttributedString * )ellipsisAbbreviatedStringForWidth: ( double )width
 {
-    NSAttributedString          *attrString = nil;
-    NSMutableString             *string = [[[ self string ] mutableCopy ] autorelease ];
-    OSStatus                    status;
-    double                      paddedWidth = ( width - 24.0 );
-    Boolean                     truncMiddle = '\0';
-    
-//    if (( status = TruncateThemeText(( CFMutableStringRef )string,
-//                    kThemeViewsFont, kThemeStateActive, paddedWidth, truncMiddle, NULL ))
-//                    != noErr ) {
-//        NSLog( @"TruncateThemeText %@ returned error %d", string, ( int )status );
-//        return( self );
-//    }
-    
-    attrString = [[ NSAttributedString alloc ] initWithString: string ];
-    
+    NSAttributedString *attrString = [[ NSAttributedString alloc ] initWithString: [ self string ]];
     return( [ attrString autorelease ] );
 }
 

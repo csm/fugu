@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSCalendarDate(ConvertToSeconds)
+@interface NSDate(ConvertToSeconds)
 
 + ( off_t )secondsFromFormattedDateString: ( NSString * )dString;
 

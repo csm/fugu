@@ -5,141 +5,51 @@
 
 #import "NSWorkspace(LaunchServices).h"
 
-#include <sys/types.h>
-#include <sys/param.h>
-
 @implementation NSWorkspace(LaunchServices)
 
-/* corresponds to LSOpenFromURLSpec() */
-- ( BOOL )launchServicesOpenFileRef: ( FSRef * )fileref
-	    withApplicationRef: ( FSRef * )appref
-	    passThruParams: ( AERecord * )params
-	    launchFlags: ( LSLaunchFlags )flags
+- ( NSURL * )findApplicationNamed: ( NSString * )name bundleID: ( NSString * )bundleID
 {
-    LSLaunchURLSpec	lspec = { NULL, NULL, NULL, 0, NULL };
-    BOOL		success = YES;
-    OSStatus		status;
-    CFURLRef		fileurl = NULL, appurl = NULL;
-    CFArrayRef		arrayref = NULL;
-    
-    if ( fileref != NULL ) {
-	if (( fileurl = CFURLCreateFromFSRef( kCFAllocatorDefault, fileref )) == NULL ) {
-	    NSLog( @"CFURLCreateFromFSRef failed." );
-	    return( NO );
-	}
-	if (( arrayref = CFArrayCreate( kCFAllocatorDefault,
-		    ( const void ** )&fileurl, 1, NULL )) == NULL ) {
-	    NSLog( @"CFArrayCreate failed." );
-	    return( NO );
-	}
+    if ( bundleID && ![ bundleID isEqualToString: @"-" ] ) {
+        NSURL *url = [ self URLForApplicationWithBundleIdentifier: bundleID ];
+        if ( url ) return url;
     }
-    
-    if ( appref != NULL ) {
-	if (( appurl = CFURLCreateFromFSRef( kCFAllocatorDefault, appref )) == NULL ) {
-	    NSLog( @"CFURLCreateFromFSRef failed." );
-	    return( NO );
-	}
-    }
-
-    lspec.appURL = appurl;
-    lspec.itemURLs = arrayref;
-    lspec.passThruParams = params;
-    lspec.launchFlags = flags;
-    lspec.asyncRefCon = NULL;
-    
-    status = LSOpenFromURLSpec( &lspec, NULL );
-    
-    if ( status != noErr ) {
-	NSLog( @"LSOpenFromRefSpec failed: error %d", status );
-	success = NO;
-    }
-    
-    if ( appurl != NULL ) {
-	CFRelease( appurl );
-    }
-    if ( fileurl != NULL ) {
-	CFRelease( fileurl );
-    }
-    if ( arrayref != NULL ) {
-	CFRelease( arrayref );
-    }
-    
-    return( success );
-}
-
-/* corresponds to LSFindApplicationForInfo() */
-- ( BOOL )launchServicesFindApplicationForCreatorType: ( OSType )creator
-	bundleID: ( CFStringRef )bundleID
-	appName: ( CFStringRef )appName
-	foundAppRef: ( FSRef * )foundRef
-	foundAppURL: ( CFURLRef * )appURL
-{
-    OSStatus		status;
-    BOOL		success = YES;
-    NSString            *modifiedAppName = nil;
-    
-    /* start by looking for bundleID and appName */
-    if (( status = LSFindApplicationForInfo( kLSUnknownCreator,
-                                            bundleID, appName,
-                                            foundRef, appURL )) == noErr ) {
-        return( success );
-    }
-    /* then try application name only */
-    if (( status = LSFindApplicationForInfo( kLSUnknownCreator,
-                                            NULL, appName,
-                                            foundRef, appURL )) != noErr ) {
-        if ( appName != NULL ) {
-            if ( [[ ( NSString * )appName pathExtension ] isEqualToString: @"" ] ) {
-                modifiedAppName = [ ( NSString * )appName stringByAppendingPathExtension: @"app" ];
-            } else {
-                modifiedAppName = [ ( NSString * )appName stringByDeletingPathExtension ];
-            }
-            
-            status = LSFindApplicationForInfo( creator, bundleID,
-                                    ( CFStringRef )modifiedAppName, foundRef, appURL );
-            
-            if ( status == noErr ) {
-                return( success );
-            }
-        } else if ( creator != kLSUnknownCreator ) {
-            /* finally, try searching by creator code */
-            status = LSFindApplicationForInfo( creator, NULL, NULL, foundRef, appURL );
-            if ( status == noErr ) {
-                return( success );
-            }
+    if ( name ) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        NSString *path = [ self fullPathForApplication: name ];
+        if ( !path ) path = [ self fullPathForApplication: [ name stringByDeletingPathExtension ]];
+        if ( !path ) {
+            NSString *withExt = [[ name stringByDeletingPathExtension ] stringByAppendingPathExtension: @"app" ];
+            path = [ self fullPathForApplication: withExt ];
         }
-#ifdef DEBUG
-	NSLog( @"Couldn't find application %@: error %d", ( NSString * )appName, status );
-#endif /* DEBUG */
-	success = NO;
+#pragma clang diagnostic pop
+        if ( path ) return [ NSURL fileURLWithPath: path ];
     }
-    
-    return( success );
+    return nil;
 }
 
-/* limited version of the above */
-- ( BOOL )launchServicesFindApplication: ( CFStringRef )appName
-	foundAppRef: ( FSRef * )foundRef
+- ( void )openFileURL: ( NSURL * )fileURL
+   withApplicationURL: ( NSURL * )appURL
+            odbParams: ( NSAppleEventDescriptor * )params
+    completionHandler: ( void (^)( NSError * ) )handler
 {
-    return( [ self launchServicesFindApplicationForCreatorType: kLSUnknownCreator
-		    bundleID: NULL appName: appName
-		    foundAppRef: foundRef foundAppURL: NULL ] );
-}
-
-- ( BOOL )launchServicesFindApplicationWithCreatorType: ( OSType )creator
-        foundAppRef: ( FSRef * )foundRef
-{
-    return( [ self launchServicesFindApplicationForCreatorType: creator
-		    bundleID: NULL appName: NULL
-		    foundAppRef: foundRef foundAppURL: NULL ] );
-}
-
-- ( BOOL )launchServicesFindApplicationWithBundleID: ( CFStringRef )bundleID
-        foundAppURL: ( CFURLRef * )foundURL
-{
-    return( [ self launchServicesFindApplicationForCreatorType: '????'
-                    bundleID: bundleID appName: NULL
-                    foundAppRef: NULL foundAppURL: foundURL ] );
+    if ( !appURL ) {
+        if ( handler ) {
+            handler( [ NSError errorWithDomain: NSCocoaErrorDomain
+                                          code: NSFileNoSuchFileError
+                                      userInfo: nil ] );
+        }
+        return;
+    }
+    NSWorkspaceOpenConfiguration *config = [ NSWorkspaceOpenConfiguration configuration ];
+    if ( params ) config.appleEvent = params;
+    [ self openURL: fileURL withApplicationAtURL: appURL
+       configuration: config
+   completionHandler: ^( NSRunningApplication *app, NSError *err ) {
+        if ( handler ) {
+            dispatch_async( dispatch_get_main_queue(), ^{ handler( err ); } );
+        }
+    }];
 }
 
 @end

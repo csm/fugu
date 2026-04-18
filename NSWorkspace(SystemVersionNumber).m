@@ -9,11 +9,9 @@
 
 + ( SInt32 )systemVersion
 {
-    SInt32		version;
-    
-    Gestalt( gestaltSystemVersion, &version );
-    
-    return( version );
+    NSOperatingSystemVersion v = [[ NSProcessInfo processInfo ] operatingSystemVersion ];
+    /* encode as 0xMMmmpp to match the old Gestalt gestaltSystemVersion format */
+    return ( SInt32 )(( v.majorVersion << 8 ) | ( v.minorVersion << 4 ) | v.patchVersion );
 }
 
 @end

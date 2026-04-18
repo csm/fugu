@@ -83,7 +83,7 @@ extern int		mfd;
             continue;
         }
         [ tunnelHostField addItemWithObjectValue: favobj ];
-        [ p release ];
+        [ p drain ];
     }
 
     if ( defhost == nil || [ defhost isEqualToString: @"" ] ) {
@@ -190,24 +190,26 @@ extern int		mfd;
     if ( ! [ self firstPasswordPrompt ] && [ self gotPasswordFromKeychain ] ) {
         int	rc;
         
-        rc = NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
+        {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText:
                 NSLocalizedString( @"The password in the keychain was rejected "
-                                    @"by this server. Would "
-                                    @"you like to open Keychain Access to edit it?",
-                                    @"The password in the keychain was rejected "
-                                    @"by this server. Would "
-                                    @"you like to open Keychain Access to edit it?" ),
-                NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" ),
-                NSLocalizedString( @"Cancel", @"Cancel" ), @"" );
-                
-        switch ( rc ) {
-        case NSAlertDefaultReturn:
-            if ( ! [[ NSWorkspace sharedWorkspace ] openFile:
-                        @"/Applications/Utilities/Keychain Access.app" ] ) {
-                NSLog( @"couldn't open keychain access." );
+                                   @"by this server. Would "
+                                   @"you like to open Keychain Access to edit it?",
+                                   @"The password in the keychain was rejected "
+                                   @"by this server. Would "
+                                   @"you like to open Keychain Access to edit it?" )];
+            [ alert addButtonWithTitle:
+                NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" )];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
+            NSModalResponse rc = [ alert runModal ];
+            [ alert release ];
+            if ( rc == NSAlertFirstButtonReturn ) {
+                NSURL *kcURL = [ NSURL fileURLWithPath:
+                    @"/Applications/Utilities/Keychain Access.app" ];
+                [[ NSWorkspace sharedWorkspace ] openURL: kcURL ];
             }
-        case NSAlertAlternateReturn:
-            break;
         }
     }
     
@@ -226,11 +228,18 @@ extern int		mfd;
     return;
     
 WRITE_ERR:
-    NSRunAlertPanel( NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
-                                        @"Write failed: Did not write correct number of bytes!" ),
-        NSLocalizedString( @"Wrote %d bytes to file descriptor",
-                            @"Wrote %d bytes to file descriptor" ),
-        NSLocalizedString( @"Exit", @"Exit" ), @"", @"", wr );
+    {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText:
+            NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
+                               @"Write failed: Did not write correct number of bytes!" )];
+        [ alert setInformativeText: [ NSString stringWithFormat:
+            NSLocalizedString( @"Wrote %d bytes to file descriptor",
+                               @"Wrote %d bytes to file descriptor" ), wr ]];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Exit", @"Exit" )];
+        [ alert runModal ];
+        [ alert release ];
+    }
     exit( 2 );
 }
 
@@ -260,8 +269,12 @@ WRITE_ERR:
 
 - ( void )connectionError: ( NSString * )errmsg
 {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ), errmsg,
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+    [ alert setInformativeText: errmsg ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+    [ alert runModal ];
+    [ alert release ];
     [ sshtunnelSheet close ];
 }
 
@@ -280,9 +293,13 @@ WRITE_ERR:
     if ( sshpid > 0 ) {
 NSLog( @"%d", sshpid );
         if ( kill( sshpid, SIGTERM ) < 0 ) {
-            NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                @"kill %d: %s", NSLocalizedString( @"OK", @"OK" ),
-                @"", @"", sshpid, strerror( errno ));
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText: [ NSString stringWithFormat: @"kill %d: %s",
+                sshpid, strerror( errno )]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+            [ alert runModal ];
+            [ alert release ];
             return;
         }
     }
@@ -298,30 +315,33 @@ NSLog( @"%d", sshpid );
 {
     int			rc;
     
-    rc = NSRunAlertPanel( NSLocalizedStringFromTable(
-                            @"Are you sure you want to close this tunnel?", @"SSHTunnel",
-                            @"Are you sure you want to close this tunnel?" ),
-            [ NSString stringWithFormat: NSLocalizedStringFromTable(
-                            @"The tunnel to port %@ of host %@ will be destroyed.", @"SSHTunnel",
-                            @"The tunnel to port %@ of host %@ will be destroyed." ),
-                [ remotePortField stringValue ], [ remoteHostField stringValue ]],
-            NSLocalizedStringFromTable( @"Close Tunnel", @"SSHTunnel", @"Close Tunnel" ),
-            NSLocalizedString( @"Cancel", @"Cancel" ), @"" );
-            
-    switch ( rc ) {
-    case NSAlertDefaultReturn:
-        break;
-        
-    default:
-    case NSAlertAlternateReturn:
-        return;
+    {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedStringFromTable(
+            @"Are you sure you want to close this tunnel?", @"SSHTunnel",
+            @"Are you sure you want to close this tunnel?" )];
+        [ alert setInformativeText: [ NSString stringWithFormat:
+            NSLocalizedStringFromTable(
+                @"The tunnel to port %@ of host %@ will be destroyed.", @"SSHTunnel",
+                @"The tunnel to port %@ of host %@ will be destroyed." ),
+            [ remotePortField stringValue ], [ remoteHostField stringValue ]]];
+        [ alert addButtonWithTitle:
+            NSLocalizedStringFromTable( @"Close Tunnel", @"SSHTunnel", @"Close Tunnel" )];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
+        NSModalResponse rc = [ alert runModal ];
+        [ alert release ];
+        if ( rc != NSAlertFirstButtonReturn ) return;
     }
 
     if ( sshpid > 0 ) {
         if ( kill( sshpid, SIGTERM ) < 0 ) {
-            NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                @"kill %d: %s", NSLocalizedString( @"OK", @"OK" ),
-                @"", @"", sshpid, strerror( errno ));
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText: [ NSString stringWithFormat: @"kill %d: %s",
+                sshpid, strerror( errno )]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+            [ alert runModal ];
+            [ alert release ];
             return;
         }
     }
@@ -341,23 +361,31 @@ NSLog( @"%d", sshpid );
             || ![[ remotePortField stringValue ] length ]
             || ![[ tunnelHostField stringValue ] length ]
             || ![[ usernameField stringValue ] length ] ) {
-        NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-            NSLocalizedStringFromTable( @"You must fill in all fields. Please try again.",
-                    @"SSHTunnel", @"You must fill in all fields. Please try again." ),
-            NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+        {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText:
+                NSLocalizedStringFromTable( @"You must fill in all fields. Please try again.",
+                    @"SSHTunnel", @"You must fill in all fields. Please try again." )];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+            [ alert runModal ];
+            [ alert release ];
+        }
         return;
     }
-    
+
     servname = ( char * )[[ remotePortField stringValue ] UTF8String ];
     if (( se = getservbyname( servname, "tcp" )) == NULL ) {
-	if (( port = [ remotePortField intValue ] ) == 0 ) {
-	    NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-		NSLocalizedString( @"OK", @"OK" ), @"", @"", sshtunnelSheet, self,
-		NULL, NULL, NULL,
+        if (( port = [ remotePortField intValue ] ) == 0 ) {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+            [ alert setInformativeText:
                 NSLocalizedStringFromTable( @"You must fill in all fields. Please try again.",
-                    @"SSHTunnel", @"You must fill in all fields. Please try again." ));
-	    return;
-	}
+                    @"SSHTunnel", @"You must fill in all fields. Please try again." )];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+            [ alert beginSheetModalForWindow: sshtunnelSheet completionHandler: nil ];
+            return;
+        }
     } else {
 	port = se->s_port;
     }

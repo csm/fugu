@@ -46,7 +46,7 @@ int		mfd = 0;
     
     [[ NSRunLoop currentRunLoop ] run ];
     
-    [ pool release ];
+    [ pool drain ];
 }
 
 - ( id )init
@@ -172,7 +172,7 @@ int		mfd = 0;
 
                 memset( buf, '\0', strlen( buf ));
             }
-            [ pool release ];
+            [ pool drain ];
         }
         if ( threestrikes == 3 ) {
             [ controller connectionError: @"Authentication failed." ];

@@ -29,23 +29,20 @@
 
 - ( void )awakeFromNib
 {
-    [ self registerForDraggedTypes: [ NSArray arrayWithObjects:
-		    NSFilenamesPboardType, NSURLPboardType, nil ]];
+    [ self registerForDraggedTypes: @[ NSPasteboardTypeFileURL ]];
 }
 
 - ( NSDragOperation )draggingEntered: ( id <NSDraggingInfo> )sender
 {
-    NSPasteboard	*pb = [ sender draggingPasteboard ];
-    
-    if ( ! [[ pb types ] containsObject: NSFilenamesPboardType ] &&
-	    ! [[ pb types ] containsObject: NSURLPboardType ] ) {
-	return( NSDragOperationNone );
+    NSPasteboard *pb = [ sender draggingPasteboard ];
+    NSArray *urls = [ pb readObjectsForClasses: @[ [ NSURL class ] ]
+                         options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES } ];
+    if ( [ urls count ] == 0 ) {
+        return( NSDragOperationNone );
     }
-	
     [ self setBackgroundColor: [ NSColor lightGrayColor ]];
     [ self setEditable: NO ];
     [ self setNeedsDisplay: YES ];
-    
     return( NSDragOperationCopy );
 }
 
@@ -58,37 +55,28 @@
 
 - ( BOOL )performDragOperation: ( id <NSDraggingInfo> )sender
 {
-    NSPasteboard	*pb = [ sender draggingPasteboard ];
-    NSString		*path = nil;
-    
-    if ( [[ pb types ] containsObject: NSFilenamesPboardType ] ) {
-	NSArray		*files;
-	
-	files = [ pb propertyListForType: NSFilenamesPboardType ];
-	
-	/* first item wins */
-	path = [ files objectAtIndex: 0 ];
-    } else if ( [[ pb types ] containsObject: NSURLPboardType ] ) {
-	path = [ pb stringForType: NSURLPboardType ];
+    NSPasteboard *pb = [ sender draggingPasteboard ];
+    NSArray *urls = [ pb readObjectsForClasses: @[ [ NSURL class ] ]
+                         options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES } ];
+    if ( [ urls count ] == 0 ) {
+        return( NO );
     }
-    
-    if ( path == nil ) {
-	return( NO );
-    }
-    
+
+    NSString *path = [[ urls objectAtIndex: 0 ] path ];
+
     [ self setStringValue: path ];
     [ self setEditable: YES ];
     [ self setBackgroundColor: [ NSColor controlBackgroundColor ]];
     [ self setNeedsDisplay: YES ];
-    
+
     if ( [[ self delegate ] respondsToSelector:
-	    @selector( umTextFieldContentsChanged: ) ] ) {
-	[[ self delegate ] umTextFieldContentsChanged:
-		[ NSDictionary dictionaryWithObjectsAndKeys:
-		self, @"UMTextField",
-		path, @"UMTextFieldString", nil ]];
+            @selector( umTextFieldContentsChanged: ) ] ) {
+        [[ self delegate ] umTextFieldContentsChanged:
+            [ NSDictionary dictionaryWithObjectsAndKeys:
+                self, @"UMTextField",
+                path, @"UMTextFieldString", nil ]];
     }
-    
+
     return( YES );
 }
 

@@ -200,10 +200,10 @@ static NSMutableArray	*knownHosts = nil;
 								NSHomeDirectory() ];
     
     if (( knfp = fopen( [ knownhostspath UTF8String ], "r" )) == NULL ) {
-	NSRunAlertPanel( @"Couldn't open ~/.ssh/known_hosts.",
-		@"fopen %@: %s", @"OK", @"", @"",
-		knownhostspath, strerror( errno ));
-	return;
+        [ self showPrefsError: [ NSString stringWithFormat:
+            @"Couldn't open ~/.ssh/known_hosts.\nfopen %@: %s",
+            knownhostspath, strerror( errno )]];
+        return;
     }
     
     [ knownHosts removeAllObjects ];
@@ -359,25 +359,13 @@ static NSMutableArray	*knownHosts = nil;
     for ( i = 0; i < [ editorArray count ]; i++ ) {
         NSString    *bundleID = [[ editorArray objectAtIndex: i ] objectForKey: @"ODBEditorBundleID" ];
         NSString    *name = [[ editorArray objectAtIndex: i ] objectForKey: @"ODBEditorName" ];
-        NSString    *signature = [[ editorArray objectAtIndex: i ] objectForKey: @"ODBEditorCreatorCode" ];
         NSImage     *odbIcon = nil;
         NSURL       *appURL;
         NSMenu      *popupMenu = [ prefTextEditorPopUp menu ];
         NSMenuItem  *menuItem = nil;
-        const char  *sig;
-        OSType      cc;
         
-        if ( signature ) {
-            sig = [ signature UTF8String ];
-            cc = *(OSType *)sig;
-        } else {
-            cc = kLSUnknownCreator;
-        }
-        
-        if ( [[ NSWorkspace sharedWorkspace ]
-                launchServicesFindApplicationForCreatorType: cc
-                bundleID: ( CFStringRef )bundleID appName: ( CFStringRef )name
-                foundAppRef: NULL foundAppURL: ( CFURLRef * )&appURL ] ) {
+        appURL = [[ NSWorkspace sharedWorkspace ] findApplicationNamed: name bundleID: bundleID ];
+        if ( appURL ) {
             odbIcon = [[ NSWorkspace sharedWorkspace ] iconForFile: [ appURL path ]];
         } else if ( [ bundleID isEqualToString: @"-" ] ) {
             odbIcon = [[ NSWorkspace sharedWorkspace ] iconForFile:
@@ -388,7 +376,6 @@ static NSMutableArray	*knownHosts = nil;
         
         menuItem = [[ NSMenuItem alloc ] initWithTitle: name action: NULL keyEquivalent: @"" ];
         if ( odbIcon ) {
-            [ odbIcon setScalesWhenResized: YES ];
             [ odbIcon setSize: NSMakeSize( 16.0, 16.0 ) ];
             [ menuItem setImage: odbIcon ];
         }
@@ -528,59 +515,46 @@ static NSMutableArray	*knownHosts = nil;
     FILE		*fp;
     
     if ( snprintf( khpath, MAXPATHLEN, "%s/.ssh/known_hosts", [ NSHomeDirectory() UTF8String ] )
-		    > ( MAXPATHLEN - 1 )) {
-	NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-		    NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-		    self, NULL, nil, NULL,
-		    @"%@/.ssh/known_hosts: path too long", NSHomeDirectory());
-	return;
+            > ( MAXPATHLEN - 1 )) {
+        [ self showPrefsError: [ NSString stringWithFormat:
+            @"%@/.ssh/known_hosts: path too long", NSHomeDirectory()]];
+        return;
     }
-	
+
     if ( access( khpath, R_OK | W_OK | F_OK ) < 0 ) {
-	if ( errno != ENOENT ) {
-	    NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-			NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-			self, NULL, nil, NULL,
-			@"access %s: %s", khpath, strerror( errno ));
-	    return;
-	} else {
-	    haskhfile = 0;
-	}
+        if ( errno != ENOENT ) {
+            [ self showPrefsError: [ NSString stringWithFormat:
+                @"access %s: %s", khpath, strerror( errno )]];
+            return;
+        } else {
+            haskhfile = 0;
+        }
     }
-    
+
     if ( haskhfile ) {
-	if ( strlcpy( khpathbak, khpath, sizeof( khpath )) >= sizeof( khpath )) {
-	    NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-			NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-			self, NULL, nil, NULL,
-			@"strlcpy %s failed: string exceeds bounds." );
-	    return;
-	}
-	
-	if ( strlcat( khpathbak, backupext, sizeof( backupext )) >= sizeof( khpathbak )) {
-	    NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-			NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-			self, NULL, nil, NULL,
-			@"strlcat %s failed: string exceeds bounds.", khpathbak );
-	    return;
-	}
-	
-	if ( rename( khpath, khpathbak ) != 0 ) {
-	    NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-			NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-			self, NULL, nil, NULL,
-			@"rename %s to %s: %s", khpath, khpathbak, strerror( errno ));
-	    return;
-	}
+        if ( strlcpy( khpathbak, khpath, sizeof( khpath )) >= sizeof( khpath )) {
+            [ self showPrefsError: @"strlcpy failed: string exceeds bounds." ];
+            return;
+        }
+
+        if ( strlcat( khpathbak, backupext, sizeof( backupext )) >= sizeof( khpathbak )) {
+            [ self showPrefsError: [ NSString stringWithFormat:
+                @"strlcat %s failed: string exceeds bounds.", khpathbak ]];
+            return;
+        }
+
+        if ( rename( khpath, khpathbak ) != 0 ) {
+            [ self showPrefsError: [ NSString stringWithFormat:
+                @"rename %s to %s: %s", khpath, khpathbak, strerror( errno )]];
+            return;
+        }
     }
-    
+
     if (( fp = fopen( khpath, "w+" )) == NULL ) {
-	NSBeginAlertSheet( NSLocalizedString( @"Error", @"Error" ),
-			NSLocalizedString( @"OK", @"OK" ), @"", @"", prefPanel,
-			self, NULL, nil, NULL,
-			@"fopen %s: %s", khpath, strerror( errno ));
-	( void )rename( khpathbak, khpath );
-	return;
+        [ self showPrefsError: [ NSString stringWithFormat:
+            @"fopen %s: %s", khpath, strerror( errno )]];
+        ( void )rename( khpathbak, khpath );
+        return;
     }
     
     for ( i = 0; i < [ knownHosts count ]; i++ ) {
@@ -701,40 +675,33 @@ static NSMutableArray	*knownHosts = nil;
     [ self readGeneralPrefs ];
 }
 
-- ( IBAction )clearDefaults: ( id )sender
+- ( void )showPrefsError: ( NSString * )message
 {
-    NSBeginAlertSheet( NSLocalizedString( @"Clear Defaults?", @"Clear Defaults?" ),
-		NSLocalizedString( @"Clear", @"Clear" ), NSLocalizedString( @"Cancel", @"Cancel" ),
-		@"", prefPanel, self, @selector( clearDefaultsSheetDidEnd:returnCode:contextInfo: ),
-		NULL, NULL, @"" );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
+    [ alert setInformativeText: message ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
+    [ alert beginSheetModalForWindow: prefPanel completionHandler: nil ];
+    [ alert release ];
 }
 
-- ( void )clearDefaultsSheetDidEnd: ( NSPanel * )sheet returnCode: ( int )rc
-	    contextInfo: ( void * )contextInfo
+- ( IBAction )clearDefaults: ( id )sender
 {
-    NSUserDefaults	*defaults;
-    
-    [ sheet orderOut: nil ];
-    [ NSApp endSheet: sheet ];
-    
-    [ prefPanel makeKeyAndOrderFront: nil ];
-    
-    switch ( rc ) {
-    case NSAlertDefaultReturn:
-	break;
-    case NSAlertAlternateReturn:
-    default:
-	return;
-    }
-    
-    defaults = [ NSUserDefaults standardUserDefaults ];
-    [ defaults setObject: @"" forKey: @"defaulthost" ];
-    [ defaults setObject: @"" forKey: @"defaultuser" ];
-    [ defaults setObject: @"" forKey: @"defaultport" ];
-    [ defaults setObject: @"" forKey: @"defaultdir" ];
-    [ defaults setObject: @"" forKey: @"defaultrdir" ];
-    
-    [ self readGeneralPrefs ];
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Clear Defaults?", @"Clear Defaults?" )];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Clear", @"Clear" )];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
+    [ alert beginSheetModalForWindow: prefPanel completionHandler: ^( NSModalResponse rc ) {
+        if ( rc != NSAlertFirstButtonReturn ) return;
+        NSUserDefaults *defaults = [ NSUserDefaults standardUserDefaults ];
+        [ defaults setObject: @"" forKey: @"defaulthost" ];
+        [ defaults setObject: @"" forKey: @"defaultuser" ];
+        [ defaults setObject: @"" forKey: @"defaultport" ];
+        [ defaults setObject: @"" forKey: @"defaultdir" ];
+        [ defaults setObject: @"" forKey: @"defaultrdir" ];
+        [ self readGeneralPrefs ];
+    }];
+    [ alert release ];
 }
 
 - ( IBAction )deleteFavorite: ( id )sender
@@ -759,33 +726,19 @@ static NSMutableArray	*knownHosts = nil;
     NSOpenPanel		*op = [ NSOpenPanel openPanel ];
     NSString		*ddir = [[ NSUserDefaults standardUserDefaults ]
                                     objectForKey: @"NSDefaultOpenDirectory" ];
-    
+
     if ( ddir == nil ) ddir = NSHomeDirectory();
-    
+
     [ op setCanChooseFiles: NO ];
     [ op setCanChooseDirectories: YES ];
     [ op setTitle: @"Choose a Default Folder" ];
     [ op setPrompt: @"Choose" ];
-    
-    [ op beginSheetForDirectory: ddir
-        file: nil
-        types: nil
-        modalForWindow: prefPanel
-        modalDelegate: self
-        didEndSelector: @selector( defaultDirOpenPanelDidEnd:returnCode:contextInfo: )
-        contextInfo: nil ];
-}
+    [ op setDirectoryURL: [ NSURL fileURLWithPath: ddir isDirectory: YES ]];
 
-- ( void )defaultDirOpenPanelDidEnd: ( NSOpenPanel * )sheet returnCode: ( int )rc
-        contextInfo: ( void * )contextInfo
-{
-    switch ( rc ) {
-    case NSOKButton:
-        [ prefDefaultLDir setStringValue: [[ sheet filenames ] objectAtIndex: 0 ]];
-        break;
-    case NSCancelButton:
-        return;
-    }
+    [ op beginSheetModalForWindow: prefPanel completionHandler: ^( NSModalResponse rc ) {
+        if ( rc != NSModalResponseOK ) return;
+        [ prefDefaultLDir setStringValue: [[[ op URLs ] objectAtIndex: 0 ] path ]];
+    }];
 }
 
 /* tableview datasource methods */

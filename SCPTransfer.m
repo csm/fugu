@@ -46,7 +46,7 @@ int		scpconnecting = 0;
     
     [[ NSRunLoop currentRunLoop ] run ];
     
-    [ pool release ];
+    [ pool drain ];
 }
 
 - ( id )init
@@ -256,7 +256,7 @@ int		scpconnecting = 0;
 
                 [ controller addToLog: [ NSString stringWithUTF8String: ( char * )buf ]];
                 memset(( char * )buf, '\0', strlen(( char * )buf ));
-                [ pool release ];
+                [ pool drain ];
                 if ( noscp ) break;
             }
         }

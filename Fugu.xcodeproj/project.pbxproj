@@ -87,7 +87,6 @@
 		09682FF907C5528A00210847 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 093444890524CA3800D5E7DF /* trash.png */; };
 		09682FFA07C5528A00210847 /* remotetrash.png in Resources */ = {isa = PBXBuildFile; fileRef = 0934448B0524CAB600D5E7DF /* remotetrash.png */; };
 		09682FFB07C5528A00210847 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 094AF260054772B6006D53C9 /* info.png */; };
-		09682FFC07C5528A00210847 /* externaleditor in Resources */ = {isa = PBXBuildFile; fileRef = 097EE2D0070BA9ED00305C66 /* externaleditor */; };
 		09682FFD07C5528A00210847 /* ODBEditors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0985D5CC074A9A2A00B8ED3B /* ODBEditors.plist */; };
 		09682FFF07C5528A00210847 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		0968300007C5528A00210847 /* SFTPMainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F58418F301B4201501D5E771 /* SFTPMainWindow.m */; };
@@ -187,7 +186,6 @@
 		0968303007C5528A00210847 /* Fugu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fugu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0977864F0430BF2000BEE8BF /* keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keychain.h; sourceTree = "<group>"; };
 		097786500430BF2000BEE8BF /* keychain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain.c; sourceTree = "<group>"; };
-		097EE2D0070BA9ED00305C66 /* externaleditor */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = externaleditor; path = Build/Products/Development/externaleditor; sourceTree = "<group>"; };
 		0981B76604F81AC900000102 /* disconnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disconnect.png; sourceTree = "<group>"; };
 		0981B76D04FA546F00000102 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		0984006B05DB103E00EEA2D5 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
@@ -490,7 +488,6 @@
 				1DBF164A1E0DAFE3008FCCF2 /* MainMenu.xib */,
 				1D74F21A1E0DAE1E009B37B9 /* SSHTunnel.xib */,
 				0985D5CC074A9A2A00B8ED3B /* ODBEditors.plist */,
-				097EE2D0070BA9ED00305C66 /* externaleditor */,
 				09E1EBF20452494200D5EA79 /* Fugu README.rtfd */,
 				F558B96301E3994C01D5E771 /* Images */,
 				F5B12CC002DF4E6001D5EA79 /* Prefs.nib */,
@@ -714,6 +711,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					09682FA507C5528A00210847 = {
+						LastSwiftMigration = 2640;
+					};
+				};
 			};
 			buildConfigurationList = 701B7AEB12AD904F003D5274 /* Build configuration list for PBXProject "Fugu" */;
 			compatibilityVersion = "Xcode 12.0";
@@ -788,7 +790,6 @@
 				09682FF907C5528A00210847 /* trash.png in Resources */,
 				09682FFA07C5528A00210847 /* remotetrash.png in Resources */,
 				09682FFB07C5528A00210847 /* info.png in Resources */,
-				09682FFC07C5528A00210847 /* externaleditor in Resources */,
 				09682FFD07C5528A00210847 /* ODBEditors.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1025,6 +1026,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1066,6 +1068,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1105,6 +1108,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1146,6 +1150,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1154,13 +1159,14 @@
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/Mac";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				"OTHER_CFLAGS[arch=*]" = (
@@ -1172,6 +1178,8 @@
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -1188,6 +1196,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -1195,11 +1204,12 @@
 				CPLUSPLUS = "/usr/bin/g++";
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/Mac";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
@@ -1208,6 +1218,8 @@
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -1224,17 +1236,19 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CPLUSPLUS = "/usr/bin/g++";
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/Mac";
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
@@ -1243,6 +1257,8 @@
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",

@@ -9,6 +9,7 @@
   */
 
 #import "NSImage(IconForType).h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -26,16 +27,17 @@ static NSMutableDictionary      *cachedIconDictionary = nil;
         return( nil );
     }
     
-    if ( [ ext isEqualToString: @"" ] ) {
-        ext = @"'doc '";
-    }
-    
     if ( images == nil ) {
         images = [[ NSMutableDictionary alloc ] init ];
     }
-    
+
     if (( icon = [ images objectForKey: ext ] ) == nil ) {
-        if (( icon = [[ NSWorkspace sharedWorkspace ] iconForFileType: ext ] ) != nil ) {
+        UTType *uttype = [ ext length ] > 0
+            ? [ UTType typeWithFilenameExtension: ext ]
+            : nil;
+        icon = [[ NSWorkspace sharedWorkspace ]
+                    iconForContentType: uttype ?: UTTypeItem ];
+        if ( icon != nil ) {
             [ images setObject: icon forKey: ext ];
         }
     }
@@ -117,12 +119,11 @@ static NSMutableDictionary      *cachedIconDictionary = nil;
             }
             [ reps release ];
             
-            [ icon setScalesWhenResized: YES ];
             [ icon setSize: NSMakeSize( 16.0, 16.0 ) ];
             [ icons setObject: icon forKey: file ];
         }
     }
-    [ pool release ];
+    [ pool drain ];
     
     if ( !cachedIconDictionary ) {
         cachedIconDictionary = [[ NSMutableDictionary alloc ] init ];
