@@ -707,7 +707,7 @@ NSComparisonResult
   [ logField setEditable: NO ];
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [ logField insertText: @"Could not get hostname. Using default name \"localhost.\"" ];
+    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
   }
   [ mainWindow setFrameUsingName: @"SFTPWindow" ];
   [ mainWindow setFrameAutosaveName: @"SFTPWindow" ];
@@ -726,8 +726,7 @@ NSComparisonResult
     [ logField setFont: logFont ];
   }
   
-  [ manualComField registerForDraggedTypes:
-   [ NSArray arrayWithObject: NSFilenamesPboardType ]];
+  [ manualComField registerForDraggedTypes: @[ NSPasteboardTypeFileURL ]];
   
   [ localBrowser setAction: nil ];//@selector( localBrowserSingleClick: ) ];
   [ localBrowser setDoubleAction: @selector( localBrowserDoubleClick: ) ];
@@ -874,8 +873,7 @@ NSComparisonResult
                   rgReadSwitch, rgWriteSwitch, rgExecSwitch,
                   raReadSwitch, raWriteSwitch, raExecSwitch, nil ];
   
-  [ remoteBrowser registerForDraggedTypes:
-   [ NSArray arrayWithObject: NSFilenamesPboardType ]];
+  [ remoteBrowser registerForDraggedTypes: @[ NSPasteboardTypeFileURL ]];
   [ remoteBrowser setDataSource: self ];
   [ remoteBrowser reloadData ];
   
@@ -1095,7 +1093,7 @@ NSComparisonResult
   if ( [ downloadSheet isVisible ] )
     [ self finishedDownload ];
   
-  [ logField insertText: @"\nCaught request to cancel connection. Ending....\n" ];
+  [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"\nCaught request to cancel connection. Ending....\n" ] autorelease ]];
   cancelflag = 1;
   
   if ( [ verifyConnectSheet isVisible ] ) {
@@ -1116,7 +1114,7 @@ NSComparisonResult
   }
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [ logField insertText: @"Could not get hostname. Using default name \"localhost.\"" ];
+    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
   }
   
   if ( ! connected && ! connecting ) return;
@@ -1443,7 +1441,7 @@ WRITE_ERR:
   }
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [ logField insertText: @"Could not get hostname. Using default name \"localhost.\"" ];
+    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
   }
   
   if ( connected ) {
@@ -1729,17 +1727,13 @@ WRITE_ERR:
 
 - ( IBAction )uploadButtonClick: ( id )sender
 {
-  NSEnumerator	*en = [ localBrowser selectedRowEnumerator ];
   NSMutableArray	*marray = [[ NSMutableArray alloc ] init ];
-  NSDictionary	*dict = nil;
-  id			nobj;
-  
-  while (( nobj = [ en nextObject ] ) != nil ) {
-    dict = [ ( dotflag ? localDirContents : dotlessLDir )
-             objectAtIndex: [ nobj intValue ]];
-    
-    [ marray addObject: [ dict objectForKey: @"name" ]];
-  }
+  NSArray		*uploadSource = ( dotflag ? localDirContents : dotlessLDir );
+  [[ localBrowser selectedRowIndexes ] enumerateIndexesUsingBlock:
+      ^( NSUInteger idx, BOOL *stop ) {
+        NSDictionary *dict = [ uploadSource objectAtIndex: idx ];
+        [ marray addObject: [ dict objectForKey: @"name" ]];
+      }];
   [ self uploadFiles: marray toDirectory: @"." ];
   [ marray release ];
 }
@@ -1751,14 +1745,12 @@ WRITE_ERR:
 
 - ( IBAction )downloadButtonClick: ( id )sender
 {
-  NSEnumerator	*en = [ remoteBrowser selectedRowEnumerator ];
   NSMutableArray	*marray = [[ NSMutableArray alloc ] init ];
-  NSAutoreleasePool	*p = [[ NSAutoreleasePool alloc ] init ];
-  NSDictionary	*d;
-  id			nobj;
-  
-  while (( nobj = [ en nextObject ] ) != nil ) {
-    d = [ ( dotflag ? remoteDirContents : dotlessRDir ) objectAtIndex: [ nobj intValue ]];
+  __block BOOL downloadDone = NO;
+  NSArray		*dlSource = ( dotflag ? remoteDirContents : dotlessRDir );
+  [[ remoteBrowser selectedRowIndexes ] enumerateIndexesUsingBlock:
+      ^( NSUInteger idx, BOOL *stop ) {
+    NSDictionary *d = [ dlSource objectAtIndex: idx ];
     
     if ( [[ d objectForKey: @"type" ] isEqualToString: @"directory" ] ) {
       int			rc;
@@ -1785,12 +1777,11 @@ WRITE_ERR:
                    toLocalPath: localDirPath userName: [ userName stringValue ]];
         case NSAlertSecondButtonReturn:
         default:
-          continue;
+          return;
       }
     }
     [ marray addObject: d ];
-  }
-  [ p drain ];
+  }];
   [ self downloadFiles: marray toDirectory: localDirPath ];
   [ marray release ];
 }
@@ -2077,31 +2068,21 @@ WRITE_ERR:
 
 - ( IBAction )deleteLocalFile: ( id )sender
 {
-  int				i = 0, rc, optag, row = [ localBrowser selectedRow ];
-  unsigned long int		numberoflines = [ localBrowser numberOfSelectedRows ];
-  unsigned long int		selectedlines[ numberoflines ];
+  int				rc, optag, row = [ localBrowser selectedRow ];
+  NSIndexSet		*selectedIndexes = [ localBrowser selectedRowIndexes ];
   NSMutableArray		*items, *source;
   NSString			*fn;
-  NSEnumerator		*en;
-  id				tobj, contents;
-  NSAutoreleasePool		*p;
-  
+  id				contents;
+
   if ( row < 0 ) {
     return;
   }
-  
+
   source = ( dotflag ? localDirContents : dotlessLDir );
   items = [[ NSMutableArray alloc ] init ];
-  en = [ localBrowser selectedRowEnumerator ];
-  p = [[ NSAutoreleasePool alloc ] init ];
-  
-  while (( tobj = [ en nextObject ] ) != nil ) {
-    [ items addObject: [[[ source objectAtIndex:
-                          [ tobj intValue ]] objectForKey: @"name" ] lastPathComponent ]];
-    selectedlines[ i ] = [ tobj intValue ];
-    i++;
-  }
-  [ p drain ];
+  [ selectedIndexes enumerateIndexesUsingBlock: ^( NSUInteger idx, BOOL *stop ) {
+    [ items addObject: [[[ source objectAtIndex: idx ] objectForKey: @"name" ] lastPathComponent ]];
+  }];
   
   switch ( [ items count ] ) {
     case 0:
@@ -2137,8 +2118,7 @@ WRITE_ERR:
   }
 
   contents = ( dotflag ? localDirContents : dotlessLDir );
-  [ contents removeObjectsFromIndices: ( unsigned * )selectedlines
-                           numIndices: numberoflines ];
+  [ contents removeObjectsAtIndexes: selectedIndexes ];
   [ localBrowser reloadData ];
 
   if ( [[ NSWorkspace sharedWorkspace ] performFileOperation: NSWorkspaceRecycleOperation
@@ -2162,27 +2142,20 @@ WRITE_ERR:
 
 - ( IBAction )deleteRemoteFile: ( id )sender
 {
-  int				rc, i, row = [ remoteBrowser selectedRow ];
+  int				rc, row = [ remoteBrowser selectedRow ];
   NSMutableDictionary		*dict;
-  NSEnumerator		*en;
   NSMutableArray		*items;
-  NSAutoreleasePool		*p;
-  id				dobj;
   NSString			*fn, *item, *deleteCommand = nil;
   char			*delcmd = NULL;
-  
+
   if ( row < 0 || !connected ) return;
-  
+
   items = [[ NSMutableArray alloc ] init ];
-  en = [ remoteBrowser selectedRowEnumerator ];
-  p = [[ NSAutoreleasePool alloc ] init ];
-  
-  while (( dobj = [ en nextObject ] ) != nil ) {
-    [ items addObject: (( dotflag ) ?
-                        [ remoteDirContents objectAtIndex: [ dobj intValue ]] :
-                        [ dotlessRDir objectAtIndex: [ dobj intValue ]] ) ];
-  }
-  [ p drain ];
+  NSArray *delSource = ( dotflag ? remoteDirContents : dotlessRDir );
+  [[ remoteBrowser selectedRowIndexes ] enumerateIndexesUsingBlock:
+      ^( NSUInteger idx, BOOL *stop ) {
+        [ items addObject: [ delSource objectAtIndex: idx ]];
+      }];
   
   switch ( [ items count ] ) {
     case 0:
@@ -2219,22 +2192,16 @@ WRITE_ERR:
   }
   
   if ( removeQueue == nil ) removeQueue = [[ NSMutableArray alloc ] init ];
-  p = [[ NSAutoreleasePool alloc ] init ];
-  for ( i = 0; i < [ items count ]; i++ ) {
-    dict = [ items objectAtIndex: i ];
-    
+  for ( dict in items ) {
     if ( [[ dict objectForKey: @"perm" ] characterAtIndex: 0 ] == 'd' ) {
       delcmd = "rmdir";
     } else {
       delcmd = "rm";
     }
-    item = nil;
     item = [ dict objectForKey: @"name" ];
-    
     deleteCommand = [ NSString stringWithFormat: @"%s \"%@\"", delcmd, item ];
     [ removeQueue addObject: deleteCommand ];
   }
-  [ p drain ];
   [ self writeCommand: " " ];
   [ remoteProgBar setIndeterminate: NO ];
   [ remoteProgBar setMinValue: 0.0 ];
@@ -3095,9 +3062,7 @@ CHMOD_ERROR:
 
 - ( void )addToLog: ( NSString * )text
 {
-  [ logField setEditable: YES ];
-  [ logField insertText: text ];
-  [ logField setEditable: NO ];
+  [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: text ] autorelease ]];
 }
 
 - ( void )updateHostList
@@ -5263,9 +5228,13 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
                objectForKey: @"name" ];
     }
     
-    dragData = [ pb propertyListForType:
-                [ pb availableTypeFromArray:
-                 [ NSArray arrayWithObject: NSFilenamesPboardType ]]];
+    {
+      NSArray *fileURLs = [ pb readObjectsForClasses: @[ [ NSURL class ] ]
+                                            options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES }];
+      NSMutableArray *paths = [ NSMutableArray arrayWithCapacity: [ fileURLs count ]];
+      for ( NSURL *url in fileURLs ) { [ paths addObject: [ url path ]]; }
+      dragData = paths;
+    }
     
     [ self uploadFiles: dragData toDirectory: rpath ];
     return( YES );
@@ -5336,8 +5305,14 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
               objectForKey: @"name" ];
       anArray = [ anArray arrayByAddingObject: path ];
     }
-    [ pboard declareTypes: [ NSArray arrayWithObject: NSFilenamesPboardType ] owner: self ];
-    [ pboard setPropertyList: anArray forType: NSFilenamesPboardType ];
+    {
+      NSMutableArray *fileURLs = [ NSMutableArray arrayWithCapacity: [ anArray count ]];
+      for ( NSString *path in anArray ) {
+        [ fileURLs addObject: [ NSURL fileURLWithPath: path ]];
+      }
+      [ pboard clearContents ];
+      [ pboard writeObjects: fileURLs ];
+    }
   } else if ( tableView == remoteBrowser ) {
 #ifdef notdef
     NSRect		imageLocation = [ remoteBrowser frameOfCellAtColumn: 0
@@ -5585,13 +5560,18 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   NSArray		*filenames;
   NSArray		*types = [ pboard types ];
   
-  if ( ![ types containsObject: NSFilenamesPboardType ] ) {
+  if ( ![ pboard canReadObjectForClasses: @[ [ NSURL class ] ]
+                                options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES }]) {
     *error = @"Pasteboard doesn't contain any filenames";
     return;
   }
-  filenames = [ pboard propertyListForType:
-               [ pboard availableTypeFromArray:
-                [ NSArray arrayWithObject: NSFilenamesPboardType ]]];
+  {
+    NSArray *fileURLs = [ pboard readObjectsForClasses: @[ [ NSURL class ] ]
+                                              options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES }];
+    NSMutableArray *paths = [ NSMutableArray arrayWithCapacity: [ fileURLs count ]];
+    for ( NSURL *url in fileURLs ) { [ paths addObject: [ url path ]]; }
+    filenames = paths;
+  }
   if ( filenames == nil ) {
     *error = @"Couldn't extract filename from pasteboard.";
     return;
