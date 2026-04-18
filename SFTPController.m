@@ -1397,10 +1397,14 @@ NSComparisonResult
   return;
   
 WRITE_ERR:
-  NSRunAlertPanel( NSLocalizedString(
-                                     @"Write failed: Did not write correct number of bytes!",
-                                     @"Write failed: Did not write correct number of bytes!" ),
-                  @"", @"Exit", @"", @"" );
+  {
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
+                                              @"Write failed: Did not write correct number of bytes!" ) ];
+    [ alert addButtonWithTitle: @"Exit" ];
+    [ alert runModal ];
+    [ alert release ];
+  }
   exit( 2 );
 }
 
@@ -1415,22 +1419,24 @@ WRITE_ERR:
   int		rc;
   
   if ( [[ self editedDocuments ] count ] ) {
-    rc = NSRunAlertPanel(
-                         NSLocalizedString( @"Warning: Some remote documents are still being edited.",
-                                           @"Warning: Some remote documents are still being edited." ),
-                         NSLocalizedString( @"If you disconnect now, "
-                                           @"you will lose any unsaved changes. Are you sure you want to disconnect?",
-                                           @"If you disconnect now, "
-                                           @"you will lose any unsaved changes. Are you sure you want to disconnect?" ),
-                         NSLocalizedString( @"Disconnect", @"Disconnect" ),
-                         NSLocalizedString( @"Cancel", @"Cancel" ), @"", [[ self editedDocuments ] count ] );
-    
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Warning: Some remote documents are still being edited.",
+                                                @"Warning: Some remote documents are still being edited." ) ];
+      [ alert setInformativeText: NSLocalizedString( @"If you disconnect now, "
+                                                    @"you will lose any unsaved changes. Are you sure you want to disconnect?",
+                                                    @"If you disconnect now, "
+                                                    @"you will lose any unsaved changes. Are you sure you want to disconnect?" ) ];
+      [ alert addButtonWithTitle: NSLocalizedString( @"Disconnect", @"Disconnect" ) ];
+      [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+      rc = [ alert runModal ];
+      [ alert release ];
+    }
     switch ( rc ) {
-      case NSAlertDefaultReturn:
+      case NSAlertFirstButtonReturn:
         [ editedDocuments removeAllObjects ];
         break;
-        
-      case NSAlertAlternateReturn:
+      case NSAlertSecondButtonReturn:
       default:
         return;
     }
@@ -1521,11 +1527,16 @@ WRITE_ERR:
   fullpath = [ path stringByExpandingTildeInPath ];
   
   if ( access(( char * )[ fullpath UTF8String ], F_OK | R_OK | X_OK ) < 0 ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    NSLocalizedString( @"Couldn't view %@: %s",
-                                      @"Couldn't view %@: %s" ),
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                    fullpath, strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat:
+          NSLocalizedString( @"Couldn't view %@: %s", @"Couldn't view %@: %s" ),
+          fullpath, strerror( errno )]];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    }
     return;
   }
   
@@ -1752,21 +1763,27 @@ WRITE_ERR:
     if ( [[ d objectForKey: @"type" ] isEqualToString: @"directory" ] ) {
       int			rc;
       
-      rc = NSRunAlertPanel( NSLocalizedString( @"Warning: OpenSSH's sftp client "
-                                              @"cannot yet download directories.",
-                                              @"Warning: OpenSSH's sftp client "
-                                              @"cannot yet download directories." ),
-                           NSLocalizedString( @"Would you like to download %@ to %@ with SCP instead?",
-                                             @"Would you like to download %@ to %@ with SCP instead?" ),
-                           NSLocalizedString( @"Download", @"Download" ),
-                           NSLocalizedString( @"Cancel", @"Cancel" ), @"",
-                           [ d objectForKey: @"name" ], localDirPath );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Warning: OpenSSH's sftp client "
+                                                  @"cannot yet download directories.",
+                                                  @"Warning: OpenSSH's sftp client "
+                                                  @"cannot yet download directories." ) ];
+        [ alert setInformativeText: [ NSString stringWithFormat:
+            NSLocalizedString( @"Would you like to download %@ to %@ with SCP instead?",
+                               @"Would you like to download %@ to %@ with SCP instead?" ),
+            [ d objectForKey: @"name" ], localDirPath ]];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Download", @"Download" ) ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+        rc = [ alert runModal ];
+        [ alert release ];
+      }
       switch ( rc ) {
-        case NSAlertDefaultReturn:
+        case NSAlertFirstButtonReturn:
           [ self scpRemoteItem: [ d objectForKey: @"name" ]
                       fromHost: [ remoteHost stringValue ]
                    toLocalPath: localDirPath userName: [ userName stringValue ]];
-        case NSAlertAlternateReturn:
+        case NSAlertSecondButtonReturn:
         default:
           continue;
       }
@@ -1866,21 +1883,25 @@ WRITE_ERR:
         if ( [ rpath isEqualToString: @"." ] &&
             [[[ remoteDirContents objectAtIndex: j ] objectForKey: @"name" ]
              isEqualToString: [[ lfiles objectAtIndex: i ] lastPathComponent ]] ) {
-          rc = NSRunAlertPanel( [ NSString stringWithFormat:
-                                 NSLocalizedString( @"%@ exists. Overwrite?",
-                                                   @"%@ exists. Overwrite?" ),
-                                 [[ lfiles objectAtIndex: i ] lastPathComponent ]],
-                               @"", NSLocalizedString( @"Cancel", @"Cancel" ),
-                               NSLocalizedString( @"Overwrite", @"Overwrite" ),
-                               NSLocalizedString( @"Overwrite All", @"Overwrite All" ));
+          {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: [ NSString stringWithFormat:
+                NSLocalizedString( @"%@ exists. Overwrite?", @"%@ exists. Overwrite?" ),
+                [[ lfiles objectAtIndex: i ] lastPathComponent ]]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite", @"Overwrite" ) ];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite All", @"Overwrite All" ) ];
+            rc = [ alert runModal ];
+            [ alert release ];
+          }
           switch ( rc ) {
             default:
-            case NSAlertDefaultReturn:
+            case NSAlertFirstButtonReturn:
               skip++;
               return;
-            case NSAlertAlternateReturn:
+            case NSAlertSecondButtonReturn:
               break;
-            case NSAlertOtherReturn:
+            case NSAlertThirdButtonReturn:
               clobber++;
               break;
           }
@@ -1920,7 +1941,7 @@ WRITE_ERR:
   
   if ( ! connected ) return;
   
-  lpathContents = [[ NSFileManager defaultManager ] directoryContentsAtPath: lpath ];
+  lpathContents = [[ NSFileManager defaultManager ] contentsOfDirectoryAtPath: lpath error: nil ];
   
   noSafetyNet = [[ NSUserDefaults standardUserDefaults ]
                  boolForKey: @"TrapezeWithNoNet" ];
@@ -1930,22 +1951,24 @@ WRITE_ERR:
       for ( j = 0; j < [ lpathContents count ]; j++ ) {
         if ( [[ lpathContents objectAtIndex: j ] isEqualToString:
               [[ rpaths objectAtIndex: i ] objectForKey: @"name" ]] && !clobber ) {
-          rc = NSRunAlertPanel( [ NSString stringWithFormat:
-                                 NSLocalizedString( @"%@ exists. Overwrite?",
-                                                   @"%@ exists. Overwrite?" ),
-                                 [[ rpaths objectAtIndex: i ] objectForKey: @"name" ]],
-                               @"", NSLocalizedString( @"Cancel", @"Cancel" ),
-                               NSLocalizedString( @"Overwrite", @"Overwrite" ),
-                               NSLocalizedString( @"Overwrite All", @"Overwrite All" ));
+          {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: [ NSString stringWithFormat:
+                NSLocalizedString( @"%@ exists. Overwrite?", @"%@ exists. Overwrite?" ),
+                [[ rpaths objectAtIndex: i ] objectForKey: @"name" ]]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite", @"Overwrite" ) ];
+            [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite All", @"Overwrite All" ) ];
+            rc = [ alert runModal ];
+            [ alert release ];
+          }
           switch ( rc ) {
-            case NSAlertDefaultReturn:
+            case NSAlertFirstButtonReturn:
               skip = 1;
               break;
-              
-            case NSAlertAlternateReturn:
+            case NSAlertSecondButtonReturn:
               break;
-              
-            case NSAlertOtherReturn:
+            case NSAlertThirdButtonReturn:
               clobber = 1;
               break;
           }
@@ -2093,33 +2116,41 @@ WRITE_ERR:
   }
   [[ NSUserDefaults standardUserDefaults ] setBool: YES forKey: @"confirmdelete" ];
   [[ NSUserDefaults standardUserDefaults ] synchronize ];
-  rc = NSRunAlertPanel( [ NSString stringWithFormat:
-                         NSLocalizedString( @"Do you want to move %@ to the Trash?",
-                                           @"Do you want to move %@ to the Trash?" ), fn ],
-                       NSLocalizedString( @"You cannot undo this action.",
-                                         @"You cannot undo this action." ),
-                       NSLocalizedString( @"Delete", @"Delete" ),
-                       NSLocalizedString( @"Cancel", @"Cancel" ), @"" );
-  
+  {
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: [ NSString stringWithFormat:
+        NSLocalizedString( @"Do you want to move %@ to the Trash?",
+                           @"Do you want to move %@ to the Trash?" ), fn ]];
+    [ alert setInformativeText: NSLocalizedString( @"You cannot undo this action.",
+                                                  @"You cannot undo this action." ) ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Delete", @"Delete" ) ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+    rc = [ alert runModal ];
+    [ alert release ];
+  }
   switch ( rc ) {
     default:
-    case NSAlertDefaultReturn:
+    case NSAlertFirstButtonReturn:
       break;
-    case NSAlertAlternateReturn:
+    case NSAlertSecondButtonReturn:
       return;
   }
-  
+
   contents = ( dotflag ? localDirContents : dotlessLDir );
   [ contents removeObjectsFromIndices: ( unsigned * )selectedlines
                            numIndices: numberoflines ];
   [ localBrowser reloadData ];
-  
+
   if ( [[ NSWorkspace sharedWorkspace ] performFileOperation: NSWorkspaceRecycleOperation
                                                       source: localDirPath destination: @"/"
                                                        files: items tag: &optag ] == NO ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    NSLocalizedString( @"Couldn't delete %@.", @"Couldn't delete %@." ),
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"", fn );
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+    [ alert setInformativeText: [ NSString stringWithFormat:
+        NSLocalizedString( @"Couldn't delete %@.", @"Couldn't delete %@." ), fn ]];
+    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+    [ alert runModal ];
+    [ alert release ];
     return;
   }
   
@@ -2165,20 +2196,25 @@ WRITE_ERR:
       break;
   }
   
-  rc = NSRunAlertPanel( [ NSString stringWithFormat:
-                         NSLocalizedString( @"Delete %@?", @"Delete %@?" ), fn ],
-                       NSLocalizedString( @"%@ will be deleted immediately. "
-                                         @"You will not be able to undo this action.",
-                                         @"%@ will be deleted immediately. "
-                                         @"You will not be able to undo this action." ),
-                       NSLocalizedString( @"Delete", @"Delete" ),
-                       NSLocalizedString( @"Cancel", @"Cancel" ), @"", fn );
-  
+  {
+    NSAlert *alert = [[ NSAlert alloc ] init ];
+    [ alert setMessageText: [ NSString stringWithFormat:
+        NSLocalizedString( @"Delete %@?", @"Delete %@?" ), fn ]];
+    [ alert setInformativeText: [ NSString stringWithFormat:
+        NSLocalizedString( @"%@ will be deleted immediately. "
+                           @"You will not be able to undo this action.",
+                           @"%@ will be deleted immediately. "
+                           @"You will not be able to undo this action." ), fn ]];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Delete", @"Delete" ) ];
+    [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+    rc = [ alert runModal ];
+    [ alert release ];
+  }
   switch ( rc ) {
     default:
-    case NSAlertDefaultReturn:
+    case NSAlertFirstButtonReturn:
       break;
-    case NSAlertAlternateReturn:
+    case NSAlertSecondButtonReturn:
       return;
   }
   
@@ -2297,9 +2333,14 @@ WRITE_ERR:
                         [ newDirNameField stringValue ]];
   
   if ( mkdir(( char * )[ lpath UTF8String ], 0755 ) != 0 ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    NSLocalizedString( @"Couldn't create %@: %s", @"Couldn't create %@: %s" ),
-                    @"OK", @"", @"", lpath, strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"Couldn't create %@: %s", @"Couldn't create %@: %s" ), lpath, strerror( errno ) ]];
+      [ alert addButtonWithTitle: @"OK" ];
+      [ alert runModal ];
+      [ alert release ];
+    }
   }
   
   [ self localBrowserReloadForPath: localDirPath ];
@@ -3079,17 +3120,20 @@ CHMOD_ERROR:
 
 - ( void )connectionError: ( NSString * )errmsg
 {
-  if ( strstr(( char * )[ errmsg UTF8String ], "WARNING" ) != NULL ) {
-    NSRunAlertPanel( errmsg,
-                    @"", @"OK", @"", @"" );
-  } else {
-    NSRunAlertPanel( errmsg, @"", @"OK", @"", @"" );
-  }
+  NSAlert *alert = [[ NSAlert alloc ] init ];
+  [ alert setMessageText: errmsg ];
+  [ alert addButtonWithTitle: @"OK" ];
+  [ alert runModal ];
+  [ alert release ];
 }
 
 - ( void )sessionError: ( NSString * )errmsg
 {
-  NSRunAlertPanel( errmsg, @"", NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+  NSAlert *alert = [[ NSAlert alloc ] init ];
+  [ alert setMessageText: errmsg ];
+  [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+  [ alert runModal ];
+  [ alert release ];
 }
 
 - ( IBAction )showConnectingInterface: ( id )sender
@@ -3154,19 +3198,25 @@ CHMOD_ERROR:
     NSString *alternateButton = NSLocalizedString( @"Cancel", @"Cancel" );
     
     
-    rc = NSRunAlertPanel( title,
-                         @"%@", msgFormat,
-                         defaultButton,
-                         alternateButton,
-                         @"" );
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: title ];
+      [ alert setInformativeText: msgFormat ];
+      [ alert addButtonWithTitle: defaultButton ];
+      [ alert addButtonWithTitle: alternateButton ];
+      rc = [ alert runModal ];
+      [ alert release ];
+    }
 
-    
-    
     switch ( rc ) {
-      case NSAlertDefaultReturn:
+      case NSAlertFirstButtonReturn:
         if ( ! [[ NSWorkspace sharedWorkspace ] launchApplication: @"Keychain Access" ] ) {
-          NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                          @"Couldn't open Keychain Access", NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+          NSAlert *errAlert = [[ NSAlert alloc ] init ];
+          [ errAlert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+          [ errAlert setInformativeText: @"Couldn't open Keychain Access" ];
+          [ errAlert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+          [ errAlert runModal ];
+          [ errAlert release ];
         }
         break;
       default:
@@ -3228,9 +3278,14 @@ CHMOD_ERROR:
   char	pass[ ( _PASSWORD_LEN + 1 ) ] = { 0 };
   
   if ( [[ passWord stringValue ] length ] > _PASSWORD_LEN ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    NSLocalizedString( @"Password is too long.", @"Password is too long." ),
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: NSLocalizedString( @"Password is too long.", @"Password is too long." ) ];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    }
     [ passWord setStringValue: @"" ];
     return;
   }
@@ -3470,9 +3525,14 @@ CHMOD_ERROR:
              makeTemporaryDirectoryWithMode: ( mode_t )0700 ];
   
   if ( tmppath == nil ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    @"mkdir: %s", NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                    strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat: @"mkdir: %s", strerror( errno ) ]];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    }
     return;
   }
   
@@ -3538,11 +3598,14 @@ CHMOD_ERROR:
     image = [[ NSImage alloc ] initWithContentsOfFile: [ self previewedImage ]];
     
     if ( image == nil ) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"Couldn't create preview of %@",
-                                        @"Couldn't create preview of %@" ),
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                      [[ self previewedImage ] lastPathComponent ] );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"Couldn't create preview of %@", @"Couldn't create preview of %@" ), [[ self previewedImage ] lastPathComponent ] ]];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       return;
     }
     path = [ self previewedImage ];
@@ -3659,9 +3722,14 @@ CHMOD_ERROR:
              makeTemporaryDirectoryWithMode: ( mode_t )0700 ];
   
   if ( tmppath == nil ) {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    @"mkdir: %s", NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                    strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat: @"mkdir: %s", strerror( errno ) ]];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    }
     return;
   }
   
@@ -4199,9 +4267,14 @@ CHMOD_ERROR:
   if ( len ) {
     port = [ portString intValue ];
     if ( port == 0 ) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"Invalid port number.", @"Invalid port number." ),
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: NSLocalizedString( @"Invalid port number.", @"Invalid port number." ) ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       goto INVALID_CONNECTION_SETTINGS;
     }
   }
@@ -4212,10 +4285,14 @@ CHMOD_ERROR:
                       [ userName stringValue ], @"user",
                       [ remoteHost stringValue ], @"rhost", nil ];
   } else {
-    NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                    NSLocalizedString( @"You must provide a username and server address to continue.",
-                                      @"You must provide a username and server address to continue." ),
-                    NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+      [ alert setInformativeText: NSLocalizedString( @"You must provide a username and server address to continue.", @"You must provide a username and server address to continue." ) ];
+      [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+      [ alert runModal ];
+      [ alert release ];
+    }
     goto INVALID_CONNECTION_SETTINGS;
   }
   
@@ -4256,9 +4333,14 @@ CHMOD_ERROR:
   switch ( sshversion()) {
     case SFTP_VERSION_UNSUPPORTED:
       /* Let's not pretend we support SSH.com's sftp client */
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      @"Unsupported version of sftp.",
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"" );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: @"Unsupported version of sftp." ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       goto INVALID_CONNECTION_SETTINGS;
       break;
       
@@ -4332,11 +4414,14 @@ INVALID_CONNECTION_SETTINGS:
     
     if ( rename( [[ dict objectForKey: @"name" ] UTF8String ],
                 [ newpath UTF8String ] ) < 0 ) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"rename %@ to %@: %s", @"rename %@ to %@: %s" ),
-                      NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                      [ dict objectForKey: @"name" ],
-                      newpath, strerror( errno ));
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"rename %@ to %@: %s", @"rename %@ to %@: %s" ), [ dict objectForKey: @"name" ], newpath, strerror( errno ) ]];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       return( NO );
     }
     dict = [[ SFTPNode sharedInstance ]
@@ -4352,9 +4437,14 @@ INVALID_CONNECTION_SETTINGS:
     if ( snprintf( renamecmd, MAXPATHLEN, "rename \"%s\" \"%s\"",
                   [[[ items objectAtIndex: row ] objectForKey: @"name" ] UTF8String ],
                   [ newstring UTF8String ] ) > ( MAXPATHLEN - 1 )) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      @"snprintf string exceeds bounds.", NSLocalizedString( @"OK", @"OK" ),
-                      @"", @"" );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: @"snprintf string exceeds bounds." ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       return( NO );
     }
     [ self writeCommand: renamecmd ];
@@ -4523,17 +4613,27 @@ INVALID_CONNECTION_SETTINGS:
     if ( [ localpath isEqualToString: docpath ] ) {
       if ( unlink( [ localpath UTF8String ] ) < 0 ) {
         if ( errno != ENOENT ) {
-          NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                          @"unlink %@: %s", NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                          localpath, strerror( errno ));
+          {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+            [ alert setInformativeText: [ NSString stringWithFormat: @"unlink %@: %s", localpath, strerror( errno ) ]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+            [ alert runModal ];
+            [ alert release ];
+          }
           return;
         }
       }
       if ( rmdir( [[ localpath stringByDeletingLastPathComponent ] UTF8String ] ) < 0 ) {
         if ( errno != ENOENT ) {
-          NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                          @"unlink %@: %s", NSLocalizedString( @"OK", @"OK" ), @"", @"",
-                          localpath, strerror( errno ));
+          {
+            NSAlert *alert = [[ NSAlert alloc ] init ];
+            [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+            [ alert setInformativeText: [ NSString stringWithFormat: @"unlink %@: %s", localpath, strerror( errno ) ]];
+            [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+            [ alert runModal ];
+            [ alert release ];
+          }
           return;
         }
       }
@@ -5131,21 +5231,22 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
          isEqualToString: @"directory" ] ) {
       int			rc;
       
-      rc = NSRunAlertPanel(
-                           NSLocalizedString( @"Warning: OpenSSH's sftp client cannot yet download directories.",
-                                             @"Warning: OpenSSH's sftp client cannot yet download directories." ),
-                           NSLocalizedString( @"Would you like to download %@ to %@ with SCP instead?",
-                                             @"Would you like to download %@ to %@ with SCP instead?" ),
-                           NSLocalizedString( @"Download", @"Download" ),
-                           NSLocalizedString( @"Cancel", @"Cancel" ), @"",
-                           [[ dragData objectAtIndex: 0 ] objectForKey: @"name" ], lpath );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Warning: OpenSSH's sftp client cannot yet download directories.", @"Warning: OpenSSH's sftp client cannot yet download directories." ) ];
+        [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"Would you like to download %@ to %@ with SCP instead?", @"Would you like to download %@ to %@ with SCP instead?" ), [[ dragData objectAtIndex: 0 ] objectForKey: @"name" ], lpath ]];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Download", @"Download" ) ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+        rc = [ alert runModal ];
+        [ alert release ];
+      }
       switch ( rc ) {
-        case NSAlertDefaultReturn:
+        case NSAlertFirstButtonReturn:
           [ self scpRemoteItem:
            [[ dragData objectAtIndex: 0 ] objectForKey: @"name" ]
                       fromHost: [ remoteHost stringValue ]
                    toLocalPath: lpath userName: [ userName stringValue ]];
-        case NSAlertAlternateReturn:
+        case NSAlertSecondButtonReturn:
         default:
           return( YES );
       }
