@@ -1060,23 +1060,29 @@ NSComparisonResult
   int			rc;
   
   if ( [ uploadQueue count ] ) {
-    rc = NSRunAlertPanel( NSLocalizedString( @"Warning: Upload queue not empty.",
-                                            @"Warning: Upload queue not empty." ),
-                         NSLocalizedString( @"There are %lu items left in the "
-                                           @"upload queue. Cancelling will end this session. Do "
-                                           @"you want to disconnect without uploading all of them?",
-                                           @"There are %d items left in the "
-                                           @"upload queue. Cancelling will end this session. Do "
-                                           @"you want to disconnect without uploading all of them?" ),
-                         NSLocalizedString( @"Disconnect", @"Disconnect" ),
-                         NSLocalizedString( @"Cancel", @"Cancel" ), @"", (unsigned long)[ uploadQueue count ] );
-    
-    switch( rc ) {
-      case NSAlertDefaultReturn:
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedString( @"Warning: Upload queue not empty.",
+                                                @"Warning: Upload queue not empty." ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat:
+          NSLocalizedString( @"There are %lu items left in the "
+                             @"upload queue. Cancelling will end this session. Do "
+                             @"you want to disconnect without uploading all of them?",
+                             @"There are %lu items left in the "
+                             @"upload queue. Cancelling will end this session. Do "
+                             @"you want to disconnect without uploading all of them?" ),
+          ( unsigned long )[ uploadQueue count ]]];
+      [ alert addButtonWithTitle: NSLocalizedString( @"Disconnect", @"Disconnect" ) ];
+      [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
+      rc = [ alert runModal ];
+      [ alert release ];
+    }
+    switch ( rc ) {
+      case NSAlertFirstButtonReturn:
         [ uploadQueue removeAllObjects ];
         break;
       default:
-      case NSAlertAlternateReturn:
+      case NSAlertSecondButtonReturn:
         return;
     }
   }
@@ -1094,10 +1100,15 @@ NSComparisonResult
   
   if ( [ verifyConnectSheet isVisible ] ) {
     if ( write( master, "no\n", strlen( "no\n" )) != strlen( "no\n" )) {
-      NSRunAlertPanel( NSLocalizedString( @"Error", @"Error" ),
-                      NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
-                                        @"Write failed: Did not write correct number of bytes!" ),
-                      NSLocalizedString( @"Quit", @"Quit" ), @"", @"" );
+      {
+        NSAlert *alert = [[ NSAlert alloc ] init ];
+        [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+        [ alert setInformativeText: NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
+                                                      @"Write failed: Did not write correct number of bytes!" ) ];
+        [ alert addButtonWithTitle: NSLocalizedString( @"Quit", @"Quit" ) ];
+        [ alert runModal ];
+        [ alert release ];
+      }
       exit( 2 );
     }
     [ verifyConnectSheet orderOut: nil ];

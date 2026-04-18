@@ -5,7 +5,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SFTPImageView : NSImageView
+@interface SFTPImageView : NSImageView <NSDraggingSource>
 {
 @private
     NSString		*_imageLocationPath_;

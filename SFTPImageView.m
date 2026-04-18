@@ -26,39 +26,36 @@
 /* allow user to drag image out of image view */
 - ( void )mouseDown: ( NSEvent * )theEvent
 {
-    NSSize		dragOffset = NSMakeSize( 0.0, 0.0 );
-    NSPasteboard	*pboard;
     NSImage		*dragImage = nil;
     NSImage		*scaledImage = [[ self cell ] scaledImage ];
     NSPoint		point;
-    NSArray		*paths = nil;
     
     point = NSMakePoint((( [ self bounds ].size.width - [ scaledImage size ].width ) / 2.0 ),
                         (( [ self bounds ].size.height - [ scaledImage size ].height ) / 2.0 ));
 
-    pboard = [ NSPasteboard pasteboardWithName: NSDragPboard ];
-    [ pboard declareTypes: [ NSArray arrayWithObjects: NSTIFFPboardType,
-                                        NSFilenamesPboardType, nil ]
-                owner: self ];
-                
-    [ pboard setData: [[ self image ] TIFFRepresentation ]
-            forType: NSTIFFPboardType ];
-    
-    if ( [ self imageLocationPath ] != nil ) {
-        paths = [ NSArray arrayWithObject: [ self imageLocationPath ]];
-        [ pboard setPropertyList: paths forType: NSFilenamesPboardType ];
-    }
-    
     dragImage = [[ NSImage alloc ] initWithSize: [ scaledImage size ]];
     [ dragImage lockFocus ];
-    [ scaledImage dissolveToPoint: NSMakePoint( 0.0, 0.0 )
-                    fraction: 0.5 ];
+    [ scaledImage drawAtPoint: NSMakePoint( 0.0, 0.0 ) fromRect: NSZeroRect
+                    operation: NSCompositingOperationSourceOver fraction: 0.5 ];
     [ dragImage unlockFocus ];
-    
-    [ self dragImage: dragImage at: point
-            offset: dragOffset event: theEvent pasteboard: pboard
-            source: self slideBack: YES ];
+
+    NSPasteboardItem *pbItem = [[ NSPasteboardItem alloc ] init ];
+    [ pbItem setData: [[ self image ] TIFFRepresentation ] forType: NSPasteboardTypeTIFF ];
+    if ( [ self imageLocationPath ] != nil ) {
+        NSURL *fileURL = [ NSURL fileURLWithPath: [ self imageLocationPath ]];
+        [ pbItem setString: [ fileURL absoluteString ] forType: NSPasteboardTypeFileURL ];
+    }
+
+    NSDraggingItem *dragItem = [[ NSDraggingItem alloc ] initWithPasteboardWriter: pbItem ];
+    [ pbItem release ];
+    [ dragItem setDraggingFrame: NSMakeRect( point.x, point.y,
+                                            [ scaledImage size ].width,
+                                            [ scaledImage size ].height )
+                       contents: dragImage ];
     [ dragImage release ];
+
+    [ self beginDraggingSessionWithItems: @[ dragItem ] event: theEvent source: self ];
+    [ dragItem release ];
 }
 
 - ( BOOL )needsPanelToBecomeKey
@@ -71,13 +68,13 @@
     return( YES );
 }
 
-- ( unsigned int )draggingSourceOperationMaskForLocal: ( BOOL )isLocal
+- ( NSDragOperation )draggingSession: ( NSDraggingSession * )session
+      sourceOperationMaskForDraggingContext: ( NSDraggingContext )context
 {
-    if ( isLocal ) {
-        return( NSDragOperationNone );
+    if ( context == NSDraggingContextWithinApplication ) {
+        return NSDragOperationNone;
     }
-    
-    return( NSDragOperationGeneric | NSDragOperationCopy );
+    return NSDragOperationGeneric | NSDragOperationCopy;
 }
 
 - ( void )setImageLocationPath: ( NSString * )path

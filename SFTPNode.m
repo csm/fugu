@@ -244,7 +244,7 @@ now()
 {
     int			i;
     NSAutoreleasePool   *pool = [[ NSAutoreleasePool alloc ] init ];
-    NSArray		*allItems = [[ NSFileManager defaultManager ] directoryContentsAtPath: path ];
+    NSArray		*allItems = [[ NSFileManager defaultManager ] contentsOfDirectoryAtPath: path error: nil ];
     NSMutableArray 	*items = [[ NSMutableArray alloc ] init ];
     NSString		*tpath = [ path copy ], *fullpath = nil;
     NSDictionary	*item = nil;
