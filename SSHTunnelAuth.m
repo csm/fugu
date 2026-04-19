@@ -20,7 +20,6 @@
 
 #include "argcargv.h"
 
-extern int	errno;
 
 @implementation SSHTunnelAuth
 
@@ -71,7 +70,8 @@ int		mfd = 0;
 {
     fd_set		readmask;
     FILE		*mfp;
-    int			status, pwsent = 0, validpw = 0, threestrikes = 0;
+    int			status, validpw = 0, threestrikes = 0;
+    int			pwsent __attribute__((unused)) = 0;
     char		*unknownmsg;
     char		ttyname[ MAXPATHLEN ], buf[ MAXPATHLEN ], tportarg[ MAXPATHLEN ];
     char		executable[ MAXPATHLEN], portarg[ MAXPATHLEN ], *execargs[ 7 ];
@@ -82,7 +82,7 @@ int		mfd = 0;
 	return;
     }
     if ( [ sshBinary length ] >= MAXPATHLEN ) {
-	NSLog( @"%@: path too long" );
+	NSLog( @"sshBinary: path too long" );
 	return;
     }
     strcpy( executable, [ sshBinary UTF8String ] );

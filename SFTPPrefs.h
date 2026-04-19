@@ -9,7 +9,7 @@
 
 @class SFTPPrefTableView;
 
-@interface SFTPPrefs : NSObject
+@interface SFTPPrefs : NSObject <NSToolbarDelegate, NSTableViewDelegate, NSTableViewDataSource>
 {
     IBOutlet NSComboBox 	*prefDefaultHost;
     IBOutlet NSTextField	*prefDefaultUser;

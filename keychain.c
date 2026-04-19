@@ -11,7 +11,6 @@
 #include <syslog.h>
 #include "keychain.h"
 
-extern int			errno;
 
     char *
 getpwdfromkeychain( const char *service, const char *account, OSStatus *error )

@@ -29,7 +29,7 @@
 @class 		SFTPTServer;
 @class		SCPController;
 
-@interface 	SFTPController : NSObject
+@interface 	SFTPController : NSObject <NSApplicationDelegate, NSToolbarDelegate, NSTableViewDataSource, NSTabViewDelegate>
 {
     /* console panel outlets */
     IBOutlet NSPanel			*logPanel;

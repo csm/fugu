@@ -21,7 +21,6 @@
 #include "argcargv.h"
 #include "sshversion.h"
 
-extern int	errno;
 
 @implementation SCPTransfer
 

@@ -27,7 +27,7 @@
 - ( void )mouseDown: ( NSEvent * )theEvent
 {
     NSImage		*dragImage = nil;
-    NSImage		*scaledImage = [[ self cell ] scaledImage ];
+    NSImage		*scaledImage = [ self image ];
     NSPoint		point;
     
     point = NSMakePoint((( [ self bounds ].size.width - [ scaledImage size ].width ) / 2.0 ),

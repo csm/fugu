@@ -920,7 +920,7 @@ NSComparisonResult
 
 - ( IBAction )toggleGroupColumn: ( id )sender
 {
-  int			state = [ sender state ];
+  NSControlStateValue	state = [( NSButton * )sender state ];
   
   if ( state == NSControlStateValueOn ) {
     [ sender setState: NSControlStateValueOff ];
@@ -947,7 +947,7 @@ NSComparisonResult
 
 - ( IBAction )toggleModDateColumn: ( id )sender;
 {
-  int			state = [ sender state ];
+  NSControlStateValue	state = [( NSButton * )sender state ];
   
   if ( state == NSControlStateValueOn ) {
     [ sender setState: NSControlStateValueOff ];
@@ -974,7 +974,7 @@ NSComparisonResult
 
 - ( IBAction )toggleModeColumn: ( id )sender
 {
-  int			state = [ sender state ];
+  NSControlStateValue	state = [( NSButton * )sender state ];
   
   if ( state == NSControlStateValueOn ) {
     [ sender setState: NSControlStateValueOff ];
@@ -1001,7 +1001,7 @@ NSComparisonResult
 
 - ( IBAction )toggleOwnerColumn: ( id )sender
 {
-  int			state = [ sender state ];
+  NSControlStateValue	state = [( NSButton * )sender state ];
   
   if ( state == NSControlStateValueOn ) {
     [ sender setState: NSControlStateValueOff ];
@@ -1028,7 +1028,7 @@ NSComparisonResult
 
 - ( IBAction )toggleSizeColumn: ( id )sender
 {
-  int			state = [ sender state ];
+  NSControlStateValue	state = [( NSButton * )sender state ];
   
   if ( state == NSControlStateValueOn ) {
     [ sender setState: NSControlStateValueOff ];
@@ -1055,7 +1055,7 @@ NSComparisonResult
 
 - ( IBAction )cancelConnection: ( id )sender
 {
-  int			rc;
+  NSModalResponse	rc;
   
   if ( [ uploadQueue count ] ) {
     {
@@ -1123,8 +1123,9 @@ NSComparisonResult
     if ( kill( sftppid, SIGINT ) != 0 ) {
       if ( errno == ESRCH ) NSLog( @"kill: sftp process %d: %s", sftppid, strerror( errno ));
     } else {
-      [ logField insertText:
-       [ NSString stringWithFormat: @"sftp process with pid %d killed.\n", sftppid ]];
+      [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ]
+          initWithString: [ NSString stringWithFormat: @"sftp process with pid %d killed.\n", sftppid ]
+          ] autorelease ]];
       connecting = 0;
       connected = 0;
     }
@@ -1205,7 +1206,7 @@ NSComparisonResult
 - ( void )loadRemoteBrowserWithItems: ( NSArray * )items
 {
   int			sorting;
-  int			selectedrow = [ remoteBrowser selectedRow ];
+  NSInteger		selectedrow = [ remoteBrowser selectedRow ];
   BOOL		asciisort = [[ NSUserDefaults standardUserDefaults ]
                        boolForKey: @"ASCIIOrderSorting" ];
   
@@ -1244,7 +1245,7 @@ NSComparisonResult
   
   if ( [ infoPanel isVisible ] ) {
     if ( selectedrow >= 0 ) {
-      [ remoteBrowser selectRow: selectedrow byExtendingSelection: NO ];
+      [ remoteBrowser selectRowIndexes: [ NSIndexSet indexSetWithIndex: selectedrow ] byExtendingSelection: NO ];
       [ self getInfo: nil ];
     }
   }
@@ -1252,7 +1253,7 @@ NSComparisonResult
 
 - ( void )setRemotePathPopUp: ( NSString * )pwd
 {
-  int			i;
+  NSUInteger		i;
   NSMutableArray	*rPathComponents = [[ NSMutableArray alloc ] init ];
   NSArray		*tmp = [[ pwd componentsSeparatedByString: @"/" ] copy ];
   NSImage		*slashImage;
@@ -1414,7 +1415,7 @@ WRITE_ERR:
 
 - ( IBAction )disconnect: ( id )sender
 {
-  int		rc;
+  NSModalResponse	rc;
   
   if ( [[ self editedDocuments ] count ] ) {
     {
@@ -2000,11 +2001,7 @@ WRITE_ERR:
   }
   
   if ( ![ downloadSheet isVisible ] ) {
-    [ NSApp beginSheet: downloadSheet
-        modalForWindow: mainWindow
-         modalDelegate: self
-        didEndSelector: NULL
-           contextInfo: nil ];
+    [ mainWindow beginSheet: downloadSheet completionHandler: nil ];
   }
 }
 
@@ -2051,7 +2048,6 @@ WRITE_ERR:
   [ timer invalidate ];
   timer = nil;
   
-  [[ NSWorkspace sharedWorkspace ] noteFileSystemChanged ];
   [ self localBrowserReloadForPath: localDirPath ];
 }
 
@@ -2121,23 +2117,33 @@ WRITE_ERR:
   [ contents removeObjectsAtIndexes: selectedIndexes ];
   [ localBrowser reloadData ];
 
-  if ( [[ NSWorkspace sharedWorkspace ] performFileOperation: NSWorkspaceRecycleOperation
-                                                      source: localDirPath destination: @"/"
-                                                       files: items tag: &optag ] == NO ) {
-    NSAlert *alert = [[ NSAlert alloc ] init ];
-    [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
-    [ alert setInformativeText: [ NSString stringWithFormat:
-        NSLocalizedString( @"Couldn't delete %@.", @"Couldn't delete %@." ), fn ]];
-    [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
-    [ alert runModal ];
-    [ alert release ];
-    return;
+  {
+    NSMutableArray *fileURLs = [ NSMutableArray arrayWithCapacity: [ items count ]];
+    for ( NSString *name in items ) {
+      [ fileURLs addObject: [ NSURL fileURLWithPath: [ localDirPath stringByAppendingPathComponent: name ]]];
+    }
+    NSString *displayName = [ fn copy ];
+    NSString *reloadPath  = [ localDirPath copy ];
+    [[ NSWorkspace sharedWorkspace ] recycleURLs: fileURLs
+                               completionHandler: ^( NSDictionary *newURLs, NSError *err ) {
+      dispatch_async( dispatch_get_main_queue(), ^{
+        if ( err ) {
+          NSAlert *alert = [[ NSAlert alloc ] init ];
+          [ alert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+          [ alert setInformativeText: [ NSString stringWithFormat:
+              NSLocalizedString( @"Couldn't delete %@.", @"Couldn't delete %@." ), displayName ]];
+          [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+          [ alert runModal ];
+          [ alert release ];
+        }
+        [ self localBrowserReloadForPath: reloadPath ];
+        [ localBrowser reloadData ];
+        [ displayName release ];
+        [ reloadPath release ];
+      });
+    }];
   }
-  
-  [[ NSWorkspace sharedWorkspace ] noteFileSystemChanged: localDirPath ];
-  
-  [ self localBrowserReloadForPath: localDirPath ];
-  [ localBrowser reloadData ];
+  [ items release ];
 }
 
 - ( IBAction )deleteRemoteFile: ( id )sender
@@ -2271,11 +2277,7 @@ WRITE_ERR:
   } else if ( [ remoteDirCreateButton state ] ) {
     [ newDirCreateButton setAction: @selector( makeRDir ) ];
   }
-  [ NSApp beginSheet: newDirPanel
-      modalForWindow: mainWindow
-       modalDelegate: self
-      didEndSelector: NULL
-         contextInfo: nil ];
+  [ mainWindow beginSheet: newDirPanel completionHandler: nil ];
 }
 
 - ( void )makeRDir
@@ -2311,8 +2313,6 @@ WRITE_ERR:
   }
   
   [ self localBrowserReloadForPath: localDirPath ];
-  [[ NSWorkspace sharedWorkspace ] noteFileSystemChanged: localDirPath ];
-  
   [ self dismissNewDirPanel: nil ];
 }
 
@@ -2347,15 +2347,14 @@ WRITE_ERR:
   [ self writeCommand: cmd ];
   return;
   
-CHOWN_ERROR:
-  NSBeginAlertSheet( NSLocalizedStringFromTable( @"Invalid owner user identification number.",
-                                                @"SFTPInfoPanel",
-                                                @"Invalid owner user identification number." ),
-                    @"OK", @"", @"", infoPanel,
-                    self, NULL, nil, NULL,
-                    NSLocalizedStringFromTable(
-                                               @"You must provide a numeric uid for this action.", @"SFTPInfoPanel",
-                                               @"You must provide a numeric uid for this action." ));
+CHOWN_ERROR: {
+  NSAlert *alert = [[ NSAlert alloc ] init ];
+  [ alert setMessageText: NSLocalizedStringFromTable( @"Invalid owner user identification number.", @"SFTPInfoPanel", @"Invalid owner user identification number." ) ];
+  [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a numeric uid for this action.", @"SFTPInfoPanel", @"You must provide a numeric uid for this action." ) ];
+  [ alert addButtonWithTitle: @"OK" ];
+  [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
+  [ alert release ];
+}
 }
 
 - ( IBAction )changeRGroup: ( id )sender
@@ -2383,16 +2382,14 @@ CHOWN_ERROR:
   [ self writeCommand: cmd ];
   return;
   
-CHGRP_ERROR:
-  NSBeginAlertSheet( NSLocalizedStringFromTable( @"Invalid group identification number.",
-                                                @"SFTPInfoPanel",
-                                                @"Invalid group identification number." ),
-                    @"OK", @"", @"", infoPanel,
-                    self, NULL, nil, NULL,
-                    NSLocalizedStringFromTable(
-                                               @"You must provide a numeric gid for this operation.",
-                                               @"SFTPInfoPanel",
-                                               @"You must provide a numeric gid for this operation." ));
+CHGRP_ERROR: {
+  NSAlert *alert = [[ NSAlert alloc ] init ];
+  [ alert setMessageText: NSLocalizedStringFromTable( @"Invalid group identification number.", @"SFTPInfoPanel", @"Invalid group identification number." ) ];
+  [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a numeric gid for this operation.", @"SFTPInfoPanel", @"You must provide a numeric gid for this operation." ) ];
+  [ alert addButtonWithTitle: @"OK" ];
+  [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
+  [ alert release ];
+}
 }
 
 - ( IBAction )remotePermissionSwitchClick: ( id )sender
@@ -2442,15 +2439,14 @@ CHGRP_ERROR:
   [ self writeCommand: cmd ];
   return;
   
-CHMOD_ERROR:
-  NSBeginAlertSheet( NSLocalizedStringFromTable( @"Invalid octal permissions set.",
-                                                @"SFTPInfoPanel", @"Invalid octal permissions set." ),
-                    @"OK", @"", @"", infoPanel,
-                    self, NULL, nil, NULL,
-                    NSLocalizedStringFromTable(
-                                               @"You must provide a four-digit octal permissions set for this operation.",
-                                               @"SFTPInfoPanel",
-                                               @"You must provide a four-digit octal permissions set for this operation." ));
+CHMOD_ERROR: {
+  NSAlert *alert = [[ NSAlert alloc ] init ];
+  [ alert setMessageText: NSLocalizedStringFromTable( @"Invalid octal permissions set.", @"SFTPInfoPanel", @"Invalid octal permissions set." ) ];
+  [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a four-digit octal permissions set for this operation.", @"SFTPInfoPanel", @"You must provide a four-digit octal permissions set for this operation." ) ];
+  [ alert addButtonWithTitle: @"OK" ];
+  [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
+  [ alert release ];
+}
 }
 
 - ( IBAction )changeLOwnerAndGroup: ( id )sender
@@ -2468,12 +2464,14 @@ CHMOD_ERROR:
   if ( getuid() != 0 && u != getuid()) u = getuid();
   
   if ( chown(( char * )[[ whereField stringValue ] UTF8String ], u, g ) < 0 ) {
-    NSBeginAlertSheet( NSLocalizedStringFromTable( @"Error changing owner.", @"SFTPInfoPanel",
-                                                  @"Error changing owner." ),
-                      @"OK", @"", @"", infoPanel,
-                      self, NULL, nil, NULL,
-                      @"chown %@: %s", [ whereField stringValue ],
-                      strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedStringFromTable( @"Error changing owner.", @"SFTPInfoPanel", @"Error changing owner." ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat: @"chown %@: %s", [ whereField stringValue ], strerror( errno ) ]];
+      [ alert addButtonWithTitle: @"OK" ];
+      [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
+      [ alert release ];
+    }
     return;
   }
 }
@@ -2490,12 +2488,14 @@ CHMOD_ERROR:
     return;
   }
   if ( chmod(( char * )[[ whereField stringValue ] UTF8String ], mode ) < 0 ) {
-    NSBeginAlertSheet( NSLocalizedStringFromTable( @"Error changing permissions.",
-                                                  @"SFTPInfoPanel", @"Error changing permissions." ),
-                      @"OK", @"", @"", infoPanel,
-                      self, NULL, nil, NULL,
-                      @"chmod %@: %s", [ infoPathField stringValue ],
-                      strerror( errno ));
+    {
+      NSAlert *alert = [[ NSAlert alloc ] init ];
+      [ alert setMessageText: NSLocalizedStringFromTable( @"Error changing permissions.", @"SFTPInfoPanel", @"Error changing permissions." ) ];
+      [ alert setInformativeText: [ NSString stringWithFormat: @"chmod %@: %s", [ infoPathField stringValue ], strerror( errno ) ]];
+      [ alert addButtonWithTitle: @"OK" ];
+      [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
+      [ alert release ];
+    }
     return;
   }
   [ self localBrowserReloadForPath: localDirPath ];
@@ -2564,11 +2564,7 @@ CHMOD_ERROR:
   }
   
   [ gotoDirNameField setCompletes: YES ];
-  [ NSApp beginSheet: gotoDirPanel
-      modalForWindow: mainWindow
-       modalDelegate: self
-      didEndSelector: NULL
-         contextInfo: nil ];
+  [ mainWindow beginSheet: gotoDirPanel completionHandler: nil ];
 }
 
 - ( IBAction )gotoLocalDirectory: ( id )sender
@@ -2738,7 +2734,7 @@ CHMOD_ERROR:
   NSString        *path = nil;
   NSMutableArray  *contents;
   
-  location = [[ table window ] convertScreenToBase: location ];
+  location = [[ table window ] convertPointFromScreen: location ];
   location = [ table convertPoint: location
                          fromView: [[ table window ] contentView ]];
   
@@ -2950,11 +2946,7 @@ CHMOD_ERROR:
   [ commandButton setEnabled: NO ];
   
   if ( [ mainWindow isVisible ] ) {
-    [ NSApp beginSheet: uploadProgPanel
-        modalForWindow: mainWindow
-         modalDelegate: self
-        didEndSelector: NULL
-           contextInfo: nil ];
+    [ mainWindow beginSheet: uploadProgPanel completionHandler: nil ];
   }
 }
 
@@ -3123,8 +3115,7 @@ CHMOD_ERROR:
   [ hostKeyUnauth setStringValue: [ hostInfo objectForKey: @"key" ]];
   [ hostKeyUnauth setEditable: NO ];
   
-  [ NSApp beginSheet: verifyConnectSheet modalForWindow: mainWindow
-       modalDelegate: self didEndSelector: NULL contextInfo: nil ];
+  [ mainWindow beginSheet: verifyConnectSheet completionHandler: nil ];
 }
 
 - ( BOOL )firstPasswordPrompt
@@ -3174,16 +3165,28 @@ CHMOD_ERROR:
     }
 
     switch ( rc ) {
-      case NSAlertFirstButtonReturn:
-        if ( ! [[ NSWorkspace sharedWorkspace ] launchApplication: @"Keychain Access" ] ) {
-          NSAlert *errAlert = [[ NSAlert alloc ] init ];
-          [ errAlert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
-          [ errAlert setInformativeText: @"Couldn't open Keychain Access" ];
-          [ errAlert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
-          [ errAlert runModal ];
-          [ errAlert release ];
+      case NSAlertFirstButtonReturn: {
+        NSURL *kcURL = [[ NSWorkspace sharedWorkspace ]
+                        URLForApplicationWithBundleIdentifier: @"com.apple.keychainaccess" ];
+        if ( kcURL ) {
+          [[ NSWorkspace sharedWorkspace ]
+              openApplicationAtURL: kcURL
+                     configuration: [ NSWorkspaceOpenConfiguration configuration ]
+                 completionHandler: ^( NSRunningApplication *app, NSError *err ) {
+            if ( err ) {
+              dispatch_async( dispatch_get_main_queue(), ^{
+                NSAlert *errAlert = [[ NSAlert alloc ] init ];
+                [ errAlert setMessageText: NSLocalizedString( @"Error", @"Error" ) ];
+                [ errAlert setInformativeText: @"Couldn't open Keychain Access" ];
+                [ errAlert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
+                [ errAlert runModal ];
+                [ errAlert release ];
+              });
+            }
+          }];
         }
         break;
+      }
       default:
         break;
     }
@@ -4015,9 +4018,6 @@ CHMOD_ERROR:
   NSString		*fullPath;
   NSArray		*items = nil;
   id			activeTableView;
-  CFStringRef		type;
-  CFURLRef		url;
-  OSStatus		status;
   
   if ( ! [ infoPanel isVisible ] ) {
     [ infoPanel makeKeyAndOrderFront: nil ];
@@ -4049,18 +4049,11 @@ CHMOD_ERROR:
                            iconForFile: fullPath ]];
     [ self localCheckSetup: [ attribDict objectForKey: @"perm" ]];
     
-    url = CFURLCreateFromFileSystemRepresentation( kCFAllocatorDefault,
-                                                  ( const UInt8 * )[ fullPath fileSystemRepresentation ],
-                                                  strlen( [ fullPath fileSystemRepresentation ] ), false );
-    if ( url ) {
-      if (( status = LSCopyKindStringForURL( url, &type )) != noErr ) {
-        NSLog( @"LSCopyKindStringForURL failed: error %d", ( int )status );
-        [ typeField setStringValue: [ attribDict objectForKey: @"type" ]];
-      } else {
-        [ typeField setStringValue: ( NSString * )type ];
-        CFRelease( type );
-      }
-      CFRelease( url );
+    {
+      NSURL *fileURL = [ NSURL fileURLWithPath: fullPath ];
+      NSString *typeDesc = nil;
+      [ fileURL getResourceValue: &typeDesc forKey: NSURLLocalizedTypeDescriptionKey error: nil ];
+      [ typeField setStringValue: typeDesc ?: [ attribDict objectForKey: @"type" ]];
     }
     
     [ ownerField setStringValue: [ attribDict objectForKey: @"owner" ]];
@@ -4493,7 +4486,7 @@ INVALID_CONNECTION_SETTINGS:
     
     if ( row < 0 ) return( NO );
     [ table scrollRowToVisible: row ];
-    [ table selectRow: row byExtendingSelection: NO ];
+    [ table selectRowIndexes: [ NSIndexSet indexSetWithIndex: row ] byExtendingSelection: NO ];
     return( YES );
   }
   
@@ -4716,12 +4709,7 @@ INVALID_CONNECTION_SETTINGS:
     
     for ( i = 0; i < [ services count ]; i++ ) {
       [[ services objectAtIndex: i ] setDelegate: self ];
-      if ( [[ services objectAtIndex: i ]
-            respondsToSelector: @selector( resolveWithTimeout: ) ] ) {
-        [[ services objectAtIndex: i ] resolveWithTimeout: 5 ];
-      } else {
-        [[ services objectAtIndex: i ] resolve ];
-      }
+      [[ services objectAtIndex: i ] resolveWithTimeout: 5 ];
     }
     
     [ rendezvousPopUp setEnabled: YES ];
@@ -4754,7 +4742,7 @@ INVALID_CONNECTION_SETTINGS:
     
     for ( i = 0; i < [ services count ]; i++ ) {
       [[ services objectAtIndex: i ] setDelegate: self ];
-      [[ services objectAtIndex: i ] resolve ];
+      [[ services objectAtIndex: i ] resolveWithTimeout: 5 ];
     }
     
     if ( [ services count ] == 0 ) {
@@ -5350,7 +5338,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( prefs == nil ) {
     prefs = [[ SFTPPrefs alloc ] init ];
-    [ NSBundle loadNibNamed: @"Prefs.nib" owner: prefs ];
+    [ NSBundle loadNibNamed: @"Prefs.nib" owner: prefs topLevelObjects: nil ];
   }
   [ prefs showPreferencePanel ];
 }
@@ -5397,7 +5385,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp ];
+    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: aFileName scpType: 0 copyToPath: @""
@@ -5413,9 +5401,11 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   NSMutableArray	*columnArray = nil;
   
   if ( access( C_TMPFUGUDIR, F_OK | W_OK ) == 0 ) {
-    if ( [[ NSFileManager defaultManager ]
-          removeFileAtPath: OBJC_TMPFUGUDIR handler: nil ] == NO ) {
-      NSLog( @"Couldn't remove %@!", OBJC_TMPFUGUDIR );
+    {
+      NSError *rmErr = nil;
+      if ( ![[ NSFileManager defaultManager ] removeItemAtPath: OBJC_TMPFUGUDIR error: &rmErr ] ) {
+        NSLog( @"Couldn't remove %@: %@", OBJC_TMPFUGUDIR, rmErr );
+      }
     }
   }
   
@@ -5449,7 +5439,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   SSHTunnel		*t = [[ SSHTunnel alloc ] init ];
   
-  [ NSBundle loadNibNamed: @"SSHTunnel" owner: t ];
+  [ NSBundle loadNibNamed: @"SSHTunnel" owner: t topLevelObjects: nil ];
   [ t displayWindow ];
   [ t autorelease ];
 }
@@ -5458,7 +5448,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp ];
+    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: @"" scpType: 0 copyToPath: @"" fromHost: @"" userName: @""
@@ -5521,7 +5511,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp ];
+    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: fullRemoteDirPath scpType: 1
@@ -5537,7 +5527,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp ];
+    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: item scpType: 0
@@ -5580,7 +5570,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp ];
+    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: [ filenames objectAtIndex: 0 ]
@@ -5594,7 +5584,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   SSHTunnel		*ssht = [[ SSHTunnel alloc ] init ];
   
-  [ NSBundle loadNibNamed: @"SSHTunnel" owner: ssht ];
+  [ NSBundle loadNibNamed: @"SSHTunnel" owner: ssht topLevelObjects: nil ];
   [ ssht displayWindow ];
   [ ssht autorelease ];
 }

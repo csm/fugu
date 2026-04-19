@@ -25,7 +25,6 @@
 #include "fdwrite.h"
 #include "typeforchar.h"
 
-extern int	errno;
 extern char	**environ;
 
 /* used to set which field contains the filename */
@@ -227,7 +226,7 @@ int		master = 0;
 	if (( p = strrchr( tav[ i ], '%' )) != NULL ) {
 	    /* found the %-done field */
 	    pc_index = i;
-	    p = '\0';
+	    *p = '\0';
 	    break;
 	}
     }
@@ -498,7 +497,9 @@ DOT_OR_DOTDOT:
     fd_set		readmask;
     struct winsize	win_size = { 24, 512, 0, 0 };
     FILE		*mf = NULL;
-    int			rc, status, pwsent = 0, validpw = 0, showrb = 0, threestrikes = 0;
+    int			rc __attribute__((unused)), status;
+    int			pwsent __attribute__((unused)) = 0, showrb __attribute__((unused)) = 0;
+    int			validpw = 0, threestrikes = 0;
     int			was_uploading = 0, was_downloading = 0, was_changing = 0, sethomedir = 0;
     int			was_removing = 0, was_renaming = 0, was_listing = 0;
     char		ttyname[ MAXPATHLEN ], **execargs;

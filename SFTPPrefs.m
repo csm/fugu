@@ -20,7 +20,6 @@
 #define SFTPPrefToolbarFilesIdentifier		@"fileeditingprefs"
 #define SFTPPrefToolbarTransfersIdentifier	@"transfersprefs"
 
-extern int		errno;
 static NSMutableArray	*knownHosts = nil;
 
 @implementation SFTPPrefs
@@ -54,7 +53,7 @@ static NSMutableArray	*knownHosts = nil;
     NSButtonCell        *protoCell = [[[ NSButtonCell alloc ]
                                             initTextCell: @"" ] autorelease ];
                                             
-    [ protoCell setButtonType: NSSwitchButton ];
+    [ protoCell setButtonType: NSButtonTypeSwitch ];
     [ protoCell setEditable: YES ];
     if ( tableColumn ) {
         [ tableColumn setDataCell: protoCell ];
@@ -464,7 +463,7 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( IBAction )toggleRetainFileTime: ( id )sender
 {
-    if ( [ prefRetainFileTimeSwitch state ] == NSOnState ) {
+    if ( [ prefRetainFileTimeSwitch state ] == NSControlStateValueOn ) {
 	[[ NSUserDefaults standardUserDefaults ] setBool: YES forKey: @"RetainFileTimestamp" ];
     } else {
 	[[ NSUserDefaults standardUserDefaults ] setBool: NO forKey: @"RetainFileTimestamp" ];
@@ -532,12 +531,12 @@ static NSMutableArray	*knownHosts = nil;
     }
 
     if ( haskhfile ) {
-        if ( strlcpy( khpathbak, khpath, sizeof( khpath )) >= sizeof( khpath )) {
+        if ( strlcpy( khpathbak, khpath, sizeof( khpathbak )) >= sizeof( khpathbak )) {
             [ self showPrefsError: @"strlcpy failed: string exceeds bounds." ];
             return;
         }
 
-        if ( strlcat( khpathbak, backupext, sizeof( backupext )) >= sizeof( khpathbak )) {
+        if ( strlcat( khpathbak, backupext, sizeof( khpathbak )) >= sizeof( khpathbak )) {
             [ self showPrefsError: [ NSString stringWithFormat:
                 @"strlcat %s failed: string exceeds bounds.", khpathbak ]];
             return;
@@ -646,7 +645,7 @@ static NSMutableArray	*knownHosts = nil;
                                     @"", @"dir", nil ];
     [ favs addObject: dict ];
     [ prefFavTable reloadData ];
-    [ prefFavTable selectRow: ( [ favs count ] - 1 ) byExtendingSelection: NO ];
+    [ prefFavTable selectRowIndexes: [ NSIndexSet indexSetWithIndex: ( [ favs count ] - 1 ) ] byExtendingSelection: NO ];
     [ prefFavTable editColumn: 0 row: ( [ favs count ] - 1 ) withEvent: nil select: YES ];
 }
 
@@ -742,12 +741,12 @@ static NSMutableArray	*knownHosts = nil;
 }
 
 /* tableview datasource methods */
-- ( int )numberOfRowsInTableView: ( NSTableView * )aTableView
+- ( NSInteger )numberOfRowsInTableView: ( NSTableView * )aTableView
 {
     if ( [ aTableView isEqual: prefFavTable ] ) {
-	return( [ favs count ] );
+	return( ( NSInteger )[ favs count ] );
     } else if ( [ aTableView isEqual: prefKnownHostsTable ] ) {
-	return( [ knownHosts count ] );
+	return( ( NSInteger )[ knownHosts count ] );
     }
     
     return( 0 );
@@ -755,7 +754,7 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( id )tableView: ( NSTableView * )aTableView
         objectValueForTableColumn: ( NSTableColumn * )aTableColumn
-        row: ( int )rowIndex
+        row: ( NSInteger )rowIndex
 {
     NSMutableArray      *array = nil;
     
@@ -776,7 +775,7 @@ static NSMutableArray	*knownHosts = nil;
 - ( void )tableView: ( NSTableView * )aTableView
             setObjectValue: ( id )anObject
             forTableColumn: ( NSTableColumn * )aTableColumn
-            row: ( int )rowIndex
+            row: ( NSInteger )rowIndex
 {
     NSMutableDictionary		*dict = nil;
     

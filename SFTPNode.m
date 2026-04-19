@@ -18,16 +18,15 @@
 #include <tzfile.h>
 #include <unistd.h>
 
-extern int		errno;
 
     time_t
-sixmo_in_secs()
+sixmo_in_secs( void )
 {
     return(( DAYSPERNYEAR / 2 ) * SECSPERDAY );
 }
 
     time_t
-now()
+now( void )
 {
     return( time( NULL ));
 }

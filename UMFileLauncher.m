@@ -8,14 +8,13 @@
 #include <errno.h>
 #include <unistd.h>
 
-extern int			errno;
 
 @implementation UMFileLauncher
 
 - ( BOOL )openFile: ( NSString * )file withApplication: ( NSString * )app
 {
     if ( app == nil ) {
-        if ( ! [[ NSWorkspace sharedWorkspace ] openFile: file ] ) return( NO );
+        if ( ! [[ NSWorkspace sharedWorkspace ] openURL: [ NSURL fileURLWithPath: file ] ] ) return( NO );
         return( YES );
     }
     

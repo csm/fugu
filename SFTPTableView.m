@@ -32,7 +32,10 @@
 /* catch key events */
 - ( void )keyDown: ( NSEvent * )theEvent
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-method-access"
     if ( ! [[ self delegate ] handleEvent: theEvent fromTable: self ] ) {
+#pragma clang diagnostic pop
         [ super keyDown: theEvent ];
     }
 }
@@ -41,7 +44,7 @@
         event: ( NSEvent * )theEvent pasteboard: ( NSPasteboard * )pboard
 	source: ( id )sourceObject slideBack: ( BOOL )slideBack
 {
-    int                 row = [ self rowAtPoint: imageLoc ];
+    NSInteger           row = [ self rowAtPoint: imageLoc ];
     NSRect		imageframe = [ self frameOfCellAtColumn: 0 row: row ];
     NSRect		imageRect;
     float		width = NSWidth( imageframe );
@@ -141,12 +144,15 @@
 - ( NSArray * )namesOfPromisedFilesDroppedAtDestination: ( NSURL * )url
 {
     NSArray	    *plists = _sftpOriginalPboardPlists;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-method-access"
     NSArray	    *names = [[ self dataSource ] promisedNamesFromPlists: plists ];
     BOOL	    handled;
 					    
     handled = [[ self dataSource ]
 		    handleDroppedPromisedFiles: [ plists objectAtIndex: 0 ]
 		    destination: [ url path ]];
+#pragma clang diagnostic pop
     if ( ! handled ) {
 	NSLog( @"failed to handle promised files" );
     }
@@ -167,15 +173,19 @@
 {
     /* work around a bug in Panther */
     [[ NSPasteboard pasteboardWithName: NSDragPboard ]
-	    declareTypes: nil owner: nil ];
+	    declareTypes: @[] owner: nil ];
 }
 
 - ( void )doSpringLoadedAction: ( NSTimer * )timer
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+#pragma clang diagnostic ignored "-Wobjc-method-access"
     [[ self delegate ] performSelector:
                     @selector( performSpringLoadedActionInTable: )
                                     withObject: self
                                     afterDelay: 0.0 ];
+#pragma clang diagnostic pop
                                     
     [ springLoadedTimer invalidate ];
     springLoadedTimer = nil;
@@ -207,31 +217,34 @@
     NSEventType     type = [ e type ];
     NSDragOperation op = [ super draggingUpdated: sender ];
     
-    if ( type == NSKeyDown ) {
+    if ( type == NSEventTypeKeyDown ) {
         NSEvent         *newEvent = nil;
         NSPoint         pt;
         unichar         key = [[ e charactersIgnoringModifiers ] characterAtIndex: 0 ];
         
         if ( key == ' ' ) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+#pragma clang diagnostic ignored "-Wobjc-method-access"
             if ( [[ self delegate ] respondsToSelector:
                             @selector( performSpringLoadedActionInTable: ) ] ) {
                 [ springLoadedTimer invalidate ];
                 springLoadedTimer = nil;
-                
                 [[ self delegate ] performSelector:
                     @selector( performSpringLoadedActionInTable: )
                                     withObject: self
                                     afterDelay: 0.0 ];
             }
+#pragma clang diagnostic pop
         }
         
         pt = NSMakePoint( [ e locationInWindow ].x + 1, [ e locationInWindow ].y + 1 );
         
         /* send a fake event to avoid repeats */
-        newEvent = [ NSEvent mouseEventWithType: NSLeftMouseDragged
+        newEvent = [ NSEvent mouseEventWithType: NSEventTypeLeftMouseDragged
                     location: pt modifierFlags: [ e modifierFlags ]
                     timestamp: ( [ e timestamp ] + 0.1 ) windowNumber: [ e windowNumber ]
-                    context: [ e context ] eventNumber: 1
+                    context: nil eventNumber: 1
                     clickCount: 0 pressure: 0.0 ];
                     
         [ NSApp postEvent: newEvent atStart: YES ];
@@ -247,6 +260,9 @@
         springLoadedTimer = nil;
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+#pragma clang diagnostic ignored "-Wobjc-method-access"
     if ( [[ self delegate ] respondsToSelector:
             @selector( springLoadedActionCancelledInTable: ) ] ) {
         [[ self delegate ] performSelector:
@@ -254,6 +270,7 @@
                             withObject: self
                             afterDelay: 0.0 ];
     }
+#pragma clang diagnostic pop
     
     [ super draggingExited: sender ];
 }
@@ -291,8 +308,8 @@
 {
     NSPoint	p = [ self convertPoint: [ event locationInWindow ]
                             fromView: nil ];
-    int		column = [ self columnAtPoint: p ];
-    int		row = [ self rowAtPoint: p ];
+    NSInteger	column = [ self columnAtPoint: p ];
+    NSInteger	row = [ self rowAtPoint: p ];
     
     rightClickedRow = 0;
     
@@ -300,11 +317,14 @@
         [[ self delegate ] respondsToSelector:
                 @selector( menuForTable:column:row: ) ] ) {
         rightClickedRow = row;
-        [ self selectRow: row byExtendingSelection: NO ];
+        [ self selectRowIndexes: [ NSIndexSet indexSetWithIndex: row ] byExtendingSelection: NO ];
         
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-method-access"
         return( [[ self delegate ] menuForTable: self
                                     column: column
                                     row: row ] );
+#pragma clang diagnostic pop
     }
     return( nil );
 }
@@ -313,7 +333,7 @@
 {
     if ( [[[ aNotification userInfo ] objectForKey: @"NSTextMovement" ]
                                         intValue ] == NSReturnTextMovement ) {
-        int		column = [ self editedColumn ];
+        NSInteger	column = [ self editedColumn ];
         
         if ( ! [[ self delegate ] respondsToSelector:
                     @selector( handleChangedText:forTable:column: ) ] ) {
@@ -322,9 +342,12 @@
             return;
         }
         
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-method-access"
         [[ self delegate ] handleChangedText: [[ aNotification object ] string ]
                 forTable: self
                 column: column ];
+#pragma clang diagnostic pop
         [[ self window ] endEditingFor: self ];
         [[ self window ] makeFirstResponder: self ];
         [ self reloadData ];
@@ -333,7 +356,7 @@
     }
 }
 
-- ( int )rightClickedRow
+- ( NSInteger )rightClickedRow
 {
     return( rightClickedRow );
 }
@@ -342,7 +365,7 @@
 {
     NSRect		cellframe;
     NSPoint		cellorigin;
-    int			row = [ self selectedRow ];
+    NSInteger		row = [ self selectedRow ];
     
     if ( row < 0 ) {
         return( NSZeroPoint );
@@ -352,7 +375,7 @@
     cellorigin = NSMakePoint( cellframe.origin.x, cellframe.origin.y );
     
     cellorigin = [[[ self window ] contentView ] convertPoint: cellorigin fromView: self ];
-    cellorigin = [[ self window ] convertBaseToScreen: cellorigin ];
+    cellorigin = [[ self window ] convertPointToScreen: cellorigin ];
     
     return( cellorigin );
 }
@@ -374,8 +397,8 @@
     [ column setMaxWidth: ( width * 5 ) ];
     [ column setWidth: width ];
     if ( [ identifier isEqualToString: @"sizecolumn" ] ) {
-        [[ column headerCell ] setAlignment: NSRightTextAlignment ];
-        [[ column dataCell ] setAlignment: NSRightTextAlignment ];
+        [[ column headerCell ] setAlignment: NSTextAlignmentRight ];
+        [[ column dataCell ] setAlignment: NSTextAlignmentRight ];
     }
     
     [ self addTableColumn: column ];

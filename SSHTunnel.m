@@ -188,8 +188,6 @@ extern int		mfd;
     }
     
     if ( ! [ self firstPasswordPrompt ] && [ self gotPasswordFromKeychain ] ) {
-        int	rc;
-        
         {
             NSAlert *alert = [[ NSAlert alloc ] init ];
             [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
@@ -220,10 +218,10 @@ extern int		mfd;
 
 - ( void )write: ( char * )buf
 {
-    int		wr;
+    ssize_t	wr;
     
-    if (( wr = write( mfd, buf, strlen( buf ))) != strlen( buf )) goto WRITE_ERR;
-    if (( wr = write( mfd, "\n", strlen( "\n" ))) != strlen( "\n" )) goto WRITE_ERR;
+    if (( wr = (ssize_t)write( mfd, buf, strlen( buf ))) != (ssize_t)strlen( buf )) goto WRITE_ERR;
+    if (( wr = (ssize_t)write( mfd, "\n", strlen( "\n" ))) != (ssize_t)strlen( "\n" )) goto WRITE_ERR;
     
     return;
     
@@ -234,8 +232,8 @@ WRITE_ERR:
             NSLocalizedString( @"Write failed: Did not write correct number of bytes!",
                                @"Write failed: Did not write correct number of bytes!" )];
         [ alert setInformativeText: [ NSString stringWithFormat:
-            NSLocalizedString( @"Wrote %d bytes to file descriptor",
-                               @"Wrote %d bytes to file descriptor" ), wr ]];
+            NSLocalizedString( @"Wrote %ld bytes to file descriptor",
+                               @"Wrote %ld bytes to file descriptor" ), ( long )wr ]];
         [ alert addButtonWithTitle: NSLocalizedString( @"Exit", @"Exit" )];
         [ alert runModal ];
         [ alert release ];
@@ -254,7 +252,7 @@ WRITE_ERR:
 
     bcopy( [[ passwordField stringValue ] UTF8String ], pass,
             strlen( [[ passwordField stringValue ] UTF8String ] ));
-    if ( [ addToKeychainSwitch state ] == NSOnState ) {
+    if ( [ addToKeychainSwitch state ] == NSControlStateValueOn ) {
         addpwdtokeychain( [[ tunnelHostField stringValue ] UTF8String ],
                 [[ usernameField stringValue ] UTF8String ], pass );
     }
@@ -313,8 +311,6 @@ NSLog( @"%d", sshpid );
 
 - ( IBAction )closeTunnel: ( id )sender
 {
-    int			rc;
-    
     {
         NSAlert *alert = [[ NSAlert alloc ] init ];
         [ alert setMessageText: NSLocalizedStringFromTable(

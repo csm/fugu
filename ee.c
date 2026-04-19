@@ -13,7 +13,6 @@
 
 #include "aevent.h"
 
-extern int		errno;
 extern char		**environ;
 
 /*

@@ -17,10 +17,9 @@
 #include <unistd.h>
 #include "sshversion.h"
 
-extern int	errno;
 
 int
-sshversion()
+sshversion( void )
 {
   const CFStringRef   user = kCFPreferencesCurrentUser;
   const CFStringRef   host = kCFPreferencesAnyHost;
@@ -32,14 +31,15 @@ sshversion()
   int                 efd[ 2 ];
   char                *sshexec[] = { NULL, NULL, NULL }, *p;
   char                line[ MAXPATHLEN ], sshpath[ MAXPATHLEN ] = { 0 };
-  int                 estatus, rr;
+  int                 estatus;
+  ssize_t             rr;
   
   if (( sshbinary = CFPreferencesCopyValue( key, appID, user, host )) == NULL ) {
     strcpy( sshpath, "/usr/bin/ssh" );
   } else {
     range.length = CFStringGetLength( sshbinary );
     if ( CFStringGetBytes( sshbinary, range, kCFStringEncodingUTF8, '?',
-                          FALSE, sshpath, MAXPATHLEN, NULL ) == 0 ) {
+                          FALSE, ( UInt8 * )sshpath, MAXPATHLEN, NULL ) == 0 ) {
       syslog( LOG_ERR, "CFStringGetBytes failed" );
       strcpy( sshpath, "/usr/bin/ssh" );
     } else {
@@ -125,7 +125,7 @@ sshversion()
     char	tmp[ 4 ];
     
     for ( i = 0; i < 3; i++ ) {
-      if ( *p == NULL ) break;
+      if ( *p == '\0' ) break;
       tmp[ i ] = *p;
       p++;
     }

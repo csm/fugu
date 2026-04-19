@@ -15,7 +15,7 @@
 @interface SFTPTableView : NSTableView
 {
 @private
-    int		    rightClickedRow;
+    NSInteger	    rightClickedRow;
     int		    _sftpDragPhase;
     NSTimer	    *springLoadedTimer;
     NSImage	    *_sftpOriginalDragImage;
@@ -25,7 +25,7 @@
 }
 
 - ( void )keyDown: ( NSEvent * )theEvent;
-- ( int )rightClickedRow;
+- ( NSInteger )rightClickedRow;
 
 - ( NSPoint )originOfSelectedCell;
 

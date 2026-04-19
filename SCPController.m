@@ -23,7 +23,6 @@
 #define UPLOAD		0
 #define	DOWNLOAD	1
 
-extern int		errno;
 extern char		**environ;
 
 @implementation SCPController

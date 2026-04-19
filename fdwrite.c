@@ -15,7 +15,6 @@
 #include "fdwrite.h"
 
 extern int		connected;
-extern int		errno;
 typedef unsigned short 	unichar;
 
 /* write arbitrary formatted string to an open file descriptor */
