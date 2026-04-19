@@ -1459,7 +1459,7 @@ WRITE_ERR:
 
 - ( void )cleanUp
 {
-  int		i;
+  NSInteger		i;
   
   [ uploadQueue removeAllObjects ];
   if ( [ rPathPopUp numberOfItems ] ) {
@@ -1515,7 +1515,7 @@ WRITE_ERR:
 
 - ( void )localBrowserReloadForPath: ( NSString * )path
 {
-  int			i, sorting, sortdirection = 0;
+  NSInteger			i, sorting, sortdirection = 0;
   NSArray		*bits;
   NSString		*fullpath, *componentpath, *identifier;
   NSMutableArray	*tmp, *lpath;
@@ -1683,7 +1683,7 @@ WRITE_ERR:
 
 - ( IBAction )localBrowserDoubleClick: ( id )browser
 {
-  int			row = [ localBrowser clickedRow ];
+  NSInteger			row = [ localBrowser clickedRow ];
   NSDictionary	*dict;
   NSString		*type, *path;
   
@@ -1747,14 +1747,13 @@ WRITE_ERR:
 - ( IBAction )downloadButtonClick: ( id )sender
 {
   NSMutableArray	*marray = [[ NSMutableArray alloc ] init ];
-  __block BOOL downloadDone = NO;
   NSArray		*dlSource = ( dotflag ? remoteDirContents : dotlessRDir );
   [[ remoteBrowser selectedRowIndexes ] enumerateIndexesUsingBlock:
       ^( NSUInteger idx, BOOL *stop ) {
     NSDictionary *d = [ dlSource objectAtIndex: idx ];
     
     if ( [[ d objectForKey: @"type" ] isEqualToString: @"directory" ] ) {
-      int			rc;
+      NSModalResponse			rc;
       
       {
         NSAlert *alert = [[ NSAlert alloc ] init ];
@@ -1789,9 +1788,9 @@ WRITE_ERR:
 
 - ( IBAction )remoteBrowserDoubleClick: ( id )browser
 {
-  int			rcrow = [ remoteBrowser clickedRow ];
+  NSInteger			rcrow = [ remoteBrowser clickedRow ];
   NSDictionary	*remoteItem;
-  int			type;
+  NSInteger			type;
   
   /* double-click in the header cell */
   if ( rcrow < 0 ) {
@@ -1845,7 +1844,10 @@ WRITE_ERR:
 {
   NSEvent		*e = [ NSApp currentEvent ];
   
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
   [ NSMenu popUpContextMenu: remoteHistoryMenu withEvent: e forView: nil ];
+#pragma clang diagnostic pop
 }
 
 - ( NSMutableArray * )uploadQ
@@ -1988,7 +1990,6 @@ WRITE_ERR:
                                          @"Downloading %s..." ), msg ];
   
   [ downloadTextField setStringValue: mesg ];
-  [ downloadProgBar setAnimationDelay: ( 20.0 / 60.0 ) ];
   [ downloadProgBar setUsesThreadedAnimation: YES ];
   [ downloadProgBar startAnimation: nil ];
   
@@ -2064,7 +2065,8 @@ WRITE_ERR:
 
 - ( IBAction )deleteLocalFile: ( id )sender
 {
-  int				rc, optag, row = [ localBrowser selectedRow ];
+  NSModalResponse			rc;
+  NSInteger				row = [ localBrowser selectedRow ];
   NSIndexSet		*selectedIndexes = [ localBrowser selectedRowIndexes ];
   NSMutableArray		*items, *source;
   NSString			*fn;
@@ -2148,7 +2150,8 @@ WRITE_ERR:
 
 - ( IBAction )deleteRemoteFile: ( id )sender
 {
-  int				rc, row = [ remoteBrowser selectedRow ];
+  NSModalResponse			rc;
+  NSInteger				row = [ remoteBrowser selectedRow ];
   NSMutableDictionary		*dict;
   NSMutableArray		*items;
   NSString			*fn, *item, *deleteCommand = nil;
@@ -2217,7 +2220,7 @@ WRITE_ERR:
 
 - ( void )deleteFirstItemFromRemoveQueue
 {
-  int		count = [ removeQueue count ];
+  NSUInteger		count = [ removeQueue count ];
   
   if ( ! count ) return;
   
@@ -2662,7 +2665,7 @@ CHMOD_ERROR: {
 - ( IBAction )cdFromLPathPopUp: ( id )sender
 {
   NSString	*path, *component;
-  int		index, i = 0;
+  NSInteger		index, i = 0;
   
   path = [ NSString stringWithString: localDirPath ];
   component = [ lPathPopUp titleOfSelectedItem ];
@@ -2692,7 +2695,7 @@ CHMOD_ERROR: {
 - ( IBAction )cdFromRPathPopUp: ( id )sender
 {
   NSString	*path, *component, *dircmd;
-  int		index, i;
+  NSInteger		index, i;
   
   if ( ! connected ) return;
   
@@ -2730,7 +2733,7 @@ CHMOD_ERROR: {
 - ( void )performSpringLoadedActionInTable: ( NSTableView * )table
 {
   NSPoint         location = [ NSEvent mouseLocation ];
-  int             row;
+  NSInteger       row;
   NSString        *path = nil;
   NSMutableArray  *contents;
   
@@ -2875,7 +2878,7 @@ CHMOD_ERROR: {
   int                 isdir = 0;
   
   if ( [ directoryPath length ] > sizeof( dirpath )) {
-    NSLog( @"%@: too long\n" );
+    NSLog( @"directoryPath: too long" );
     return;
   }
   strcpy( dirpath, [ directoryPath UTF8String ] );
@@ -2965,7 +2968,7 @@ CHMOD_ERROR: {
     [ uploadProgName setStringValue: @"" ];
     [ uploadProgName setStringValue: item ];
     [ uploadProgItemsLeft setStringValue: @"" ];
-    [ uploadProgItemsLeft setIntValue: [ uploadQueue count ]];
+    [ uploadProgItemsLeft setIntegerValue: (NSInteger)[ uploadQueue count ]];
     
     if ( ssh_version < 3.6 ) {
       [ uploadProgBar incrementBy: 1.0 ];
@@ -2981,7 +2984,7 @@ CHMOD_ERROR: {
     [ uploadProgName setStringValue: @"" ];
     [ uploadProgName setStringValue: item ];
     [ uploadProgItemsLeft setStringValue: @"" ];
-    [ uploadProgItemsLeft setIntValue: [ uploadQueue count ]];
+    [ uploadProgItemsLeft setIntegerValue: (NSInteger)[ uploadQueue count ]];
     
     if ( ssh_version < 3.6 ) {
       [ uploadProgBar setIndeterminate: YES ];
@@ -3531,7 +3534,7 @@ CHMOD_ERROR: {
     return;
   }
   
-  if (( row == [ table selectedRow ] ) < 0 ) {
+  if (( row = [ table selectedRow ] ) < 0 ) {
     NSBeep();
     return;
   }
@@ -3640,7 +3643,7 @@ CHMOD_ERROR: {
 
 - ( IBAction )openLocalFileInEditor: ( id )sender
 {
-  unsigned int  row = [ localBrowser selectedRow ];
+  NSInteger     row = [ localBrowser selectedRow ];
   NSString      *filepath = [[ ( dotflag ? localDirContents : dotlessLDir )
                                objectAtIndex: row ] objectForKey: @"name" ];
   NSString      *editor = [[ NSUserDefaults standardUserDefaults ] objectForKey: @"ODBTextEditor" ];
@@ -3679,7 +3682,7 @@ CHMOD_ERROR: {
 
 - ( IBAction )openRemoteFileInEditor: ( id )sender
 {
-  int			row = [ remoteBrowser selectedRow ];
+  NSInteger			row = [ remoteBrowser selectedRow ];
   NSDictionary	*item = [ ( dotflag ? remoteDirContents : dotlessRDir ) objectAtIndex: row ];
   NSData              *data = [ item objectForKey: @"NameAsRawBytes" ];
   NSString		*filename = [ item objectForKey: @"name" ], *tmppath = nil;
@@ -3710,7 +3713,7 @@ CHMOD_ERROR: {
   }
   
   objcFilepath = [ NSString stringWithBytesOfUnknownEncoding: filepath
-                                                      length: strlen( filepath ) ];
+                                                      length: ( unsigned int )strlen( filepath ) ];
   
   [ self addToEditedDocuments: tmppath
                    remotePath: objcFilepath ];
@@ -4216,7 +4219,8 @@ CHMOD_ERROR: {
   NSString		*portString;
   NSArray		*params, *recent;
   NSMutableArray	*tmp;
-  int			i, port = 0, len;
+  NSInteger			i, len;
+  int				port = 0;
   
   [ connectButton setEnabled: NO ];
   
@@ -4345,10 +4349,10 @@ INVALID_CONNECTION_SETTINGS:
 }
 
 - ( BOOL )handleChangedText: ( NSString * )newstring forTable: ( SFTPTableView * )table
-                     column: ( int )column
+                     column: ( NSInteger )column
 {
   NSMutableArray	*items;
-  int			row = [ table editedRow ];
+  NSInteger			row = [ table editedRow ];
   
   if ( row < 0 ) {
     NSBeep();
@@ -4432,7 +4436,7 @@ INVALID_CONNECTION_SETTINGS:
     }
     return( YES );
   } else if ( key == NSF8FunctionKey ) {
-    int		row = [ table selectedRow ];
+    NSInteger		row = [ table selectedRow ];
     NSMenu		*menu = nil;
     NSEvent		*e = nil;
     NSRect		rect;
@@ -4469,7 +4473,7 @@ INVALID_CONNECTION_SETTINGS:
     [ NSMenu popUpContextMenu: menu withEvent: e forView: nil ];
     return( YES );
   } else if ( isascii( key )) {
-    int		row;
+    NSInteger		row;
     
     [ NSObject cancelPreviousPerformRequestsWithTarget: self
                                               selector: @selector( clearTypeAheadString )
@@ -4658,7 +4662,7 @@ INVALID_CONNECTION_SETTINGS:
   struct sockaddr_in  *ip;
   struct hostent	*he;
   char                *service_address;
-  unsigned int        port;
+  unsigned int        port __attribute__((unused));
   
   if ( [[ sender addresses ] count ] <= 0 ) {
     return;
@@ -4854,7 +4858,7 @@ INVALID_CONNECTION_SETTINGS:
 - ( void )tableViewSelectionDidChange: ( NSNotification * )aNotification
 {
   id 				tv = [ aNotification object ];
-  int				numselected;
+  NSInteger				numselected;
   
   if ( ! [ tv isKindOfClass: [ SFTPTableView class ]] ) {
     return;
@@ -4962,7 +4966,7 @@ shouldEditTableColumn: ( NSTableColumn * )aTableColumn
 }
 
 
-- ( int )numberOfRowsInTableView: ( NSTableView * )aTableView
+- ( NSInteger )numberOfRowsInTableView: ( NSTableView * )aTableView
 {
   NSMutableArray	*items = nil;
   
@@ -5338,7 +5342,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( prefs == nil ) {
     prefs = [[ SFTPPrefs alloc ] init ];
-    [ NSBundle loadNibNamed: @"Prefs.nib" owner: prefs topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"Prefs.nib" owner: prefs topLevelObjects: nil ];
   }
   [ prefs showPreferencePanel ];
 }
@@ -5385,7 +5389,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: aFileName scpType: 0 copyToPath: @""
@@ -5439,7 +5443,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   SSHTunnel		*t = [[ SSHTunnel alloc ] init ];
   
-  [ NSBundle loadNibNamed: @"SSHTunnel" owner: t topLevelObjects: nil ];
+  [[NSBundle mainBundle] loadNibNamed: @"SSHTunnel" owner: t topLevelObjects: nil ];
   [ t displayWindow ];
   [ t autorelease ];
 }
@@ -5448,7 +5452,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: @"" scpType: 0 copyToPath: @"" fromHost: @"" userName: @""
@@ -5458,7 +5462,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 /* download files/directories with scp */
 - ( IBAction )scp: ( id )sender
 {
-  int			row;
+  NSInteger			row;
   id			item;
   
   if ( [ sender isKindOfClass: [ NSMenuItem class ]] ) {
@@ -5511,7 +5515,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: fullRemoteDirPath scpType: 1
@@ -5527,7 +5531,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: item scpType: 0
@@ -5548,7 +5552,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
                    error: ( NSString ** )error
 {
   NSArray		*filenames;
-  NSArray		*types = [ pboard types ];
   
   if ( ![ pboard canReadObjectForClasses: @[ [ NSURL class ] ]
                                 options: @{ NSPasteboardURLReadingFileURLsOnlyKey: @YES }]) {
@@ -5570,7 +5573,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   if ( scp == nil ) {
     scp = [[ SCPController alloc ] init ];
-    [ NSBundle loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"SCP" owner: scp topLevelObjects: nil ];
   }
   
   [ scp getSecureCopyWindowForFile: [ filenames objectAtIndex: 0 ]
@@ -5584,7 +5587,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   SSHTunnel		*ssht = [[ SSHTunnel alloc ] init ];
   
-  [ NSBundle loadNibNamed: @"SSHTunnel" owner: ssht topLevelObjects: nil ];
+  [[NSBundle mainBundle] loadNibNamed: @"SSHTunnel" owner: ssht topLevelObjects: nil ];
   [ ssht displayWindow ];
   [ ssht autorelease ];
 }
