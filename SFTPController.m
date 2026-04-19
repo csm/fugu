@@ -245,6 +245,8 @@ NSComparisonResult
   tServer = ( SFTPTServer <SFTPTServerInterface> * )serverObject;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( BOOL )validateMenuItem: ( NSMenuItem * )anItem
 {
   if ( [[ anItem title ] isEqualToString:
@@ -529,6 +531,9 @@ NSComparisonResult
   return( sftptbarItem );
 }
 
+#pragma clang diagnostic pop
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( BOOL )validateToolbarItem: ( NSToolbarItem * )tItem
 {
   if ( [[ tItem itemIdentifier ] isEqualToString: SFTPToolbarConnectIdentifier ]
@@ -593,7 +598,10 @@ NSComparisonResult
   
   return( YES );
 }
+#pragma clang diagnostic pop
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - ( NSArray * )toolbarDefaultItemIdentifiers: ( NSToolbar * )toolbar
 {
   NSArray	*tmp = [ NSArray arrayWithObjects:
@@ -635,9 +643,10 @@ NSComparisonResult
                   SFTPToolbarRemoteHistoryIdentifier,
                   SFTPToolbarRemoteItemPreviewIdentifier,
                   SFTPToolbarEditDocumentIdentifier, nil ];
-  
+
   return( tmp );
 }
+#pragma clang diagnostic pop
 /* end required toolbar delegate methods */
 
 - ( void )setMenuOnStateForColumnWithIdentifier: ( id )identifier
@@ -1864,8 +1873,10 @@ WRITE_ERR:
 {
   BOOL                noSafetyNet = NO;
   struct stat         st;
-  int			i, j, rc, skip = 0, clobber = 0;
+  NSInteger			i, j, skip = 0, clobber = 0;
   
+  NSModalResponse	rc = NSAlertFirstButtonReturn;
+
   if ( ! connected ) return;
   
   noSafetyNet = [[ NSUserDefaults standardUserDefaults ]
@@ -3145,7 +3156,7 @@ CHMOD_ERROR: {
    *  from the keychain, the password is wrong. Let the user know.
    */
   if ( ! [ self firstPasswordPrompt ] && [ self gotPasswordFromKeychain ] ) {
-    int			rc;
+    NSModalResponse	rc;
     
     NSString *title = NSLocalizedString( @"Error", @"Error" );
     NSString *msgFormat = NSLocalizedString( @"The password for this server in your "
@@ -4465,13 +4476,15 @@ INVALID_CONNECTION_SETTINGS:
     } else if ( [ table isEqual: remoteBrowser ] ) {
       menu = remoteTableMenu;
     }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
     e = [ NSEvent mouseEventWithType: NSEventTypeRightMouseUp location: p
                        modifierFlags: 0 timestamp: 1
                         windowNumber: [[ table window ] windowNumber ]
                              context: [ NSGraphicsContext currentContext ]
                          eventNumber: 1 clickCount: 1 pressure: 0.0 ];
-    
     [ NSMenu popUpContextMenu: menu withEvent: e forView: nil ];
+#pragma clang diagnostic pop
     return( YES );
   } else if ( isascii( key )) {
     NSInteger		row;
@@ -4846,7 +4859,7 @@ INVALID_CONNECTION_SETTINGS:
 /* tableview delegate methods */
 /* contextual menu for tables */
 - ( NSMenu * )menuForTable: ( SFTPTableView * )table
-                    column: ( int )column row: ( int )row
+                    column: ( NSInteger )column row: ( NSInteger )row
 {
   if ( [ table isEqual: localBrowser ] ) {
     return( localTableMenu );
@@ -4958,7 +4971,7 @@ didClickTableColumn: ( NSTableColumn * )tableColumn
 
 - ( BOOL )tableView: ( NSTableView * )aTableView
 shouldEditTableColumn: ( NSTableColumn * )aTableColumn
-                row: ( int )rowIndex
+                row: ( NSInteger )rowIndex
 {
   /* if user's chosen to rename a file, allow editing */
   if ( [ aTableView editedRow ] >= 0 ) return( YES );
@@ -4995,7 +5008,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   NSString			*path = nil, *ext = nil;
   NSAttributedString          *attrString = nil;
   NSImage			*image = nil;
-  int				therow = row;
+  NSInteger				therow = row;
   NSString			*name = nil;
   id				cell = [ aTableColumn dataCell ];
   double                      width = [ aTableColumn width ];
@@ -5276,6 +5289,8 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   return( NSDragOperationNone );
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( BOOL )tableView: ( NSTableView * )tableView writeRows: ( NSArray * )rows
        toPasteboard: ( NSPasteboard * )pboard
 {
@@ -5338,6 +5353,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   return( YES );
 }
+#pragma clang diagnostic pop
 
 - ( IBAction )showPrefs: ( id )sender
 {

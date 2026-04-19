@@ -29,7 +29,7 @@
 @class 		SFTPTServer;
 @class		SCPController;
 
-@interface 	SFTPController : NSObject <NSApplicationDelegate, NSToolbarDelegate, NSTableViewDataSource, NSTabViewDelegate>
+@interface 	SFTPController : NSObject <NSApplicationDelegate, NSToolbarDelegate, NSTableViewDataSource, NSTableViewDelegate, NSTabViewDelegate, NSMenuItemValidation, NSToolbarItemValidation>
 {
     /* console panel outlets */
     IBOutlet NSPanel			*logPanel;
@@ -194,7 +194,10 @@
     
     int				dotflag;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSConnection		*connectionToTServer;
+#pragma clang diagnostic pop
     SFTPTServer			*tServer;
     
     SFTPPrefs			*prefs;

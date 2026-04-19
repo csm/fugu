@@ -40,6 +40,8 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( void )dragImage: ( NSImage * )anImage at: ( NSPoint )imageLoc offset: ( NSSize )mouseOffset
         event: ( NSEvent * )theEvent pasteboard: ( NSPasteboard * )pboard
 	source: ( id )sourceObject slideBack: ( BOOL )slideBack
@@ -146,10 +148,11 @@
     NSArray	    *plists = _sftpOriginalPboardPlists;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-method-access"
+#pragma clang diagnostic ignored "-Wint-conversion"
     NSArray	    *names = [[ self dataSource ] promisedNamesFromPlists: plists ];
     BOOL	    handled;
-					    
-    handled = [[ self dataSource ]
+
+    handled = !![[ self dataSource ]
 		    handleDroppedPromisedFiles: [ plists objectAtIndex: 0 ]
 		    destination: [ url path ]];
 #pragma clang diagnostic pop
@@ -334,7 +337,7 @@
     if ( [[[ aNotification userInfo ] objectForKey: @"NSTextMovement" ]
                                         intValue ] == NSReturnTextMovement ) {
         NSInteger	column = [ self editedColumn ];
-        
+
         if ( ! [[ self delegate ] respondsToSelector:
                     @selector( handleChangedText:forTable:column: ) ] ) {
             NSBeep();
@@ -355,6 +358,7 @@
         [ super textDidEndEditing: aNotification ];
     }
 }
+#pragma clang diagnostic pop
 
 - ( NSInteger )rightClickedRow
 {

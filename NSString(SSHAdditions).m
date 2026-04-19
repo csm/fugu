@@ -106,7 +106,7 @@
     char	*p = ( char * )[ self UTF8String ];
     int		i, oow = 0, ogr = 0, oot = 0, s = 0;
     
-    for ( i = 0, p++; *p != NULL; i++, p++ ) {
+    for ( i = 0, p++; *p != '\0'; i++, p++ ) {
         switch ( *p ) {
         case 'r':
             if ( i < 3 ) oow += 4;
@@ -140,7 +140,7 @@
 {
     NSString	*type = nil;
     char	tmp[ 11 ] = "----------";
-    int		i = 1, j = 0, len = [ self length ];
+    NSInteger		i = 1, j = 0, len = [ self length ];
     
     /*
      * if we're dealing with a server that outputs modes and types
@@ -309,7 +309,7 @@
     
     if ( [ self characterAtIndex: 0 ] == '~' ) {
         NSRange		tildeRange = [ self rangeOfString: @"~" ];
-        unsigned int	len = [ self length ];
+        NSInteger	len = [ self length ];
         
         if ( len > 1 ) {
             NSRange	slashRange = [ self rangeOfString: @"/" ];
@@ -321,7 +321,7 @@
                             [ remoteHome stringByDeletingLastPathComponent ],
                             [ self substringFromIndex: tildeRange.location ]];
             } else if ( slashRange.location > 1 ) { 	/* ~username/dirname format */
-                int 	sublen = [[ self substringFromIndex: slashRange.location ] length ];
+                NSInteger 	sublen = [[ self substringFromIndex: slashRange.location ] length ];
                 expandedString = [ NSString stringWithFormat: @"%@/%@/%@",
                             [ remoteHome stringByDeletingLastPathComponent ],
                             [ self substringWithRange:
@@ -411,7 +411,7 @@
     }
     
     escapedPath = [ NSString stringWithBytesOfUnknownEncoding: esc
-                                length: strlen( esc ) ];
+                                length: ( unsigned int )strlen( esc ) ];
                                 
     return( escapedPath );
 }
