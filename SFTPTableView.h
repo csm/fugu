@@ -47,10 +47,10 @@ float		WidthForColumnWithIdentifier( NSString *identifier );
 
 - ( BOOL )handleEvent: ( NSEvent * )theEvent fromTable: ( SFTPTableView * )table;
 - ( BOOL )handleChangedText: ( NSString * )newstring forTable: ( SFTPTableView * )table
-            column: ( int )column;
+            column: ( NSInteger )column;
 - ( NSMenu * )menuForTable: ( SFTPTableView * )table
-            column: ( int )column
-            row: ( int )row;
+            column: ( NSInteger )column
+            row: ( NSInteger )row;
 
 @end
 

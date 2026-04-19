@@ -1928,7 +1928,8 @@ WRITE_ERR:
 
 - ( void )downloadFiles: ( NSArray * )rpaths toDirectory: ( NSString * )lpath
 {
-  int		i, j, rc, skip = 0, clobber = 0;
+  NSInteger		i, j, skip = 0, clobber = 0;
+  NSModalResponse	rc = NSAlertFirstButtonReturn;
   NSArray	*lpathContents = nil;
   NSData      *rawdata = nil;
   BOOL        noSafetyNet = NO;
@@ -3528,7 +3529,7 @@ CHMOD_ERROR: {
   NSRect			originalPanelFrame;
   NSPoint			cellorigin;
   id				table = [ mainWindow firstResponder ];
-  int				row = 0;
+  NSInteger				row = 0;
   
   if ( ! [ table isKindOfClass: [ SFTPTableView class ]] ) {
     return;
@@ -3874,7 +3875,7 @@ CHMOD_ERROR: {
   }
   
   indtype = [ fssDesc descriptorType ];
-  NSLog( @"indtype: %s", &indtype );
+  NSLog( @"indtype: %.4s", (char *)&indtype );
   if ( indtype != typeFileURL ) {
     fssDesc = [ fssDesc coerceToDescriptorType: typeFileURL ];
   }
@@ -3898,7 +3899,7 @@ CHMOD_ERROR: {
   NSString			*filename = nil;
   
   if ( eid != kAEClosedFile ) {
-    NSLog( @"Unknown event (%s) received", &eid );
+    NSLog( @"Unknown event (%.4s) received", (char *)&eid );
     return;
   }
   
@@ -3946,7 +3947,7 @@ CHMOD_ERROR: {
   char			remotepath[ MAXPATHLEN ] = { 0 };
   
   if ( eid != kAEModifiedFile ) {
-    NSLog( @"Unexpected event type (%s) in FMod handler.", &eid );
+    NSLog( @"Unexpected event type (%.4s) in FMod handler.", (char *)&eid );
     return;
   }
   
@@ -4989,7 +4990,7 @@ shouldEditTableColumn: ( NSTableColumn * )aTableColumn
 
 - ( id )tableView: ( NSTableView * )view
 objectValueForTableColumn: ( NSTableColumn * )aTableColumn
-              row: ( int )row
+              row: ( NSInteger )row
 {
   NSString			*path = nil, *ext = nil;
   NSAttributedString          *attrString = nil;
@@ -5152,14 +5153,14 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 - ( void )tableView: ( NSTableView * )aTableView
      setObjectValue: ( id )anObject
      forTableColumn: ( NSTableColumn * )aTableColumn
-                row: ( int )rowIndex
+                row: ( NSInteger )rowIndex
 {
 }
 
 /* drag and drop related methods */
 
 - ( BOOL )tableView: ( NSTableView * )tableView acceptDrop: ( id <NSDraggingInfo> )info
-                row: ( int )row dropOperation: ( NSTableViewDropOperation )operation
+                row: ( NSInteger )row dropOperation: ( NSTableViewDropOperation )operation
 {
   NSPasteboard		*pb;
   id				dragData;
@@ -5186,7 +5187,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
     if ( [ dragData count ] == 1 &&
         [[[ dragData objectAtIndex: 0 ] objectForKey: @"type" ]
          isEqualToString: @"directory" ] ) {
-      int			rc;
+      NSModalResponse			rc;
       
       {
         NSAlert *alert = [[ NSAlert alloc ] init ];
@@ -5236,7 +5237,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 }
 
 - ( NSDragOperation )tableView: ( NSTableView * )tableView validateDrop:( id <NSDraggingInfo> )info
-                   proposedRow: ( int )row proposedDropOperation: ( NSTableViewDropOperation )operation
+                   proposedRow: ( NSInteger )row proposedDropOperation: ( NSTableViewDropOperation )operation
 {
   id			dsrc;
   
