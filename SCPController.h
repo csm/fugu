@@ -43,13 +43,19 @@
     IBOutlet NSWindow 		*scpWindow;
     
     /* log outlets */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     IBOutlet NSDrawer		*scpLogDrawer;
+#pragma clang diagnostic pop
     IBOutlet NSTextView		*scpLogField;
     
     IBOutlet NSProgressIndicator *authProgBar;
     
 @private
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSConnection		*connectionToTServer;
+#pragma clang diagnostic pop
     NSString			*scpFileName;
     SCPTransfer			*scp;
     double			bytescopied, scpFileSize;

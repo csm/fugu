@@ -184,8 +184,11 @@ NSComparisonResult
   /* prepare distributed objects for sftp task thread, but don't establish connection yet */
   recPort = [ NSPort port ];
   sendPort = [ NSPort port ];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   connectionToTServer = [[ NSConnection alloc ] initWithReceivePort: recPort
                                                            sendPort: sendPort ];
+#pragma clang diagnostic pop
   [ connectionToTServer setRootObject: self ];
   tServer = nil;
   portArray = [ NSArray arrayWithObjects: sendPort, recPort, nil ];

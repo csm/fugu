@@ -31,12 +31,15 @@ int		scpconnecting = 0;
 + ( void )connectWithPorts: ( NSArray * )ports
 {
     NSAutoreleasePool		*pool = [[ NSAutoreleasePool alloc ] init ];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSConnection		*cnctnToController;
     SCPTransfer			*serverObject;
-    
+
     cnctnToController = [ NSConnection connectionWithReceivePort:
                             [ ports objectAtIndex: 0 ]
                             sendPort: [ ports objectAtIndex: 1 ]];
+#pragma clang diagnostic pop
                             
     serverObject = [[ self alloc ] init ];
     
@@ -122,7 +125,8 @@ int		scpconnecting = 0;
         t_amount = tav[ pos ];
     }
     t_rate = tav[ pc_index + 2 ];
-    
+    (void)t_rate;
+
     /* everything before the %-done field is a filename */
     ( void )strlcpy( filename, tav[ 0 ], sizeof( filename ));
     for ( i = 1; i < pc_index; i++ ) {
@@ -142,7 +146,8 @@ int		scpconnecting = 0;
     fd_set		readmask;
     FILE		*mfp;
     int			copying = 0;
-    int			status, pwsent = 0, validpw = 0, threestrikes = 0, noscp = 0;
+    int			status, validpw = 0, noscp = 0;
+    __attribute__((unused)) int pwsent = 0, threestrikes = 0;
     char		*unknownmsg;
     char		ttyname[ MAXPATHLEN ];
     unichar		buf[ MAXPATHLEN ];
@@ -156,7 +161,7 @@ int		scpconnecting = 0;
 	return;
     }	    
     if ( [ scpBinary length ] >= MAXPATHLEN ) {
-	NSLog( @"%@: too long" );
+	NSLog( @"scpBinary: too long" );
 	return;
     }
     strcpy( executable, [ scpBinary UTF8String ] );

@@ -27,7 +27,7 @@ extern char		**environ;
 
 @implementation SCPController
 
-static long		SCPTYPE = 0;
+static int		SCPTYPE = 0;
 
 + ( SCPController * )sharedInstance
 {
@@ -44,8 +44,11 @@ static long		SCPTYPE = 0;
     /* prepare distributed objects for scp task thread, but don't establish connection yet */
     recPort = [ NSPort port ];
     sendPort = [ NSPort port ];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     connectionToTServer = [[ NSConnection alloc ] initWithReceivePort: recPort
                                                 sendPort: sendPort ];
+#pragma clang diagnostic pop
     [ connectionToTServer setRootObject: self ];
     scp = nil;
     scppid = 0;
@@ -236,8 +239,6 @@ static long		SCPTYPE = 0;
     }
     
     if ( ! [ self firstPasswordPrompt ] && [ self gotPasswordFromKeychain ] ) {
-        NSInteger	rc;
-        
         {
             NSAlert *alert = [[ NSAlert alloc ] init ];
             [ alert setMessageText: NSLocalizedString( @"Error", @"Error" )];
@@ -302,7 +303,7 @@ WRITE_ERR:
 
     bcopy( [[ passwordField stringValue ] UTF8String ], pass,
             strlen( [[ passwordField stringValue ] UTF8String ] ));
-    if ( [ addToKeychainSwitch state ] == NSOnState ) {
+    if ( [ addToKeychainSwitch state ] == NSControlStateValueOn ) {
         addpwdtokeychain( [[ destServerField stringValue ] UTF8String ],
                 [[ destUserNameField stringValue ] UTF8String ], pass );
     }
@@ -377,11 +378,7 @@ WRITE_ERR:
         [ NSString stringWithFormat: NSLocalizedString( @"Connecting....", @"Connecting...." ),
                     [ destServerField stringValue ]]];
     
-    [ NSApp beginSheet: scpSheet
-            modalForWindow: scpWindow
-            modalDelegate: self
-            didEndSelector: NULL
-            contextInfo: nil ];
+    [ scpWindow beginSheet: scpSheet completionHandler: nil ];
             
     scpFileName = [ localFileField stringValue ];
     port = ( char * )[[ destPortField stringValue ] UTF8String ];
@@ -491,8 +488,8 @@ WRITE_ERR:
 
 - ( void )addToLog: ( NSString * )buf
 {
-    //[ scpLogField insertText: @"\n\n--BREAK--\n\n" ];
-    [ scpLogField insertText: buf ];
+    [[ scpLogField textStorage ] appendAttributedString:
+        [[[ NSAttributedString alloc ] initWithString: buf ] autorelease ]];
 }
 
 - ( void )setMasterFD: ( int )fd
