@@ -38,23 +38,6 @@ int		connecting = 0;
 int		connected = 0;
 int		master = 0;
 
-+ ( void )connectWithPorts: ( NSArray * )ports
-{
-    NSAutoreleasePool		*pool = [[ NSAutoreleasePool alloc ] init ];
-    NSConnection		*cnctnToController;
-    SFTPTServer			*serverObject;
-    
-    cnctnToController = [ NSConnection connectionWithReceivePort:
-                            [ ports objectAtIndex: 0 ]
-                            sendPort: [ ports objectAtIndex: 1 ]];
-                            
-    serverObject = [[ self alloc ] init ];
-    [ (( SFTPController * )[ cnctnToController rootProxy ] ) setServer: serverObject ];
-    [ serverObject release ];
-    
-    [[ NSRunLoop currentRunLoop ] run ];  
-    [ pool drain ];
-}
 
 - ( id )init
 {
@@ -491,7 +474,7 @@ DOT_OR_DOTDOT:
     return( nil );
 }
 
-- ( oneway void )connectToServerWithParams: ( NSArray * )params
+- ( void )connectToServerWithParams: ( NSArray * )params
                 fromController: ( SFTPController * )controller
 {
     fd_set		readmask;
@@ -510,7 +493,7 @@ DOT_OR_DOTDOT:
     atprompt = 0;
     remoteDirBuf = [[ NSString alloc ] init ];
 
-    [ controller clearLog ]; 
+    dispatch_async( dispatch_get_main_queue(), ^{ [ controller clearLog ]; });
 
     if (( sftpBinary = [ NSString pathForExecutable: @"sftp" ] ) == nil ) {
 	NSLog( @"Couldn't find sftp!" );
@@ -525,10 +508,14 @@ DOT_OR_DOTDOT:
     [ passedInArgs release ];
 
     connecting = 1;
-    [ controller addToLog: [ NSString stringWithFormat: @"sftp launch path is %s.\n", execargs[ 0 ]]];
-    
-    [ controller updateHostList ];	/* adds new host to pop-up list */
-    [ controller setConnectedWindowTitle ];
+    {
+        NSString *_launch = [ NSString stringWithFormat: @"sftp launch path is %s.\n", execargs[ 0 ]];
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [ controller addToLog: _launch ];
+            [ controller updateHostList ];
+            [ controller setConnectedWindowTitle ];
+        });
+    }
     
     switch (( sftppid = forkpty( &master, ttyname, NULL, &win_size ))) {
     case 0:
@@ -554,10 +541,14 @@ DOT_OR_DOTDOT:
     }
     setvbuf( mf, NULL, _IONBF, 0 );
     
-    [ controller addToLog: [ NSString stringWithFormat: @"Slave terminal device is %s.\n",
-                            ttyname ]];
-    [ controller addToLog: [ NSString stringWithFormat: @"Master fd is %d.\n",
-                            master ]];
+    {
+        NSString *_tty = [ NSString stringWithFormat: @"Slave terminal device is %s.\n", ttyname ];
+        NSString *_mfd = [ NSString stringWithFormat: @"Master fd is %d.\n", master ];
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [ controller addToLog: _tty ];
+            [ controller addToLog: _mfd ];
+        });
+    }
     
     for ( ;; ) {
         NSAutoreleasePool		*p = [[ NSAutoreleasePool alloc ] init ];
@@ -588,9 +579,14 @@ DOT_OR_DOTDOT:
             
             if ( [ self checkForPasswordPromptInBuffer: buf ] && !validpw ) {
                 if ( threestrikes > 0 ) {
-                    [ controller passError ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller passError ]; });
                 };
-                if ( connecting ) [ controller requestPasswordWithPrompt: ( char * )buf ];
+                if ( connecting ) {
+                    NSString *_prompt = [ NSString stringWithUTF8String: ( char * )buf ];
+                    dispatch_async( dispatch_get_main_queue(), ^{
+                        [ controller requestPasswordWithPrompt: ( char * )[ _prompt UTF8String ]];
+                    });
+                }
                 pwsent = 1;
             } else if ( strstr(( char * )buf, "rename \"" ) != NULL ) {
                 was_renaming = 1;

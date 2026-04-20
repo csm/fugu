@@ -60,7 +60,7 @@
                     <rect key="frame" x="70" y="60" width="500" height="180"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <view key="contentView" id="eGM-E4-e4W">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="168"/>
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="166"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="90">
@@ -121,7 +121,7 @@
                                 <rect key="frame" x="408" y="108" width="81" height="5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" id="9s7-d8-oHH">
-                                    <rect key="frame" x="0.0" y="-7" width="81" height="7"/>
+                                    <rect key="frame" x="0.0" y="-9" width="81" height="9"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <font key="titleFont" metaFont="system"/>
@@ -200,6 +200,7 @@
                     </connections>
                 </button>
             </subviews>
+            <point key="canvasLocation" x="-14" y="-281"/>
         </customView>
         <customView autoresizesSubviews="NO" id="168" userLabel="Favorites">
             <rect key="frame" x="0.0" y="0.0" width="640" height="341"/>

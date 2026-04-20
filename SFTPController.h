@@ -194,10 +194,6 @@
     
     int				dotflag;
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSConnection		*connectionToTServer;
-#pragma clang diagnostic pop
     SFTPTServer			*tServer;
     
     SFTPPrefs			*prefs;
@@ -359,8 +355,6 @@
 - ( void )finishedCommand;
 - ( void )writeCommand: ( void * )cmd;
 - ( IBAction )sendManualCommand: ( id )sender;
-
-- ( void )setServer: ( id )serverObject;
 
 - ( IBAction )showLogPanel: ( id )sender;
 - ( void )clearLog;

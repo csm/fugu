@@ -177,25 +177,7 @@ NSComparisonResult
 
 - ( void )establishDOConnection
 {
-  NSPort		*recPort;
-  NSPort		*sendPort;
-  NSArray		*portArray;
-  
-  /* prepare distributed objects for sftp task thread, but don't establish connection yet */
-  recPort = [ NSPort port ];
-  sendPort = [ NSPort port ];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  connectionToTServer = [[ NSConnection alloc ] initWithReceivePort: recPort
-                                                           sendPort: sendPort ];
-#pragma clang diagnostic pop
-  [ connectionToTServer setRootObject: self ];
-  tServer = nil;
-  portArray = [ NSArray arrayWithObjects: sendPort, recPort, nil ];
-  
-  [ NSThread detachNewThreadSelector: @selector( connectWithPorts: )
-                            toTarget: [ SFTPTServer class ]
-                          withObject: portArray ];
+  tServer = [[ SFTPTServer alloc ] init ];
 }
 
 - ( id )init
@@ -238,14 +220,6 @@ NSComparisonResult
 #endif /* notdef */
   
   return (( self = [ super init ] ) ? self : nil );
-}
-
-- ( void )setServer: ( id )serverObject
-{
-  [ serverObject setProtocolForProxy: @protocol( SFTPTServerInterface ) ];
-  [ serverObject retain ];
-  
-  tServer = ( SFTPTServer <SFTPTServerInterface> * )serverObject;
 }
 
 #pragma clang diagnostic push
@@ -1833,7 +1807,7 @@ WRITE_ERR:
     [ self writeCommand: cmdline ];
     
     /* wait till we're at the prompt before continuing */
-    while ( ![ tServer atSftpPrompt ] ) ;
+    while ( ![ tServer atSftpPrompt ] ) { usleep( 1000 ); }
     [ self getListing ];
   } else {
     [ self downloadFiles: [ NSArray arrayWithObject: remoteItem ]
@@ -2306,7 +2280,7 @@ WRITE_ERR:
                                     stringWithFormat: @"mkdir \"%@\"",
                                     [ newDirNameField stringValue ]] UTF8String ]];
   
-  while ( ![ tServer atSftpPrompt ] ) ;
+  while ( ![ tServer atSftpPrompt ] ) { usleep( 1000 ); }
   [ self getListing ];
   
   [ self dismissNewDirPanel: nil ];
@@ -2629,7 +2603,7 @@ CHMOD_ERROR: {
   [ self writeCommand:
    ( char * )[[ NSString stringWithFormat: @"cd %@", remoteHome ] UTF8String ]];
   
-  while ( ![ tServer atSftpPrompt ] ) ;
+  while ( ![ tServer atSftpPrompt ] ) { usleep( 1000 ); }
   [ self getListing ];
 }
 
@@ -2649,7 +2623,7 @@ CHMOD_ERROR: {
   [ self writeCommand: "cd .." ];
   
   /* wait till we're at the prompt before continuing */
-  while ( ![ tServer atSftpPrompt ] ) ;
+  while ( ![ tServer atSftpPrompt ] ) { usleep( 1000 ); }
   [ self getListing ];
 }
 
@@ -4336,13 +4310,19 @@ CHMOD_ERROR: {
   }
   
   [ self setFirstPasswordPrompt: YES ];
-  
+
   remoteDirContents = [[ NSMutableArray alloc ] init ];
   dotlessRDir	= [[ NSMutableArray alloc ] init ];
   remoteDirPath = [[ NSString alloc ] init ];
-  [ tServer connectToServerWithParams: params fromController: self ];
   [ self showConnectingInterface: nil ];
-  
+
+  {
+    NSArray *_params = params;
+    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
+        [ tServer connectToServerWithParams: _params fromController: self ];
+    });
+  }
+
   recent = [ remoteHost objectValues ];
   tmp = [ NSMutableArray array ];
   for ( i = 0; i < [ recent count ]; i++ ) {
