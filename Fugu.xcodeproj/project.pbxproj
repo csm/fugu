@@ -48,22 +48,14 @@
 		09682FCD07C5528A00210847 /* NSString-UnknownEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 09D2776A061A835D00EE17C7 /* NSString-UnknownEncoding.h */; };
 		09682FCE07C5528A00210847 /* UMTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 09682E8207C4F07300210847 /* UMTextField.h */; };
 		09682FCF07C5528A00210847 /* UMDragDropImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 09682EE507C5005400210847 /* UMDragDropImageView.h */; };
-		09682FD307C5528A00210847 /* Prefs.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5B12CC002DF4E6001D5EA79 /* Prefs.nib */; };
 		09682FD407C5528A00210847 /* COPYRIGHT.txt in Resources */ = {isa = PBXBuildFile; fileRef = F517810B03083F4A01A8002B /* COPYRIGHT.txt */; };
 		09682FD607C5528A00210847 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = F5EA815603785CDD01A8002B /* home.png */; };
 		09682FD707C5528A00210847 /* favorites.png in Resources */ = {isa = PBXBuildFile; fileRef = 239A5C18038C2294FED5EA79 /* favorites.png */; };
 		09682FD807C5528A00210847 /* bookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 238577620392BB76FED5EA79 /* bookmark.png */; };
 		09682FD907C5528A00210847 /* fugu.icns in Resources */ = {isa = PBXBuildFile; fileRef = 238577660392BFBCFED5EA79 /* fugu.icns */; };
-		09682FDB07C5528A00210847 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 09448C5E03F052C200A8002B /* Localizable.strings */; };
-		09682FDC07C5528A00210847 /* SFTPToolbar.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0960E33403F05A2800A8002B /* SFTPToolbar.strings */; };
-		09682FDD07C5528A00210847 /* HelpMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0960E33703F063A700A8002B /* HelpMenu.strings */; };
-		09682FDE07C5528A00210847 /* SFTPInfoPanel.strings in Resources */ = {isa = PBXBuildFile; fileRef = 096A883B03F1B71700A8002B /* SFTPInfoPanel.strings */; };
-		09682FDF07C5528A00210847 /* SCP.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0971F3FA03F2DFC700A8002B /* SCP.strings */; };
-		09682FE007C5528A00210847 /* SSHTunnel.strings in Resources */ = {isa = PBXBuildFile; fileRef = 09FFFC6303F992BE00A8002B /* SSHTunnel.strings */; };
 		09682FE107C5528A00210847 /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = 09FFFC7903FC38BF00A8002B /* history.png */; };
 		09682FE207C5528A00210847 /* remotehistory.png in Resources */ = {isa = PBXBuildFile; fileRef = 09FFFC7B03FC3CA600A8002B /* remotehistory.png */; };
 		09682FE307C5528A00210847 /* remotehome.png in Resources */ = {isa = PBXBuildFile; fileRef = 09FFFC7C03FC3CA600A8002B /* remotehome.png */; };
-		09682FE407C5528A00210847 /* Fugu README.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = 09E1EBF20452494200D5EA79 /* Fugu README.rtfd */; };
 		09682FE507C5528A00210847 /* generalprefs.png in Resources */ = {isa = PBXBuildFile; fileRef = 09274DEC04B36372003075E6 /* generalprefs.png */; };
 		09682FE607C5528A00210847 /* favoritesprefs.png in Resources */ = {isa = PBXBuildFile; fileRef = 09274DEE04B36AFF003075E6 /* favoritesprefs.png */; };
 		09682FE707C5528A00210847 /* knownhosts.png in Resources */ = {isa = PBXBuildFile; fileRef = 09274DF004B36B27003075E6 /* knownhosts.png */; };
@@ -79,8 +71,6 @@
 		09682FF107C5528A00210847 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 0916ACC904F7323100000102 /* preview.png */; };
 		09682FF207C5528A00210847 /* disconnect.png in Resources */ = {isa = PBXBuildFile; fileRef = 0981B76604F81AC900000102 /* disconnect.png */; };
 		09682FF307C5528A00210847 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 0981B76D04FA546F00000102 /* edit.png */; };
-		09682FF407C5528A00210847 /* SFTPPrefToolbar.strings in Resources */ = {isa = PBXBuildFile; fileRef = 09B7ACF90507596B00000106 /* SFTPPrefToolbar.strings */; };
-		09682FF507C5528A00210847 /* keys.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 09DA7590051B939700D5E7DF /* keys.rtf */; };
 		09682FF607C5528A00210847 /* newfolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0934447B0524C5E500D5E7DF /* newfolder.png */; };
 		09682FF707C5528A00210847 /* symlink.png in Resources */ = {isa = PBXBuildFile; fileRef = 0934447C0524C5E500D5E7DF /* symlink.png */; };
 		09682FF807C5528A00210847 /* uparrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 0934447E0524C5E500D5E7DF /* uparrow.png */; };
@@ -133,9 +123,11 @@
 		0968302A07C5528A00210847 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E8A371042F6F8F009BCCF8 /* Security.framework */; };
 		0968302C07C5528A00210847 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E0A0F304C06B1600D5EA79 /* CoreServices.framework */; };
 		0968302D07C5528A00210847 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0984006B05DB103E00EEA2D5 /* CoreFoundation.framework */; };
-		1D74F2191E0DAC91009B37B9 /* SCP.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D74F2181E0DAC91009B37B9 /* SCP.xib */; };
-		1D74F21B1E0DAE1E009B37B9 /* SSHTunnel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D74F21A1E0DAE1E009B37B9 /* SSHTunnel.xib */; };
-		1DBF164B1E0DAFE3008FCCF2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DBF164A1E0DAFE3008FCCF2 /* MainMenu.xib */; };
+		1D41C1B02F9530330039999E /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1D41C1AF2F9530330039999E /* LICENSE.txt */; };
+		1DD51AEA2F95F79E00CD3273 /* Prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AE92F95F79E00CD3273 /* Prefs.xib */; };
+		1DD51AED2F95F7AC00CD3273 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AEC2F95F7AC00CD3273 /* MainMenu.xib */; };
+		1DD51AF02F95F7B300CD3273 /* SSHTunnel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AEF2F95F7B300CD3273 /* SSHTunnel.xib */; };
+		1DD51AF32F95F7BC00CD3273 /* SCP.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AF22F95F7BC00CD3273 /* SCP.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -231,8 +223,6 @@
 		09FFFC7B03FC3CA600A8002B /* remotehistory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remotehistory.png; sourceTree = "<group>"; };
 		09FFFC7C03FC3CA600A8002B /* remotehome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remotehome.png; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1D0083691E0D8746004F3EE0 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		1D1CF95225629CAA0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = en; path = "en.lproj/Fugu README.rtfd"; sourceTree = "<group>"; };
 		1D1CF95325629CAA0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF95425629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1D1CF95625629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SCP.strings; sourceTree = "<group>"; };
@@ -240,54 +230,35 @@
 		1D1CF95825629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
 		1D1CF95925629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF95A25629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF95B25629CAC0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/keys.rtf; sourceTree = "<group>"; };
-		1D1CF95C25629CB60001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = nl; path = "nl.lproj/Fugu README.rtfd"; sourceTree = "<group>"; };
 		1D1CF95D25629CB60001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF95E25629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF95F25629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = nl; path = nl.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF96025629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF96125629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF96225629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
 		1D1CF96325629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF96425629CB80001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF96525629CB80001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = nl; path = nl.lproj/keys.rtf; sourceTree = "<group>"; };
 		1D1CF96625629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF96725629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF96825629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = it; path = it.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF96925629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF96A25629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF96B25629CBC0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF96C25629CBC0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D1CF96D25629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF96E25629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF96F25629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = de; path = de.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF97025629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF97125629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF97225629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
 		1D1CF97325629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF97425629CC00001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF97525629CC40001C0ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Prefs.nib; sourceTree = "<group>"; };
-		1D1CF97625629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = fr; path = "fr.lproj/Fugu README.rtfd"; sourceTree = "<group>"; };
 		1D1CF97725629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF97825629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF97925629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fr; path = fr.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF97A25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF97B25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF97C25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
 		1D1CF97D25629CC80001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF97E25629CC80001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF97F25629CCA0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF98025629CCA0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF98125629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = zh; path = zh.lproj/Prefs.nib; sourceTree = "<group>"; };
-		1D1CF98225629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF98325629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF98425629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF98525629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF98625629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF98725629CCB0001C0ED /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = zh; path = zh.lproj/keys.rtf; sourceTree = "<group>"; };
 		1D1CF98825629CCE0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF98925629CCE0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF98A25629CCE0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = fi; path = fi.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF98B25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF98C25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF98D25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
@@ -295,7 +266,6 @@
 		1D1CF98F25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D1CF99025629CD10001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF99125629CD10001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF99225629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = es; path = es.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF99325629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF99425629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF99525629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
@@ -303,22 +273,21 @@
 		1D1CF99725629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D1CF99825629CD40001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF99925629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF99A25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = da; path = da.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF99B25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF99C25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF99D25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF99E25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D1CF99F25629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF9A025629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF9A125629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = ja; path = ja.lproj/Prefs.nib; sourceTree = "<group>"; };
 		1D1CF9A225629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SCP.strings; sourceTree = "<group>"; };
 		1D1CF9A325629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
 		1D1CF9A425629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF9A525629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D74F2181E0DAC91009B37B9 /* SCP.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCP.xib; sourceTree = "<group>"; };
-		1D74F21A1E0DAE1E009B37B9 /* SSHTunnel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SSHTunnel.xib; sourceTree = "<group>"; };
-		1DBA37B02671EC9300638691 /* en */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = en; path = en.lproj/Prefs.nib; sourceTree = "<group>"; };
-		1DBF164A1E0DAFE3008FCCF2 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		1D41C1AF2F9530330039999E /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		1DD51AE82F95F79E00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Prefs.xib; sourceTree = "<group>"; };
+		1DD51AEB2F95F7AC00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		1DD51AEE2F95F7B300CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
+		1DD51AF12F95F7BC00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SCP.xib; sourceTree = "<group>"; };
 		238577620392BB76FED5EA79 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
 		238577660392BFBCFED5EA79 /* fugu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = fugu.icns; sourceTree = "<group>"; };
 		239A5C18038C2294FED5EA79 /* favorites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorites.png; sourceTree = "<group>"; };
@@ -444,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				F517810B03083F4A01A8002B /* COPYRIGHT.txt */,
+				1D41C1AF2F9530330039999E /* LICENSE.txt */,
 				F5FC36BB036A333C01E16655 /* Subclasses */,
 				F517DFB70312A17501A8002B /* Categories */,
 				0991811C03F02D7700A8002B /* Misc Classes */,
@@ -477,7 +447,6 @@
 				097786500430BF2000BEE8BF /* keychain.c */,
 				0977864F0430BF2000BEE8BF /* keychain.h */,
 				09E0A0F804C091C000D5EA79 /* ODBEditorSuite.h */,
-				1D0083691E0D8746004F3EE0 /* Cartfile */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -485,22 +454,20 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1DBF164A1E0DAFE3008FCCF2 /* MainMenu.xib */,
-				1D74F21A1E0DAE1E009B37B9 /* SSHTunnel.xib */,
+				1DD51AE92F95F79E00CD3273 /* Prefs.xib */,
+				1DD51AEC2F95F7AC00CD3273 /* MainMenu.xib */,
+				1DD51AEF2F95F7B300CD3273 /* SSHTunnel.xib */,
 				0985D5CC074A9A2A00B8ED3B /* ODBEditors.plist */,
-				09E1EBF20452494200D5EA79 /* Fugu README.rtfd */,
 				F558B96301E3994C01D5E771 /* Images */,
-				F5B12CC002DF4E6001D5EA79 /* Prefs.nib */,
 				238577660392BFBCFED5EA79 /* fugu.icns */,
 				0971F3FA03F2DFC700A8002B /* SCP.strings */,
 				0960E33703F063A700A8002B /* HelpMenu.strings */,
-				1D74F2181E0DAC91009B37B9 /* SCP.xib */,
+				1DD51AF22F95F7BC00CD3273 /* SCP.xib */,
 				09448C5E03F052C200A8002B /* Localizable.strings */,
 				096A883B03F1B71700A8002B /* SFTPInfoPanel.strings */,
 				0960E33403F05A2800A8002B /* SFTPToolbar.strings */,
 				09FFFC6303F992BE00A8002B /* SSHTunnel.strings */,
 				09B7ACF90507596B00000106 /* SFTPPrefToolbar.strings */,
-				09DA7590051B939700D5E7DF /* keys.rtf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -718,20 +685,11 @@
 			};
 			buildConfigurationList = 701B7AEB12AD904F003D5274 /* Build configuration list for PBXProject "Fugu" */;
 			compatibilityVersion = "Xcode 12.0";
-			developmentRegion = en;
+			developmentRegion = de;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
-				nl,
-				it,
 				de,
-				Base,
-				fr,
-				zh,
-				fi,
-				es,
-				da,
-				ja,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ScruFTP */;
 			projectDirPath = "";
@@ -747,24 +705,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09682FD307C5528A00210847 /* Prefs.nib in Resources */,
+				1D41C1B02F9530330039999E /* LICENSE.txt in Resources */,
 				09682FD407C5528A00210847 /* COPYRIGHT.txt in Resources */,
-				1D74F2191E0DAC91009B37B9 /* SCP.xib in Resources */,
+				1DD51AF32F95F7BC00CD3273 /* SCP.xib in Resources */,
 				09682FD607C5528A00210847 /* home.png in Resources */,
 				09682FD707C5528A00210847 /* favorites.png in Resources */,
 				09682FD807C5528A00210847 /* bookmark.png in Resources */,
 				09682FD907C5528A00210847 /* fugu.icns in Resources */,
-				09682FDB07C5528A00210847 /* Localizable.strings in Resources */,
-				09682FDC07C5528A00210847 /* SFTPToolbar.strings in Resources */,
-				09682FDD07C5528A00210847 /* HelpMenu.strings in Resources */,
-				1D74F21B1E0DAE1E009B37B9 /* SSHTunnel.xib in Resources */,
-				09682FDE07C5528A00210847 /* SFTPInfoPanel.strings in Resources */,
-				09682FDF07C5528A00210847 /* SCP.strings in Resources */,
-				09682FE007C5528A00210847 /* SSHTunnel.strings in Resources */,
+				1DD51AEA2F95F79E00CD3273 /* Prefs.xib in Resources */,
+				1DD51AF02F95F7B300CD3273 /* SSHTunnel.xib in Resources */,
 				09682FE107C5528A00210847 /* history.png in Resources */,
 				09682FE207C5528A00210847 /* remotehistory.png in Resources */,
 				09682FE307C5528A00210847 /* remotehome.png in Resources */,
-				09682FE407C5528A00210847 /* Fugu README.rtfd in Resources */,
 				09682FE507C5528A00210847 /* generalprefs.png in Resources */,
 				09682FE607C5528A00210847 /* favoritesprefs.png in Resources */,
 				09682FE707C5528A00210847 /* knownhosts.png in Resources */,
@@ -772,7 +724,7 @@
 				09682FE907C5528A00210847 /* downtriangle.png in Resources */,
 				09682FEA07C5528A00210847 /* righttriangle.png in Resources */,
 				09682FEB07C5528A00210847 /* files.png in Resources */,
-				1DBF164B1E0DAFE3008FCCF2 /* MainMenu.xib in Resources */,
+				1DD51AED2F95F7AC00CD3273 /* MainMenu.xib in Resources */,
 				09682FEC07C5528A00210847 /* transfers.png in Resources */,
 				09682FED07C5528A00210847 /* reload.png in Resources */,
 				09682FEE07C5528A00210847 /* download.png in Resources */,
@@ -781,8 +733,6 @@
 				09682FF107C5528A00210847 /* preview.png in Resources */,
 				09682FF207C5528A00210847 /* disconnect.png in Resources */,
 				09682FF307C5528A00210847 /* edit.png in Resources */,
-				09682FF407C5528A00210847 /* SFTPPrefToolbar.strings in Resources */,
-				09682FF507C5528A00210847 /* keys.rtf in Resources */,
 				09682FF607C5528A00210847 /* newfolder.png in Resources */,
 				09682FF707C5528A00210847 /* symlink.png in Resources */,
 				09682FF807C5528A00210847 /* uparrow.png in Resources */,
@@ -855,7 +805,6 @@
 				1D1CF96725629CBB0001C0ED /* it */,
 				1D1CF96E25629CBF0001C0ED /* de */,
 				1D1CF97825629CC70001C0ED /* fr */,
-				1D1CF98025629CCA0001C0ED /* zh */,
 				1D1CF98925629CCE0001C0ED /* fi */,
 				1D1CF99125629CD10001C0ED /* es */,
 				1D1CF99925629CD50001C0ED /* da */,
@@ -872,7 +821,6 @@
 				1D1CF96B25629CBC0001C0ED /* it */,
 				1D1CF97325629CBF0001C0ED /* de */,
 				1D1CF97D25629CC80001C0ED /* fr */,
-				1D1CF98525629CCB0001C0ED /* zh */,
 				1D1CF98E25629CCF0001C0ED /* fi */,
 				1D1CF99625629CD20001C0ED /* es */,
 				1D1CF99D25629CD50001C0ED /* da */,
@@ -889,7 +837,6 @@
 				1D1CF96625629CBB0001C0ED /* it */,
 				1D1CF96D25629CBF0001C0ED /* de */,
 				1D1CF97725629CC70001C0ED /* fr */,
-				1D1CF97F25629CCA0001C0ED /* zh */,
 				1D1CF98825629CCE0001C0ED /* fi */,
 				1D1CF99025629CD10001C0ED /* es */,
 				1D1CF99825629CD40001C0ED /* da */,
@@ -906,7 +853,6 @@
 				1D1CF96A25629CBB0001C0ED /* it */,
 				1D1CF97125629CBF0001C0ED /* de */,
 				1D1CF97B25629CC70001C0ED /* fr */,
-				1D1CF98325629CCB0001C0ED /* zh */,
 				1D1CF98C25629CCF0001C0ED /* fi */,
 				1D1CF99425629CD20001C0ED /* es */,
 				1D1CF99C25629CD50001C0ED /* da */,
@@ -923,7 +869,6 @@
 				1D1CF96925629CBB0001C0ED /* it */,
 				1D1CF97025629CBF0001C0ED /* de */,
 				1D1CF97A25629CC70001C0ED /* fr */,
-				1D1CF98225629CCB0001C0ED /* zh */,
 				1D1CF98B25629CCF0001C0ED /* fi */,
 				1D1CF99325629CD20001C0ED /* es */,
 				1D1CF99B25629CD50001C0ED /* da */,
@@ -939,31 +884,10 @@
 				1D1CF96225629CB70001C0ED /* nl */,
 				1D1CF97225629CBF0001C0ED /* de */,
 				1D1CF97C25629CC70001C0ED /* fr */,
-				1D1CF98425629CCB0001C0ED /* zh */,
 				1D1CF98D25629CCF0001C0ED /* fi */,
 				1D1CF99525629CD20001C0ED /* es */,
 			);
 			name = SFTPPrefToolbar.strings;
-			sourceTree = "<group>";
-		};
-		09DA7590051B939700D5E7DF /* keys.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95B25629CAC0001C0ED /* en */,
-				1D1CF96525629CB80001C0ED /* nl */,
-				1D1CF98725629CCB0001C0ED /* zh */,
-			);
-			name = keys.rtf;
-			sourceTree = "<group>";
-		};
-		09E1EBF20452494200D5EA79 /* Fugu README.rtfd */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95225629CAA0001C0ED /* en */,
-				1D1CF95C25629CB60001C0ED /* nl */,
-				1D1CF97625629CC70001C0ED /* fr */,
-			);
-			name = "Fugu README.rtfd";
 			sourceTree = "<group>";
 		};
 		09FFFC6303F992BE00A8002B /* SSHTunnel.strings */ = {
@@ -974,7 +898,6 @@
 				1D1CF96C25629CBC0001C0ED /* it */,
 				1D1CF97425629CC00001C0ED /* de */,
 				1D1CF97E25629CC80001C0ED /* fr */,
-				1D1CF98625629CCB0001C0ED /* zh */,
 				1D1CF98F25629CCF0001C0ED /* fi */,
 				1D1CF99725629CD20001C0ED /* es */,
 				1D1CF99E25629CD50001C0ED /* da */,
@@ -983,22 +906,36 @@
 			name = SSHTunnel.strings;
 			sourceTree = "<group>";
 		};
-		F5B12CC002DF4E6001D5EA79 /* Prefs.nib */ = {
+		1DD51AE92F95F79E00CD3273 /* Prefs.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1D1CF95F25629CB70001C0ED /* nl */,
-				1D1CF96825629CBB0001C0ED /* it */,
-				1D1CF96F25629CBF0001C0ED /* de */,
-				1D1CF97525629CC40001C0ED /* Base */,
-				1D1CF97925629CC70001C0ED /* fr */,
-				1D1CF98125629CCB0001C0ED /* zh */,
-				1D1CF98A25629CCE0001C0ED /* fi */,
-				1D1CF99225629CD20001C0ED /* es */,
-				1D1CF99A25629CD50001C0ED /* da */,
-				1D1CF9A125629CD80001C0ED /* ja */,
-				1DBA37B02671EC9300638691 /* en */,
+				1DD51AE82F95F79E00CD3273 /* de */,
 			);
-			name = Prefs.nib;
+			name = Prefs.xib;
+			sourceTree = "<group>";
+		};
+		1DD51AEC2F95F7AC00CD3273 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DD51AEB2F95F7AC00CD3273 /* de */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		1DD51AEF2F95F7B300CD3273 /* SSHTunnel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DD51AEE2F95F7B300CD3273 /* en */,
+			);
+			name = SSHTunnel.xib;
+			sourceTree = "<group>";
+		};
+		1DD51AF22F95F7BC00CD3273 /* SCP.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DD51AF12F95F7BC00CD3273 /* en */,
+			);
+			name = SCP.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

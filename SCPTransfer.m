@@ -28,28 +28,6 @@ extern char	**environ;
 
 int		scpconnecting = 0;
 
-+ ( void )connectWithPorts: ( NSArray * )ports
-{
-    NSAutoreleasePool		*pool = [[ NSAutoreleasePool alloc ] init ];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSConnection		*cnctnToController;
-    SCPTransfer			*serverObject;
-
-    cnctnToController = [ NSConnection connectionWithReceivePort:
-                            [ ports objectAtIndex: 0 ]
-                            sendPort: [ ports objectAtIndex: 1 ]];
-#pragma clang diagnostic pop
-                            
-    serverObject = [[ self alloc ] init ];
-    
-    [ (( SCPController * )[ cnctnToController rootProxy ] ) setServer: serverObject ];
-    [ serverObject release ];
-    
-    [[ NSRunLoop currentRunLoop ] run ];
-    
-    [ pool drain ];
-}
 
 - ( id )init
 {
@@ -132,14 +110,22 @@ int		scpconnecting = 0;
     for ( i = 1; i < pc_index; i++ ) {
         ( void )strlcat( filename, tav[ i ], sizeof( filename ));
     }
-    
-    [ controller fileCopying: [ NSString stringWithUTF8String: filename ]
-                            updateWithPercentDone: tav[ pc_index ]
-                            eta: t_eta
-                            bytesCopied: t_amount ];
+
+    NSString *_fname   = [ NSString stringWithUTF8String: filename ];
+    NSString *_pc      = [ NSString stringWithUTF8String: tav[ pc_index ] ];
+    NSString *_eta     = [ NSString stringWithUTF8String: t_eta ];
+    NSString *_amount  = [ NSString stringWithUTF8String: t_amount ];
+    free( tmp );
+
+    dispatch_async( dispatch_get_main_queue(), ^{
+        [ controller fileCopying: _fname
+                        updateWithPercentDone: ( char * )[ _pc UTF8String ]
+                        eta: ( char * )[ _eta UTF8String ]
+                        bytesCopied: ( char * )[ _amount UTF8String ]];
+    });
 }
 
-- ( oneway void )scpConnect: ( char * )userathost toPort: ( char * )portnumber
+- ( void )scpConnect: ( char * )userathost toPort: ( char * )portnumber
                 forItem: ( char * )localfile scpType: ( int )scpType
                 fromController: ( SCPController * )controller
 {
@@ -154,7 +140,7 @@ int		scpconnecting = 0;
     char		executable[ MAXPATHLEN], portarg[ MAXPATHLEN ], *execargs[ 6 ];
     NSString		*scpBinary;
   
-    [ controller clearLog ]; 
+    dispatch_async( dispatch_get_main_queue(), ^{ [ controller clearLog ]; });
 
     if (( scpBinary = [ NSString pathForExecutable: @"scp" ] ) == nil ) {
 	NSLog( @"Couldn't find scp!" );
@@ -168,7 +154,10 @@ int		scpconnecting = 0;
     execargs[ 0 ] = executable;
 
     scpconnecting = 1;
-    [ controller addToLog: [ NSString stringWithFormat: @"scp launch path is %s.\n", executable ]];
+    {
+        NSString *_launch = [ NSString stringWithFormat: @"scp launch path is %s.\n", executable ];
+        dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _launch ]; });
+    }
     
     if ( snprintf( portarg, MAXPATHLEN, "-oPort=%s", portnumber ) > ( MAXPATHLEN - 1 )) {
         NSLog( @"portarg exceeds bounds" );
@@ -184,12 +173,18 @@ int		scpconnecting = 0;
         if ( fcntl( masterfd, F_SETFL, O_NONBLOCK ) < 0 ) {	/* prevent master from blocking */
         }
         
-        [ controller setSCPPID: scppid ];
-        [ controller setMasterFD: masterfd ];
-        [ controller addToLog: [ NSString stringWithFormat: @"Slave terminal device is %s.\n",
-                                ttyname ]];
-        [ controller addToLog: [ NSString stringWithFormat: @"Master fd is %d.\n",
-                                masterfd ]];
+        {
+            pid_t _pid = scppid;
+            int   _fd  = masterfd;
+            NSString *_tty = [ NSString stringWithFormat: @"Slave terminal device is %s.\n", ttyname ];
+            NSString *_mfd = [ NSString stringWithFormat: @"Master fd is %d.\n", masterfd ];
+            dispatch_async( dispatch_get_main_queue(), ^{
+                [ controller setSCPPID: _pid ];
+                [ controller setMasterFD: _fd ];
+                [ controller addToLog: _tty ];
+                [ controller addToLog: _mfd ];
+            });
+        }
                                     
         if (( mfp = fdopen( masterfd, "r" )) == NULL ) {
             NSLog( @"fdopen master fd returned NULL" );
@@ -208,57 +203,76 @@ int		scpconnecting = 0;
             
             if ( FD_ISSET( masterfd, &readmask )) {
                 if ( fgets(( char * )buf, MAXPATHLEN, mfp ) == NULL ) break;
-                
+
                 if (( strstr(( char * )buf, "Password:" ) != NULL
                         || strstr(( char * )buf, "password:" ) != NULL
                         || strstr(( char * )buf, "passphrase" ) != NULL )
                         && !validpw ) {
-                    if ( scpconnecting ) [ controller authenticateWithPrompt: ( char * )buf ];
+                    if ( scpconnecting ) {
+                        NSString *_prompt = [ NSString stringWithUTF8String: ( char * )buf ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller authenticateWithPrompt: ( char * )[ _prompt UTF8String ]];
+                        });
+                    }
                     pwsent = 1;
                 } else {
                     if ( strncmp(( char * )buf, "Permission denied, ",
                                     strlen( "Permission denied, " )) == 0 ) {
-                        [ controller passError ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller passError ]; });
                         pwsent = 0;
                         threestrikes++;
                     } else if ( strstr(( char * )buf, "passphrase for key" ) != NULL ) {
                         pwsent = 0;
                         threestrikes = 0;	/* if pubkey auth fails, password prompt will appear */
                     } else if ( strstr(( char * )buf, "scp: Command not found" ) != NULL ) {
-                        [ controller sessionError: [ NSString stringWithUTF8String: ( char * )buf ]];
+                        NSString *_err = [ NSString stringWithUTF8String: ( char * )buf ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller sessionError: _err ];
+                        });
                         noscp++;
                     } else if ( strncmp(( char * )buf, "The auth", strlen( "The auth" )) == 0 ) {
                         unknownmsg = strdup(( char * )buf );
-                        [ controller addToLog: [ NSString stringWithUTF8String: ( char * )buf ]];
+                        NSString *_log = [ NSString stringWithUTF8String: ( char * )buf ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller addToLog: _log ];
+                        });
                         fgets(( char * )buf, MAXPATHLEN, mfp ); /* get rest of message */
-                        [ controller getContinueQueryWithString:
-                                [ NSString stringWithFormat: @"%s%s", unknownmsg, ( char * )buf ]];
+                        NSString *_query = [ NSString stringWithFormat: @"%s%s",
+                                                unknownmsg, ( char * )buf ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller getContinueQueryWithString: _query ];
+                        });
                         free( unknownmsg );
                     } else if ( strncmp(( char * )buf, "Secure ", strlen( "Secure" )) == 0 ) {
-                        [ controller sessionError: [ NSString stringWithUTF8String: ( char * )buf ]];
+                        NSString *_err = [ NSString stringWithUTF8String: ( char * )buf ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller sessionError: _err ];
+                        });
                     }
                 }
                 if ( strchr(( char * )buf, '%' ) != NULL ) {
                     if ( ! copying ) {
-                        [ controller secureCopy ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller secureCopy ]; });
                         copying = 1;
                     } else {
-                        [ self parseProgressOutputString: ( char * )buf 
+                        [ self parseProgressOutputString: ( char * )buf
                                 forController: controller ];
-                    } 
+                    }
                 }
-                
+
                 if ( strstr(( char * )buf, "Operation timed out" ) != NULL
                         || strstr(( char * )buf, "REMOTE HOST IDENTIFICATION HAS CHANGED" ) != NULL ) {
-                    char		*p = strdup(( char * )buf ), *q;
-                    
+                    char *p = strdup(( char * )buf ), *q;
                     if (( q = strrchr( p, '\r' )) != NULL ) *q = '\0';
-                            [ controller sessionError:
-                                [ NSString stringWithUTF8String: p ]];
+                    NSString *_err = [ NSString stringWithUTF8String: p ];
+                    dispatch_async( dispatch_get_main_queue(), ^{
+                        [ controller sessionError: _err ];
+                    });
                     free( p );
                 }
 
-                [ controller addToLog: [ NSString stringWithUTF8String: ( char * )buf ]];
+                NSString *_line = [ NSString stringWithUTF8String: ( char * )buf ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _line ]; });
                 memset(( char * )buf, '\0', strlen(( char * )buf ));
                 [ pool drain ];
                 if ( noscp ) break;
@@ -266,22 +280,29 @@ int		scpconnecting = 0;
         }
 
         scppid = wait( &status );
-        
+
         ( void )close( masterfd );
-        [ controller addToLog: [ NSString stringWithUTF8String: ( char * )buf ]];
-        [ controller addToLog: [ NSString stringWithFormat:
-                    @"\nscp task with pid %d ended with status %d.\n", scppid, WEXITSTATUS( status ) ]];
-        [ controller addToLog: @"\n\n" ];
-        [ controller secureCopyFinishedWithStatus: ( WEXITSTATUS( status )) ];
-        if ( WIFEXITED( status )) {
-            [ controller addToLog: @"Normal exit\n" ];
-        } else if ( WIFSIGNALED( status )) {
-            [ controller addToLog: @"WIFSIGNALED: " ];
-            [ controller addToLog: [ NSString stringWithFormat: @"signal = %d\n", status ]];
-        } else if ( WIFSTOPPED( status )) {
-            [ controller addToLog: @"WIFSTOPPED\n" ];
+        {
+            NSString *_tail = [ NSString stringWithUTF8String: ( char * )buf ];
+            pid_t _pid = scppid;
+            int   _st  = status;
+            dispatch_async( dispatch_get_main_queue(), ^{
+                [ controller addToLog: _tail ];
+                [ controller addToLog: [ NSString stringWithFormat:
+                            @"\nscp task with pid %d ended with status %d.\n",
+                            _pid, WEXITSTATUS( _st ) ]];
+                [ controller addToLog: @"\n\n" ];
+                [ controller secureCopyFinishedWithStatus: WEXITSTATUS( _st ) ];
+                if ( WIFEXITED( _st )) {
+                    [ controller addToLog: @"Normal exit\n" ];
+                } else if ( WIFSIGNALED( _st )) {
+                    [ controller addToLog: @"WIFSIGNALED: " ];
+                    [ controller addToLog: [ NSString stringWithFormat: @"signal = %d\n", _st ]];
+                } else if ( WIFSTOPPED( _st )) {
+                    [ controller addToLog: @"WIFSTOPPED\n" ];
+                }
+            });
         }
-        
         scppid = 0;
     } else if ( scppid < 0 ) {
         NSLog( @"forkpty failed: %s", strerror( errno ));

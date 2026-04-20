@@ -52,10 +52,6 @@
     IBOutlet NSProgressIndicator *authProgBar;
     
 @private
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSConnection		*connectionToTServer;
-#pragma clang diagnostic pop
     NSString			*scpFileName;
     SCPTransfer			*scp;
     double			bytescopied, scpFileSize;
@@ -67,8 +63,6 @@
     pid_t			scppid;
     int				masterfd;
 }
-
-- ( void )setServer: ( id )serverObject;
 
 - ( void )authenticateWithPrompt: ( char * )prompt;
 - ( IBAction )authenticate: ( id )sender;

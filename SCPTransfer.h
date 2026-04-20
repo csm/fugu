@@ -9,7 +9,7 @@
 
 @protocol SCPTransferInterface
 
-- ( oneway void )scpConnect: ( char * )userathost toPort: ( char * )portnumber
+- ( void )scpConnect: ( char * )userathost toPort: ( char * )portnumber
                     forItem: ( char * )localfile
                     scpType: ( int )scpType
                     fromController: ( SCPController * )controller;
@@ -25,7 +25,6 @@
     int			masterfd;
 }
 
-+ ( void )connectWithPorts: ( NSArray * )ports;
 - ( id )init;
 
 @end

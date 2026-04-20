@@ -37,30 +37,9 @@ static int		SCPTYPE = 0;
 
 - ( id )init
 {
-    NSPort		*recPort;
-    NSPort		*sendPort;
-    NSArray		*portArray;
-    
-    /* prepare distributed objects for scp task thread, but don't establish connection yet */
-    recPort = [ NSPort port ];
-    sendPort = [ NSPort port ];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    connectionToTServer = [[ NSConnection alloc ] initWithReceivePort: recPort
-                                                sendPort: sendPort ];
-#pragma clang diagnostic pop
-    [ connectionToTServer setRootObject: self ];
-    scp = nil;
+    scp = [[ SCPTransfer alloc ] init ];
     scppid = 0;
-    portArray = [ NSArray arrayWithObjects: sendPort, recPort, nil ];
-    
     bytescopied = 0.0;
-
-    [ NSThread detachNewThreadSelector: @selector( connectWithPorts: )
-                                        toTarget: [ SCPTransfer class ]
-                                        withObject: portArray ];
-                                                                                    
-                                            
     return (( self = [ super init ] ) ? self : nil );
 }
 
@@ -68,14 +47,6 @@ static int		SCPTYPE = 0;
 {
     [ localFileImageView setDelegate: self ];
     [ localFileField setDelegate: self ];
-}
-
-- ( void )setServer: ( id )serverObject
-{
-    [ serverObject setProtocolForProxy: @protocol( SCPTransferInterface ) ];
-    [ serverObject retain ];
-    
-    scp = ( SCPTransfer <SCPTransferInterface> * )serverObject;
 }
 
 - ( id )delegate
@@ -383,15 +354,9 @@ WRITE_ERR:
     scpFileName = [ localFileField stringValue ];
     port = ( char * )[[ destPortField stringValue ] UTF8String ];
     if ( !strlen( port )) port = "22";
-    [ scp scpConnect: userathost toPort: port
-                                    forItem: ( SCPTYPE == DOWNLOAD ?
-                                                ( char * )[[ destPathField stringValue ] UTF8String ]
-                                                : ( char * )[ scpFileName UTF8String ] )
-                                    scpType: SCPTYPE
-                                    fromController: self ];
-                                                
+
     defaults = [ NSUserDefaults standardUserDefaults ];
-    if ( ![[ recentCopiesList itemTitles ] containsObject: scpFileName ] ) { 
+    if ( ![[ recentCopiesList itemTitles ] containsObject: scpFileName ] ) {
         [ recentCopiesList insertItemWithTitle: scpFileName atIndex: 1 ];
     }
     no = [[ defaults objectForKey: @"numrscps" ] intValue ];
@@ -402,6 +367,22 @@ WRITE_ERR:
     }
     [ defaults setObject: [ recentCopiesList itemTitles ] forKey: @"recentscps" ];
     [ recentCopiesList insertItemWithTitle: @"Recent Copies" atIndex: 0 ];
+
+    {
+        char *_uah  = strdup( userathost );
+        char *_port = strdup( port );
+        char *_item = strdup( SCPTYPE == DOWNLOAD ?
+                                ( char * )[[ destPathField stringValue ] UTF8String ]
+                                : ( char * )[ scpFileName UTF8String ] );
+        int   _type = SCPTYPE;
+        dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
+            [ scp scpConnect: _uah toPort: _port forItem: _item
+                            scpType: _type fromController: self ];
+            free( _uah );
+            free( _port );
+            free( _item );
+        });
+    }
 }
 
 - ( void )secureCopy
@@ -593,9 +574,9 @@ WRITE_ERR:
 
 - ( void )dealloc
 {
+    [ scp release ];
     [ scpFileName release ];
-	
-	[ super dealloc ];
+    [ super dealloc ];
 }
 
 @end

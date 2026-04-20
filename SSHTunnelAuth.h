@@ -9,7 +9,7 @@
 
 @protocol SSHTunnelAuthInterface
 
-- ( oneway void )sshTunnelLocalPort: ( char * )lport remoteHost: ( char * )rhost
+- ( void )sshTunnelLocalPort: ( char * )lport remoteHost: ( char * )rhost
                 remotePort: ( char * )rport tunnelUserAndHost: ( char * )userathost
                 tunnelPort: ( char * )tport
                 fromController: ( SSHTunnel * )controller;
@@ -24,7 +24,6 @@
     pid_t	sshpid;
 }
 
-+ ( void )connectWithPorts: ( NSArray * )ports;
 - ( id )init;
 
 @end

@@ -19,31 +19,8 @@ extern int		mfd;
 
 - ( id )init
 {
-    NSPort		*recPort;
-    NSPort		*sendPort;
-    NSArray		*portArray;
-    
-    /* prepare distributed objects for scp task thread, but don't establish connection yet */
-    recPort = [ NSPort port ];
-    sendPort = [ NSPort port ];
-    connectionToTServer = [[ NSConnection alloc ] initWithReceivePort: recPort
-                                                sendPort: sendPort ];
-    [ connectionToTServer setRootObject: self ];
-    ssh = nil;
-    portArray = [ NSArray arrayWithObjects: sendPort, recPort, nil ];
-    [ NSThread detachNewThreadSelector: @selector( connectWithPorts: )
-                                        toTarget: [ SSHTunnelAuth class ]
-                                        withObject: portArray ];
-                                            
+    ssh = [[ SSHTunnelAuth alloc ] init ];
     return (( self = [ super init ] ) ? self : nil );
-}
-
-- ( void )setServer: ( id )serverObject
-{
-    [ serverObject setProtocolForProxy: @protocol( SSHTunnelAuthInterface ) ];
-    [ serverObject retain ];
-    
-    ssh = ( SSHTunnelAuth <SSHTunnelAuthInterface> * )serverObject;
 }
 
 - ( void )displayWindow//ForLocalPort: ( int )port
@@ -411,15 +388,26 @@ NSLog( @"%d", sshpid );
         localport = ( char * )[[ localPortField stringValue ] UTF8String ];
     }
     
-    [ ssh sshTunnelLocalPort: localport
-            remoteHost: ( char * )[[ remoteHostField stringValue ] UTF8String ]
-            remotePort: portstring
-            tunnelUserAndHost: ( char * )[[ NSString stringWithFormat: @"%@@%@",
-                                            [ usernameField stringValue ],
-                                            [ tunnelHostField stringValue ]] UTF8String ]
-            tunnelPort: tport
-            fromController: self ];
     [ self addTunneledHostToDefaults: [ remoteHostField stringValue ]];
+
+    {
+        char *_lport = strdup( localport );
+        char *_rhost = strdup( ( char * )[[ remoteHostField stringValue ] UTF8String ] );
+        char *_rport = strdup( portstring );
+        char *_uah   = strdup( ( char * )[[ NSString stringWithFormat: @"%@@%@",
+                                            [ usernameField stringValue ],
+                                            [ tunnelHostField stringValue ]] UTF8String ] );
+        char *_tport = strdup( tport );
+        dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
+            [ ssh sshTunnelLocalPort: _lport remoteHost: _rhost remotePort: _rport
+                    tunnelUserAndHost: _uah tunnelPort: _tport fromController: self ];
+            free( _lport );
+            free( _rhost );
+            free( _rport );
+            free( _uah );
+            free( _tport );
+        });
+    }
 }
 
 - ( void )addTunneledHostToDefaults: ( NSString * )rHost

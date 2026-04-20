@@ -5362,7 +5362,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 {
   if ( prefs == nil ) {
     prefs = [[ SFTPPrefs alloc ] init ];
-    [[NSBundle mainBundle] loadNibNamed: @"Prefs.nib" owner: prefs topLevelObjects: nil ];
+    [[NSBundle mainBundle] loadNibNamed: @"Prefs" owner: prefs topLevelObjects: nil ];
   }
   [ prefs showPreferencePanel ];
 }

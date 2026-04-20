@@ -42,17 +42,12 @@
     IBOutlet NSTextField	*connectMsg;
     
 @private
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSConnection		*connectionToTServer;
-#pragma clang diagnostic pop
     SSHTunnelAuth		*ssh;
     BOOL			_firstPasswordPrompt;
     BOOL			_gotPasswordFromKeychain;
     pid_t			sshpid;
 }
 
-- ( void )setServer: ( id )serverObject;
 - ( void )write: ( char * )buf;
 - ( void )authenticateWithPrompt: ( char * )prompt;
 - ( void )getContinueQueryWithString: ( NSString * )string;
