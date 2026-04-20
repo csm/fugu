@@ -288,6 +288,10 @@
 		1DD51AEB2F95F7AC00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1DD51AEE2F95F7B300CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
 		1DD51AF12F95F7BC00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SCP.xib; sourceTree = "<group>"; };
+		1DD51AF52F96B24C00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		1DD51AF62F96B29200CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Prefs.xib; sourceTree = "<group>"; };
+		1DD51AF72F96B2A200CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
+		1DD51AF82F96B2AA00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SCP.xib; sourceTree = "<group>"; };
 		238577620392BB76FED5EA79 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
 		238577660392BFBCFED5EA79 /* fugu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = fugu.icns; sourceTree = "<group>"; };
 		239A5C18038C2294FED5EA79 /* favorites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorites.png; sourceTree = "<group>"; };
@@ -910,6 +914,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AE82F95F79E00CD3273 /* de */,
+				1DD51AF62F96B29200CD3273 /* en */,
 			);
 			name = Prefs.xib;
 			sourceTree = "<group>";
@@ -918,6 +923,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AEB2F95F7AC00CD3273 /* de */,
+				1DD51AF52F96B24C00CD3273 /* en */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -926,6 +932,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AEE2F95F7B300CD3273 /* en */,
+				1DD51AF72F96B2A200CD3273 /* de */,
 			);
 			name = SSHTunnel.xib;
 			sourceTree = "<group>";
@@ -934,6 +941,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AF12F95F7BC00CD3273 /* en */,
+				1DD51AF82F96B2AA00CD3273 /* de */,
 			);
 			name = SCP.xib;
 			sourceTree = "<group>";

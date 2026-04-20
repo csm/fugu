@@ -223,19 +223,27 @@ int		master = 0;
 	t_eta = "--:--";
     }
     
-    if ( uploading ) {
-	[ controller updateUploadProgressBarWithValue: strtod( tav[ pc_index ], NULL )
-		    amountTransfered: [ NSString stringWithUTF8String: t_amount ]
-		    transferRate: [ NSString stringWithUTF8String: t_rate ]
-		    ETA: [ NSString stringWithFormat: @"%s ETA", t_eta ]];
-    } else {
-	[ controller updateDownloadProgressBarWithValue: strtod( tav[ pc_index ], NULL )
-		    amountTransfered: [ NSString stringWithUTF8String: t_amount ]
-		    transferRate: [ NSString stringWithUTF8String: t_rate ]
-		    ETA: [ NSString stringWithFormat: @"%s ETA", t_eta ]];
-    }
-    
+    double    _pval    = strtod( tav[ pc_index ], NULL );
+    NSString *_pamount = [ NSString stringWithUTF8String: t_amount ];
+    NSString *_prate   = [ NSString stringWithUTF8String: t_rate ];
+    NSString *_peta    = [ NSString stringWithFormat: @"%s ETA", t_eta ];
     free( tmp );
+
+    if ( uploading ) {
+	dispatch_async( dispatch_get_main_queue(), ^{
+	    [ controller updateUploadProgressBarWithValue: _pval
+		        amountTransfered: _pamount
+		        transferRate: _prate
+		        ETA: _peta ];
+	});
+    } else {
+	dispatch_async( dispatch_get_main_queue(), ^{
+	    [ controller updateDownloadProgressBarWithValue: _pval
+		        amountTransfered: _pamount
+		        transferRate: _prate
+		        ETA: _peta ];
+	});
+    }
 }
 /* end sftp/ftp output handler methods */
 
@@ -595,13 +603,13 @@ DOT_OR_DOTDOT:
                 if ( !connected ) {
                     pwsent++;	/* for key auth */
                     validpw++;
-                    [ controller showRemoteFiles ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller showRemoteFiles ]; });
                     showrb++;
                 } else if ( !sethomedir ) {
-                    [ controller getListing ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller getListing ]; });
                     sethomedir++;
                 } else if ( was_changing || was_renaming ) {
-                    [ controller getListing ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller getListing ]; });
                     was_changing = 0;
                     was_renaming = 0;
                 } else {
@@ -633,12 +641,14 @@ DOT_OR_DOTDOT:
                         
                         [ self setCurrentTransferName: [[[[ controller uploadQ ] objectAtIndex: 0 ]
                                     objectForKey: @"fullpath" ] lastPathComponent ]];
-                        [ controller showUploadProgress ];
-                        [ controller updateUploadProgress: 0 ];
+                        dispatch_async( dispatch_get_main_queue(), ^{
+                            [ controller showUploadProgress ];
+                            [ controller updateUploadProgress: 0 ];
+                        });
                     } else if ( was_uploading ) {
                         was_uploading = 0;
                         [ self setCurrentTransferName: nil ];
-                        [ controller updateUploadProgress: 0 ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller updateUploadProgress: 0 ]; });
                     }
                     
                     /* check download queue */
@@ -671,25 +681,30 @@ DOT_OR_DOTDOT:
                                                 ( char * )[[ dict objectForKey: @"rpath" ] bytes ]
                                                 length: (int) [( NSData * )[ dict objectForKey: @"rpath" ] length ]];
                         [ self setCurrentTransferName: [ transferName lastPathComponent ]];
-                        [ controller showDownloadProgressWithMessage:
-                                ( char * )[[ transferName lastPathComponent ] UTF8String ]];
-                        [ controller removeFirstItemFromDownloadQ ];
+                        {
+                            NSString *_tname = [ transferName lastPathComponent ];
+                            dispatch_async( dispatch_get_main_queue(), ^{
+                                [ controller showDownloadProgressWithMessage:
+                                        ( char * )[ _tname UTF8String ]];
+                                [ controller removeFirstItemFromDownloadQ ];
+                            });
+                        }
                     } else if ( was_downloading ) {
                         was_downloading = 0;
-                        [ controller finishedDownload ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller finishedDownload ]; });
                         [ self setCurrentTransferName: nil ];
                     }
                     
                     /* check remove queue */
                     if ( [[ controller removeQ ] count ] ) {
                         was_removing = 1;
-                        [ controller deleteFirstItemFromRemoveQueue ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller deleteFirstItemFromRemoveQueue ]; });
                     } else if ( was_removing ) {
                         was_removing = 0;
-                        [ controller getListing ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller getListing ]; });
                     } else if ( was_listing ) {
                         was_listing = 0;
-                        [ controller finishedCommand ];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller finishedCommand ]; });
                     }
                 }
             } else {
@@ -700,7 +715,8 @@ DOT_OR_DOTDOT:
                     pwsent = 0;
                     threestrikes++;
                 } else if ( [ self bufferContainsError: buf ] ) {
-                    [ controller connectionError: [ NSString stringWithUTF8String: buf ]];
+                    NSString *_err = [ NSString stringWithUTF8String: buf ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller connectionError: _err ]; });
                 } else if ( [ self currentTransferName ] != nil ) {
                     if ( strstr(( char * )buf, [[ self currentTransferName ] UTF8String ] ) != NULL
                                 && strrchr(( char * )buf, '%' ) != NULL ) {
@@ -717,15 +733,18 @@ DOT_OR_DOTDOT:
                 } else if ( strstr(( char * )buf, "passphrase for key" ) != NULL ) {
                     pwsent = 0;
                     threestrikes = 0;	/* if pubkey auth fails, password prompt will appear */
-                    [ controller requestPasswordWithPrompt: ( char * )buf ];
+                    NSString *_pp = [ NSString stringWithUTF8String: ( char * )buf ];
+                    dispatch_async( dispatch_get_main_queue(), ^{
+                        [ controller requestPasswordWithPrompt: ( char * )[ _pp UTF8String ]];
+                    });
                 } else if ( strstr(( char * )buf, "Changing owner on" ) != NULL
                         || strstr(( char * )buf, "Changing group on" )
                         || strstr(( char * )buf, "Changing mode on" )) {
-                    [ controller setBusyStatusWithMessage: [ NSString stringWithUTF8String:
-                                                                                ( void * )buf ]];
+                    NSString *_chg = [ NSString stringWithUTF8String: ( void * )buf ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller setBusyStatusWithMessage: _chg ]; });
                     was_changing = 1;
                     if ( strstr(( char * )buf, "Couldn't " ) != NULL ) {
-                        [ controller sessionError: [ NSString stringWithUTF8String: ( void * )buf ]];
+                        dispatch_async( dispatch_get_main_queue(), ^{ [ controller sessionError: _chg ]; });
                     }
                 } else if ( [ self unknownHostKeyPromptInBuffer: buf ] ) {
                     NSMutableDictionary    *hostInfo = nil;
@@ -733,21 +752,25 @@ DOT_OR_DOTDOT:
                     hostInfo = [ NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 [ NSString stringWithUTF8String: buf ], @"msg",
                                 [ self retrieveUnknownHostKeyFromStream: mf ], @"key", nil ];
-                    
-                    [ controller getContinueQueryForUnknownHost: ( NSDictionary * )hostInfo ];
+
+                    dispatch_async( dispatch_get_main_queue(), ^{
+                        [ controller getContinueQueryForUnknownHost: ( NSDictionary * )hostInfo ];
+                    });
                 } else if ( strstr(( char * )buf, "Removing " ) != NULL ) {
-                    [ controller setBusyStatusWithMessage:
-                        [ NSString stringWithUTF8String: ( char * )buf ]];
+                    NSString *_rm = [ NSString stringWithUTF8String: ( char * )buf ];
+                    dispatch_async( dispatch_get_main_queue(), ^{ [ controller setBusyStatusWithMessage: _rm ]; });
                 }
             }
 
             /* moved to separate if block: sometimes ls and sftp> occur in same buffer */
             if ( [ self hasDirectoryListingFormInBuffer: buf ] && connected ) {
-                [ controller addToLog: [ NSString stringWithUTF8String: ( char * )buf ]];
+                NSString *_lslog = [ NSString stringWithUTF8String: ( char * )buf ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _lslog ]; });
                 was_listing = 1;
                 [ self collectListingFromMaster: master fileStream: mf forController: controller ];
                 memset( buf, '\0', strlen(( char * )buf ));
-                [ controller loadRemoteBrowserWithItems: [ self remoteObjectList ]];
+                id _items = [ self remoteObjectList ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller loadRemoteBrowserWithItems: _items ]; });
                 remoteDirBuf = @"";
             }
             
@@ -760,18 +783,19 @@ DOT_OR_DOTDOT:
                 
                 p = strchr( tmp, '/' );
                 
-                [ controller setRemotePathPopUp:
-                    [ NSString stringWithBytesOfUnknownEncoding: p 
-                                            length: (int) strlen( p ) ]];
+                NSString *_rpath = [ NSString stringWithBytesOfUnknownEncoding: p
+                                            length: (int) strlen( p ) ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller setRemotePathPopUp: _rpath ]; });
                 free( tmp );
             }
             
             if ( threestrikes >= 3 ) {
-                [ controller cancelConnection: nil ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller cancelConnection: nil ]; });
             }
             
             if ( buf[ 0 ] != '\0' ) {
-                [ controller addToLog: [ NSString stringWithUTF8String: ( void * )buf ]];
+                NSString *_blog = [ NSString stringWithUTF8String: ( void * )buf ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _blog ]; });
                 memset( buf, '\0', strlen(( char * )buf ));
             }
         }
@@ -789,18 +813,25 @@ DOT_OR_DOTDOT:
     connected = 0;
     ( void )close( master );
 
-    [ controller cleanUp ];
-    [ controller addToLog: [ NSString stringWithUTF8String: ( void * )buf ]];
-    [ controller addToLog: [ NSString stringWithFormat: @"\nsftp task with pid %d ended.\n", sftppid ]];
-    sftppid = 0;
-
-    if ( WIFEXITED( status )) {
-        [ controller addToLog: @"Normal exit\n" ];
-    } else if ( WIFSIGNALED( status )) {
-        [ controller addToLog: @"WIFSIGNALED: " ];
-        [ controller addToLog: [ NSString stringWithFormat: @"signal = %d\n", status ]];
-    } else if ( WIFSTOPPED( status )) {
-        [ controller addToLog: @"WIFSTOPPED\n" ];
+    {
+        NSString *_exitBuf = [ NSString stringWithUTF8String: ( void * )buf ];
+        NSString *_pidMsg  = [ NSString stringWithFormat: @"\nsftp task with pid %d ended.\n", sftppid ];
+        NSString *_exitMsg = nil;
+        if ( WIFEXITED( status )) {
+            _exitMsg = @"Normal exit\n";
+        } else if ( WIFSIGNALED( status )) {
+            _exitMsg = [ NSString stringWithFormat: @"WIFSIGNALED: signal = %d\n", status ];
+        } else if ( WIFSTOPPED( status )) {
+            _exitMsg = @"WIFSTOPPED\n";
+        }
+        NSString *_exitMsgFinal = _exitMsg;
+        sftppid = 0;
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [ controller cleanUp ];
+            [ controller addToLog: _exitBuf ];
+            [ controller addToLog: _pidMsg ];
+            if ( _exitMsgFinal ) [ controller addToLog: _exitMsgFinal ];
+        });
     }
 }
 
@@ -831,7 +862,8 @@ DOT_OR_DOTDOT:
             }
 
             if ( [ self bufferContainsError: buf ] ) {
-                [ controller sessionError: [ NSString stringWithUTF8String: buf ]];
+                NSString *_serr = [ NSString stringWithUTF8String: buf ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller sessionError: _serr ]; });
                 continue;
             }
 #ifdef SSH_COM_SUPPORT
@@ -879,11 +911,12 @@ DOT_OR_DOTDOT:
                 [ items addObject: object ];
             }
             
-            [ controller addToLog: [ NSString stringWithBytesOfUnknownEncoding: buf
-                                                length: (int) strlen( buf ) ]];
+            NSString *_clog = [ NSString stringWithBytesOfUnknownEncoding: buf
+                                                length: (int) strlen( buf ) ];
+            dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _clog ]; });
             if ( strstr( buf, "sftp>" ) != NULL ) {
                 memset( buf, '\0', strlen( buf ));
-                [ controller finishedCommand ];
+                dispatch_async( dispatch_get_main_queue(), ^{ [ controller finishedCommand ]; });
                 [ self setRemoteObjectList: items ];
                 return;
             }

@@ -673,7 +673,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" drawsBackground="NO" id="lWL-0I-fGm">
                             <rect key="frame" x="1" y="1" width="292" height="132"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" verticallyResizable="YES" baseWritingDirection="leftToRight" usesFontPanel="YES" usesRuler="YES" quoteSubstitution="YES" dashSubstitution="YES" textReplacement="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1883">
                                     <rect key="frame" x="0.0" y="-302" width="292" height="280"/>
@@ -826,7 +826,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="Unh-f9-o75">
                         <rect key="frame" x="1" y="1" width="248" height="218"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView autoresizesSubviews="NO" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="1889" floatsGroupRows="NO" id="593">
                                 <rect key="frame" x="0.0" y="0.0" width="248" height="195"/>
@@ -2113,10 +2113,10 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="gZ5-Lt-59u">
                         <rect key="frame" x="1" y="1" width="214" height="291"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView autoresizesSubviews="NO" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" emptySelection="NO" headerView="1895" floatsGroupRows="NO" id="892" customClass="SFTPTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="569" height="268"/>
+                                <rect key="frame" x="0.0" y="0.0" width="568.5" height="268"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2211,7 +2211,7 @@ Gw
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" wantsLayer="YES" id="1895">
-                        <rect key="frame" x="0.0" y="0.0" width="569" height="23"/>
+                        <rect key="frame" x="0.0" y="0.0" width="568.5" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                     <connections>
