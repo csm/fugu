@@ -116,7 +116,7 @@ static NSInteger	SCPTYPE = 0;
     [ destUserNameField setStringValue: user ];
     [ localFileField setStringValue: filename ];
     [ destPathField setStringValue: destPath ];
-    [ copyType selectCellAtRow: scpType column: 0 ];
+    [ copyType setSelectedSegment: scpType ];
     scpFileSize = 100.0;
     
     if ( [[ NSFileManager defaultManager ] fileExistsAtPath: filename ] ) {
@@ -304,7 +304,7 @@ WRITE_ERR:
     
     scpFileSize = 100.0;
     
-    SCPTYPE = [ copyType selectedRow ];
+    SCPTYPE = (NSInteger)[ copyType selectedSegment ];
     
     if ( snprintf( userathost, MAXPATHLEN, "%s@%s:",
                 ( char * )[[ destUserNameField stringValue ] UTF8String ],
@@ -502,6 +502,15 @@ WRITE_ERR:
 {
     [ scpWindow close ];
     return;
+}
+
+- ( IBAction )toggleLogWindow: ( id )sender
+{
+    if ( [ scpLogWindow isVisible ] ) {
+        [ scpLogWindow close ];
+    } else {
+        [ scpLogWindow makeKeyAndOrderFront: nil ];
+    }
 }
 
 - ( IBAction )chooseLocalFile: ( id )sender

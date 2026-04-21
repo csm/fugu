@@ -20,7 +20,7 @@
     IBOutlet UMTextField 	*localFileField;
     IBOutlet UMDragDropImageView 	*localFileImageView;
     IBOutlet NSPopUpButton	*recentCopiesList;
-    IBOutlet NSMatrix		*copyType;
+    IBOutlet NSSegmentedControl	*copyType;
     
     IBOutlet NSTextField 	*passPromptField;
     IBOutlet NSView 		*passpromptView;
@@ -42,11 +42,7 @@
     IBOutlet NSPanel 		*scpSheet;
     IBOutlet NSWindow 		*scpWindow;
     
-    /* log outlets */
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    IBOutlet NSDrawer		*scpLogDrawer;
-#pragma clang diagnostic pop
+    IBOutlet NSWindow		*scpLogWindow;
     IBOutlet NSTextView		*scpLogField;
     
     IBOutlet NSProgressIndicator *authProgBar;
@@ -75,6 +71,7 @@
 - ( IBAction )cancelSCP: ( id )sender;
 - ( IBAction )cancelSCPDialog: ( id )sender;
 - ( IBAction )chooseLocalFile: ( id )sender;
+- ( IBAction )toggleLogWindow: ( id )sender;
 
 - ( void )getSecureCopyWindowForFile: ( NSString * )filename
             scpType: ( int )scpType copyToPath: ( NSString * )destPath
