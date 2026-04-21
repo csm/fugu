@@ -70,7 +70,6 @@ static NSMutableDictionary      *cachedIconDictionary = nil;
 + ( void )cacheIconsForPath: ( NSString * )path contents: ( NSArray * )items
 {
     NSArray                     *a = items, *reps;
-    NSAutoreleasePool           *pool = nil;
     NSMutableDictionary         *icons = nil;
     NSImage                     *icon = nil;
     NSDate                      *stamp = nil;
@@ -103,27 +102,26 @@ static NSMutableDictionary      *cachedIconDictionary = nil;
     
     icons = [[ NSMutableDictionary alloc ] init ];
     
-    pool = [[ NSAutoreleasePool alloc ] init ];
+    @autoreleasepool {
     for ( i = 0; i < [ a count ]; i++ ) {
         file = [ path stringByAppendingPathComponent: [ a objectAtIndex: i ]];
 
         if (( icon = [[ NSWorkspace sharedWorkspace ] iconForFile: file ] ) != nil ) {
             /* only cache 16x16 icons */
-            reps = [[ icon representations ] retain ];
+            reps = [ icon representations ];
             for ( j = 0; j < [ reps count ]; j++ ) {
-                if ( [[ reps objectAtIndex: j ] pixelsHigh ] != 16 ) {
+                if ( [( NSImageRep * )[ reps objectAtIndex: j ] pixelsHigh ] != 16 ) {
                     if ( [[ icon representations ] count ] > 1 ) {
                         [ icon removeRepresentation: [ reps objectAtIndex: j ]];
                     }
                 }
             }
-            [ reps release ];
             
             [ icon setSize: NSMakeSize( 16.0, 16.0 ) ];
             [ icons setObject: icon forKey: file ];
         }
     }
-    [ pool drain ];
+    }
     
     if ( !cachedIconDictionary ) {
         cachedIconDictionary = [[ NSMutableDictionary alloc ] init ];
@@ -137,7 +135,6 @@ static NSMutableDictionary      *cachedIconDictionary = nil;
     
     [ icons setObject: [ NSDate date ] forKey: @"CacheTimestamp" ];
     [ cachedIconDictionary setObject: icons forKey: path ];
-    [ icons release ];
 }
 
 @end

@@ -15,7 +15,6 @@
     [ alert setInformativeText: theError ];
     [ alert addButtonWithTitle: @"OK" ];
     [ alert runModal ];
-    [ alert release ];
 }
 
 - ( void )fatalErrorPanel: ( NSString * )fatalError
@@ -25,7 +24,6 @@
     [ alert setInformativeText: fatalError ];
     [ alert addButtonWithTitle: @"Quit" ];
     [ alert runModal ];
-    [ alert release ];
     exit( 2 );
 }
 

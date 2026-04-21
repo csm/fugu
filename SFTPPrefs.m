@@ -37,7 +37,7 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( void )toolbarSetup
 {
-    NSToolbar *preftbar = [[[ NSToolbar alloc ] initWithIdentifier:  @"SFTPPrefToolbar" ] autorelease ];
+    NSToolbar *preftbar = [[ NSToolbar alloc ] initWithIdentifier:  @"SFTPPrefToolbar" ];
     
     [ preftbar setAllowsUserCustomization: NO ];
     [ preftbar setAutosavesConfiguration: NO ];
@@ -50,8 +50,8 @@ static NSMutableArray	*knownHosts = nil;
 - ( void )awakeFromNib
 {
     NSTableColumn       *tableColumn = [ prefFavTable tableColumnWithIdentifier: @"ssh1" ];
-    NSButtonCell        *protoCell = [[[ NSButtonCell alloc ]
-                                            initTextCell: @"" ] autorelease ];
+    NSButtonCell        *protoCell = [[ NSButtonCell alloc ]
+                                            initTextCell: @"" ];
                                             
     [ protoCell setButtonType: NSButtonTypeSwitch ];
     [ protoCell setEditable: YES ];
@@ -88,8 +88,8 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( NSToolbarItem * )toolbar: ( NSToolbar * )toolbar itemForItemIdentifier: ( NSString * )itemIdent willBeInsertedIntoToolbar: ( BOOL )flag
 {
-    NSToolbarItem *preftbarItem = [[[ NSToolbarItem alloc ]
-                                    initWithItemIdentifier: itemIdent ] autorelease ];
+    NSToolbarItem *preftbarItem = [[ NSToolbarItem alloc ]
+                                    initWithItemIdentifier: itemIdent ];
     
     if ( [ itemIdent isEqualToString: SFTPPrefToolbarGeneralIdentifier ] ) {
         [ preftbarItem setLabel:
@@ -370,7 +370,7 @@ static NSMutableArray	*knownHosts = nil;
             odbIcon = [[ NSWorkspace sharedWorkspace ] iconForFile:
                         [[ editorArray objectAtIndex: i ] objectForKey: @"ODBEditorPath" ]];
         } else {
-            odbIcon = [[[ NSImage alloc ] initWithSize: NSMakeSize( 16.0, 16.0 ) ] autorelease ];
+            odbIcon = [[ NSImage alloc ] initWithSize: NSMakeSize( 16.0, 16.0 ) ];
         }
         
         menuItem = [[ NSMenuItem alloc ] initWithTitle: name action: NULL keyEquivalent: @"" ];
@@ -380,7 +380,6 @@ static NSMutableArray	*knownHosts = nil;
         }
         
         [ popupMenu addItem: menuItem ];
-        [ menuItem release ];
     }
     
     [ prefTextEditorPopUp selectItemWithTitle: editor ];
@@ -681,7 +680,6 @@ static NSMutableArray	*knownHosts = nil;
     [ alert setInformativeText: message ];
     [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
     [ alert beginSheetModalForWindow: prefPanel completionHandler: nil ];
-    [ alert release ];
 }
 
 - ( IBAction )clearDefaults: ( id )sender
@@ -700,7 +698,6 @@ static NSMutableArray	*knownHosts = nil;
         [ defaults setObject: @"" forKey: @"defaultrdir" ];
         [ self readGeneralPrefs ];
     }];
-    [ alert release ];
 }
 
 - ( IBAction )deleteFavorite: ( id )sender
@@ -796,7 +793,6 @@ static NSMutableArray	*knownHosts = nil;
         [ dict setObject: anObject forKey: [ aTableColumn identifier ]];
         
 	[ favs replaceObjectAtIndex: rowIndex withObject: dict ];
-	[ dict release ];
 	[[ NSUserDefaults standardUserDefaults ] setObject: favs forKey: @"Favorites" ];
 	[[ NSNotificationCenter defaultCenter ] postNotificationName: SFTPPrefsChangedNotification
                                             object: nil ];

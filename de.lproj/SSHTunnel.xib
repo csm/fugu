@@ -43,9 +43,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="390" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21">
-                        <rect key="frame" x="279" y="12" width="96" height="28"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                    <button autoresizesSubviews="NO" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="21">
+                        <rect key="frame" x="287" y="12" width="88" height="28"/>
                         <buttonCell key="cell" type="push" title="Close Tunnel" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" inset="2" id="187">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -54,9 +53,8 @@
                             <action selector="closeTunnel:" target="-2" id="104"/>
                         </connections>
                     </button>
-                    <popUpButton autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="125">
-                        <rect key="frame" x="17" y="14" width="262" height="22"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                    <popUpButton autoresizesSubviews="NO" horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="125">
+                        <rect key="frame" x="17" y="14" width="270" height="22"/>
                         <popUpButtonCell key="cell" type="push" title="Tunnel Information" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" pullsDown="YES" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="129" id="188">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -68,8 +66,20 @@
                                 </items>
                             </menu>
                         </popUpButtonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="Rl1-0i-FK1"/>
+                        </constraints>
                     </popUpButton>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="125" firstAttribute="centerY" secondItem="10" secondAttribute="centerY" id="2WW-3h-4yh"/>
+                    <constraint firstAttribute="trailing" secondItem="21" secondAttribute="trailing" constant="15" id="30E-4k-zIN"/>
+                    <constraint firstItem="21" firstAttribute="leading" secondItem="125" secondAttribute="trailing" id="8bT-a5-Awf"/>
+                    <constraint firstItem="125" firstAttribute="leading" secondItem="10" secondAttribute="leading" constant="17" id="BJk-e0-e7J"/>
+                    <constraint firstItem="125" firstAttribute="top" secondItem="10" secondAttribute="top" constant="14" id="DpQ-ZN-WJz"/>
+                    <constraint firstAttribute="bottom" secondItem="21" secondAttribute="bottom" constant="12" id="Tqj-qz-Yp1"/>
+                    <constraint firstItem="21" firstAttribute="top" secondItem="10" secondAttribute="top" constant="10" id="Ycr-IF-0iz"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="-132" y="-196"/>
         </window>

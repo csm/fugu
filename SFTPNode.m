@@ -41,7 +41,7 @@ now( void )
         sharedInstance = [[ SFTPNode alloc ] init ];
     }
     
-    return( [ sharedInstance autorelease ] );
+    return( sharedInstance );
 }
 
 - ( NSSet * )invisibles
@@ -229,20 +229,18 @@ now( void )
             [ fmt setDateFormat: @"MMM d yyyy" ];
         }
         date = [ fmt stringFromDate: theDate ];
-        [ fmt release ];
     }
     [ dict setObject: [ NSString stringWithFormat: @"%lld", st.st_size ]
                             forKey: @"size" ];
     [ dict setObject: date forKey: @"date" ];
     [ dict setObject: path forKey: @"name" ];
     
-    return( [ dict autorelease ] );
+    return( dict );
 }
 
 - ( NSMutableArray * )itemsAtPath: ( NSString * )path showHiddenFiles: ( BOOL )showHidden
 {
     int			i;
-    NSAutoreleasePool   *pool = [[ NSAutoreleasePool alloc ] init ];
     NSArray		*allItems = [[ NSFileManager defaultManager ] contentsOfDirectoryAtPath: path error: nil ];
     NSMutableArray 	*items = [[ NSMutableArray alloc ] init ];
     NSString		*tpath = [ path copy ], *fullpath = nil;
@@ -271,10 +269,9 @@ now( void )
         }
         [ items addObject: item ];
     }
-    [ pool drain ];
-    [ tpath release ];
+
     
-    return( [ items autorelease ] );
+    return( items );
 }
 
 @end

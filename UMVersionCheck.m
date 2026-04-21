@@ -15,7 +15,7 @@
         return;
     }
 
-    NSURLSessionDataTask *task = [[[ NSURLSession sharedSession ]
+    NSURLSessionDataTask *task = [[ NSURLSession sharedSession ]
         dataTaskWithURL: url
         completionHandler: ^( NSData *data, NSURLResponse *response, NSError *error ) {
 
@@ -34,8 +34,7 @@
                     @"problem persists, please contact the authors of Fugu." )];
                 [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
                 [ alert runModal ];
-                [ alert release ];
-            });
+                        });
             return;
         }
 
@@ -64,8 +63,7 @@
                     [ versionDictionary objectForKey: @"UMApplicationName" ]]];
                 [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
                 [ alert runModal ];
-                [ alert release ];
-                return;
+                            return;
             }
 
             NSAlert *alert = [[ NSAlert alloc ] init ];
@@ -87,8 +85,7 @@
             [ alert addButtonWithTitle: NSLocalizedString( @"Later", @"Later" )];
 
             NSModalResponse rc = [ alert runModal ];
-            [ alert release ];
-
+        
             NSWorkspace *ws = [ NSWorkspace sharedWorkspace ];
             if ( rc == NSAlertFirstButtonReturn ) {
                 [ ws openURL: [ NSURL URLWithString:
@@ -98,10 +95,9 @@
                     [ versionDictionary objectForKey: @"UMApplicationDirectDownloadURL" ]]];
             }
         });
-    }] retain ];
+    }];
 
     [ task resume ];
-    [ task release ];
 }
 
 /* kept for API compatibility; callers should prefer -checkForUpdates */

@@ -2,24 +2,17 @@
  *
  * subclass of NSTextFieldCell that shows image and text. Based on
  * Apple's sample code for ImageAndTextCell in DragAndDropOutlineView.
- * 
+ *
  */
 
 #import "SFTPItemCell.h"
 
 @implementation SFTPItemCell
 
-- ( void )dealloc
-{
-    [ image release ];
-    image = nil;
-    [ super dealloc ];
-}
-
 - copyWithZone: ( NSZone * )zone
 {
     SFTPItemCell 	*cell = ( SFTPItemCell * )[ super copyWithZone: zone ];
-    cell->image = [ image retain ];
+    cell->image = image;
     return( cell );
 }
 
@@ -30,11 +23,11 @@
     NSFont			*font;
     NSRange			range;
     NSUInteger		i;
-    
+
     range = [[ self stringValue ] rangeOfString: [ self stringValue ]];
 
     if (( i = range.location ) == NSNotFound ) { NSLog( @"not found" ); return; }
-    
+
     fm = [ NSFontManager sharedFontManager ];
     as = [[ NSMutableAttributedString alloc ] init ];
     [ as setAttributedString: [ self attributedStringValue ]];
@@ -45,14 +38,12 @@
         i = NSMaxRange( range );
     }
     [ self setAttributedStringValue: as ];
-    [ as release ];
 }
 
 - ( void )setImage: ( NSImage * )anImage
 {
     if ( anImage != image ) {
-        [ image release ];
-        image = [ anImage retain ];
+        image = anImage;
     }
 }
 
@@ -65,7 +56,7 @@
 {
     if ( image != nil ) {
         NSRect 		imageFrame;
-        
+
         imageFrame.size = [ image size ];
         imageFrame.origin = cellFrame.origin;
         imageFrame.origin.x += 1;
@@ -80,7 +71,7 @@
             delegate: ( id )anObject event: ( NSEvent * )theEvent
 {
     NSRect 		textFrame, imageFrame;
-    
+
     NSDivideRect( aRect, &imageFrame, &textFrame, ( [ image size ].width + 1 ), NSMinXEdge );
     [ super editWithFrame: textFrame inView: controlView editor: textObj
             delegate: anObject event: theEvent ];
@@ -90,7 +81,7 @@
             delegate: ( id )anObject start: ( NSInteger )selStart length: ( NSInteger )selLength
 {
     NSRect 		textFrame, imageFrame;
-    
+
     NSDivideRect( aRect, &imageFrame, &textFrame, ( [ image size ].width + 1 ), NSMinXEdge );
     [ super selectWithFrame: textFrame inView: controlView editor: textObj
             delegate: anObject start: selStart length: selLength ];
@@ -101,12 +92,12 @@
     if ( image != nil ) {
         NSSize			imageSize;
         NSRect			imageFrame;
-        
+
         imageSize = [ image size ];
         NSDivideRect( cellFrame, &imageFrame, &cellFrame, ( imageSize.width + 1 ), NSMinXEdge );
         imageFrame.origin.x += 1;
         imageFrame.size = imageSize;
-        
+
 
         if ( [ controlView isFlipped ] ) {
             imageFrame.origin.y += ceil(( cellFrame.size.height + imageFrame.size.height ) / 2 );

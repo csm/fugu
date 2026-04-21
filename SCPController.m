@@ -32,7 +32,7 @@ static int		SCPTYPE = 0;
 + ( SCPController * )sharedInstance
 {
     SCPController	*sharedInstance = [[ SCPController alloc ] init ];
-    return( [ sharedInstance autorelease ] );
+    return( sharedInstance );
 }
 
 - ( id )init
@@ -201,7 +201,6 @@ static int		SCPTYPE = 0;
 - ( void )authenticateWithPrompt: ( char * )prompt
 {
     [ progBar stopAnimation: nil ];
-    [ authProgBar retain ];
     [ authProgBar removeFromSuperview ];
     
     if ( [ self firstPasswordPrompt ] && [ self retrievePasswordFromKeychain ] == YES ) {
@@ -224,8 +223,7 @@ static int		SCPTYPE = 0;
                 NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" )];
             [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
             NSModalResponse rc = [ alert runModal ];
-            [ alert release ];
-            if ( rc == NSAlertFirstButtonReturn ) {
+                if ( rc == NSAlertFirstButtonReturn ) {
                 [[ NSWorkspace sharedWorkspace ] openURL:
                     [ NSURL fileURLWithPath:
                         @"/Applications/Utilities/Keychain Access.app" ]];
@@ -256,7 +254,6 @@ WRITE_ERR:
                                @"Write failed: Did not write correct number of bytes!" )];
         [ alert addButtonWithTitle: NSLocalizedString( @"Exit", @"Exit" )];
         [ alert runModal ];
-        [ alert release ];
     }
     exit( 2 );
 }
@@ -296,7 +293,6 @@ WRITE_ERR:
     [ alert setInformativeText: err ];
     [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
     [ alert runModal ];
-    [ alert release ];
 }
 
 - ( IBAction )beginSCP: ( id )sender
@@ -320,7 +316,6 @@ WRITE_ERR:
                                @"Parameter length exceeds bounds. Try again." )];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
         [ alert runModal ];
-        [ alert release ];
         return;
     }
     if ( [[ destPathField stringValue ] length ] ) {
@@ -336,8 +331,7 @@ WRITE_ERR:
                                    @"Parameter length exceeds bounds. Try again." )];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
             [ alert runModal ];
-            [ alert release ];
-            return;
+                return;
         }
     }
     
@@ -434,7 +428,6 @@ WRITE_ERR:
             @"scp exited with abnormal status %d", status ]];
         [ errAlert addButtonWithTitle: @"OK" ];
         [ errAlert runModal ];
-        [ errAlert release ];
         return;
     }
     {
@@ -445,7 +438,6 @@ WRITE_ERR:
         [ alert addButtonWithTitle: @"Done" ];
         [ alert addButtonWithTitle: @"New Secure Copy" ];
         NSModalResponse rc = [ alert runModal ];
-        [ alert release ];
         [ progBar setIndeterminate: YES ];
         [ progBar stopAnimation: nil ];
         [ percentDoneField setStringValue: @"" ];
@@ -470,7 +462,7 @@ WRITE_ERR:
 - ( void )addToLog: ( NSString * )buf
 {
     [[ scpLogField textStorage ] appendAttributedString:
-        [[[ NSAttributedString alloc ] initWithString: buf ] autorelease ]];
+        [[ NSAttributedString alloc ] initWithString: buf ]];
 }
 
 - ( void )setMasterFD: ( int )fd
@@ -493,7 +485,6 @@ WRITE_ERR:
     [ alert addButtonWithTitle: NSLocalizedString( @"Don't Cancel", @"Don't Cancel" )];
     [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
     NSModalResponse rc = [ alert runModal ];
-    [ alert release ];
     if ( rc != NSAlertSecondButtonReturn ) return;
 
     if ( kill( scppid, SIGINT ) < 0 ) {
@@ -503,7 +494,6 @@ WRITE_ERR:
             @"kill %d: %s", scppid, strerror( errno )]];
         [ errAlert addButtonWithTitle: @"OK" ];
         [ errAlert runModal ];
-        [ errAlert release ];
         return;
     }
 }
@@ -570,13 +560,6 @@ WRITE_ERR:
     icon = [[ NSWorkspace sharedWorkspace ] iconForFile: s ];
     
     [ localFileImageView setImage: icon ];
-}
-
-- ( void )dealloc
-{
-    [ scp release ];
-    [ scpFileName release ];
-    [ super dealloc ];
 }
 
 @end

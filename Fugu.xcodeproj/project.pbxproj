@@ -271,12 +271,6 @@
 		1D1CF99525629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
 		1D1CF99625629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
 		1D1CF99725629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF99825629CD40001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF99925629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF99B25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF99C25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF99D25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF99E25629CD50001C0ED /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D1CF99F25629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/HelpMenu.strings; sourceTree = "<group>"; };
 		1D1CF9A025629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1D1CF9A225629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SCP.strings; sourceTree = "<group>"; };
@@ -291,7 +285,7 @@
 		1DD51AF52F96B24C00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1DD51AF62F96B29200CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Prefs.xib; sourceTree = "<group>"; };
 		1DD51AF72F96B2A200CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
-		1DD51AF82F96B2AA00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SCP.xib; sourceTree = "<group>"; };
+		1DD51AF92F973C8B00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SCP.xib; sourceTree = "<group>"; };
 		238577620392BB76FED5EA79 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
 		238577660392BFBCFED5EA79 /* fugu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = fugu.icns; sourceTree = "<group>"; };
 		239A5C18038C2294FED5EA79 /* favorites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorites.png; sourceTree = "<group>"; };
@@ -689,7 +683,7 @@
 			};
 			buildConfigurationList = 701B7AEB12AD904F003D5274 /* Build configuration list for PBXProject "Fugu" */;
 			compatibilityVersion = "Xcode 12.0";
-			developmentRegion = de;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
@@ -811,7 +805,6 @@
 				1D1CF97825629CC70001C0ED /* fr */,
 				1D1CF98925629CCE0001C0ED /* fi */,
 				1D1CF99125629CD10001C0ED /* es */,
-				1D1CF99925629CD50001C0ED /* da */,
 				1D1CF9A025629CD80001C0ED /* ja */,
 			);
 			name = Localizable.strings;
@@ -827,7 +820,6 @@
 				1D1CF97D25629CC80001C0ED /* fr */,
 				1D1CF98E25629CCF0001C0ED /* fi */,
 				1D1CF99625629CD20001C0ED /* es */,
-				1D1CF99D25629CD50001C0ED /* da */,
 				1D1CF9A425629CD80001C0ED /* ja */,
 			);
 			name = SFTPToolbar.strings;
@@ -843,7 +835,6 @@
 				1D1CF97725629CC70001C0ED /* fr */,
 				1D1CF98825629CCE0001C0ED /* fi */,
 				1D1CF99025629CD10001C0ED /* es */,
-				1D1CF99825629CD40001C0ED /* da */,
 				1D1CF99F25629CD80001C0ED /* ja */,
 			);
 			name = HelpMenu.strings;
@@ -859,7 +850,6 @@
 				1D1CF97B25629CC70001C0ED /* fr */,
 				1D1CF98C25629CCF0001C0ED /* fi */,
 				1D1CF99425629CD20001C0ED /* es */,
-				1D1CF99C25629CD50001C0ED /* da */,
 				1D1CF9A325629CD80001C0ED /* ja */,
 			);
 			name = SFTPInfoPanel.strings;
@@ -875,7 +865,6 @@
 				1D1CF97A25629CC70001C0ED /* fr */,
 				1D1CF98B25629CCF0001C0ED /* fi */,
 				1D1CF99325629CD20001C0ED /* es */,
-				1D1CF99B25629CD50001C0ED /* da */,
 				1D1CF9A225629CD80001C0ED /* ja */,
 			);
 			name = SCP.strings;
@@ -904,7 +893,6 @@
 				1D1CF97E25629CC80001C0ED /* fr */,
 				1D1CF98F25629CCF0001C0ED /* fi */,
 				1D1CF99725629CD20001C0ED /* es */,
-				1D1CF99E25629CD50001C0ED /* da */,
 				1D1CF9A525629CD80001C0ED /* ja */,
 			);
 			name = SSHTunnel.strings;
@@ -941,7 +929,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AF12F95F7BC00CD3273 /* en */,
-				1DD51AF82F96B2AA00CD3273 /* de */,
+				1DD51AF92F973C8B00CD3273 /* de */,
 			);
 			name = SCP.xib;
 			sourceTree = "<group>";
@@ -952,6 +940,7 @@
 		701B7AE212AD904F003D5274 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_ONLY_KNOWN_LOCALIZATIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -984,7 +973,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -994,6 +984,7 @@
 		701B7AE312AD904F003D5274 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_ONLY_KNOWN_LOCALIZATIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -1025,7 +1016,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
@@ -1034,6 +1026,7 @@
 		701B7AE412AD904F003D5274 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_ONLY_KNOWN_LOCALIZATIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -1065,7 +1058,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
@@ -1078,6 +1072,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1095,7 +1090,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				"OTHER_CFLAGS[arch=*]" = (
 					"-DDEBUG=1",
 					"-DNOTDEF=1",
@@ -1124,6 +1119,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -1138,7 +1134,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.fugu;
@@ -1164,6 +1160,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				CC = /usr/bin/gcc;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -1177,7 +1174,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_MAP_FILE_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.fugu;

@@ -32,10 +32,7 @@
 /* catch key events */
 - ( void )keyDown: ( NSEvent * )theEvent
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-    if ( ! [[ self delegate ] handleEvent: theEvent fromTable: self ] ) {
-#pragma clang diagnostic pop
+    if ( ! [(id)[ self delegate ] handleEvent: theEvent fromTable: self ] ) {
         [ super keyDown: theEvent ];
     }
 }
@@ -78,17 +75,13 @@
 	    [ super dragImage: image at: imageLoc offset: mouseOffset
 		event: theEvent pasteboard: pboard source: sourceObject
 		slideBack: slideBack ];
-	    [ image release ];
 	    return;
 	}
 	
-	_sftpOriginalDragImage = [ image retain ];
+	_sftpOriginalDragImage = image;
 	_sftpOriginalPboardTypes = [[ pboard types ] copy ];
 	
-	if ( _sftpOriginalPboardPlists ) {
-	    [ _sftpOriginalPboardPlists release ];
-	    _sftpOriginalPboardPlists = nil;
-	}
+	_sftpOriginalPboardPlists = nil;
 	_sftpOriginalPboardPlists = [[ NSMutableArray alloc ] init ];
 	for ( i = 0; i < [ _sftpOriginalPboardTypes count ]; i++ ) {
 	    [ _sftpOriginalPboardPlists addObject:
@@ -103,7 +96,6 @@
 	[ self dragPromisedFilesOfTypes: [ NSArray arrayWithObject: @"'doc '" ]
 		    fromRect: imageRect source: self slideBack: YES event: theEvent ];
 		    
-	[ image release ];
     } else {
 	/*
 	 * phase 1: restore original image; add old pasteboard
@@ -118,27 +110,14 @@
 	    plist = [ _sftpOriginalPboardPlists objectAtIndex: i ];
 	    [ pboard setPropertyList: plist forType: [ types objectAtIndex: i ]];
 	}
-	[ _sftpOriginalPboardPlists retain ];
 	
 	[ super dragImage: _sftpOriginalDragImage at: imageLoc offset: mouseOffset
 		event: theEvent pasteboard: pboard source: sourceObject
 		slideBack: slideBack ];
 		
-	if ( _sftpOriginalDragImage ) {
-	    [ _sftpOriginalDragImage release ];
-	    _sftpOriginalDragImage = nil;
-	}
-	if ( _sftpOriginalPboardTypes ) {
-	    [ _sftpOriginalPboardTypes release ];
-	    _sftpOriginalPboardTypes = nil;
-	}
-	if ( _sftpOriginalPboardPlists ) {
-	    [ _sftpOriginalPboardPlists release ];
-	    /*
-	     * second release in next phase 0 or
-	     * namesOfPromisedFilesDroppedAtDestination
-	     */
-	}
+	_sftpOriginalDragImage = nil;
+	_sftpOriginalPboardTypes = nil;
+
 	_sftpDragPhase = 0;
     }
 }
@@ -146,21 +125,16 @@
 - ( NSArray * )namesOfPromisedFilesDroppedAtDestination: ( NSURL * )url
 {
     NSArray	    *plists = _sftpOriginalPboardPlists;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-#pragma clang diagnostic ignored "-Wint-conversion"
-    NSArray	    *names = [[ self dataSource ] promisedNamesFromPlists: plists ];
+    NSArray	    *names = [(id)[ self dataSource ] promisedNamesFromPlists: plists ];
     BOOL	    handled;
 
-    handled = !![[ self dataSource ]
+    handled = !![(id)[ self dataSource ]
 		    handleDroppedPromisedFiles: [ plists objectAtIndex: 0 ]
 		    destination: [ url path ]];
-#pragma clang diagnostic pop
     if ( ! handled ) {
 	NSLog( @"failed to handle promised files" );
     }
     
-    [ _sftpOriginalPboardPlists release ];
     _sftpOriginalPboardPlists = nil;
     
     return( names );
@@ -181,15 +155,11 @@
 
 - ( void )doSpringLoadedAction: ( NSTimer * )timer
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-    [[ self delegate ] performSelector:
+    [(NSObject *)[ self delegate ] performSelector:
                     @selector( performSpringLoadedActionInTable: )
                                     withObject: self
                                     afterDelay: 0.0 ];
-#pragma clang diagnostic pop
-                                    
+
     [ springLoadedTimer invalidate ];
     springLoadedTimer = nil;
 }
@@ -226,19 +196,15 @@
         unichar         key = [[ e charactersIgnoringModifiers ] characterAtIndex: 0 ];
         
         if ( key == ' ' ) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-#pragma clang diagnostic ignored "-Wobjc-method-access"
             if ( [[ self delegate ] respondsToSelector:
                             @selector( performSpringLoadedActionInTable: ) ] ) {
                 [ springLoadedTimer invalidate ];
                 springLoadedTimer = nil;
-                [[ self delegate ] performSelector:
+                [(NSObject *)[ self delegate ] performSelector:
                     @selector( performSpringLoadedActionInTable: )
                                     withObject: self
                                     afterDelay: 0.0 ];
             }
-#pragma clang diagnostic pop
         }
         
         pt = NSMakePoint( [ e locationInWindow ].x + 1, [ e locationInWindow ].y + 1 );
@@ -263,17 +229,13 @@
         springLoadedTimer = nil;
     }
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-#pragma clang diagnostic ignored "-Wobjc-method-access"
     if ( [[ self delegate ] respondsToSelector:
             @selector( springLoadedActionCancelledInTable: ) ] ) {
-        [[ self delegate ] performSelector:
+        [(NSObject *)[ self delegate ] performSelector:
                     @selector( springLoadedActionCancelledInTable: )
                             withObject: self
                             afterDelay: 0.0 ];
     }
-#pragma clang diagnostic pop
     
     [ super draggingExited: sender ];
 }
@@ -322,12 +284,9 @@
         rightClickedRow = row;
         [ self selectRowIndexes: [ NSIndexSet indexSetWithIndex: row ] byExtendingSelection: NO ];
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-        return( [[ self delegate ] menuForTable: self
+        return( [(id)[ self delegate ] menuForTable: self
                                     column: column
                                     row: row ] );
-#pragma clang diagnostic pop
     }
     return( nil );
 }
@@ -345,12 +304,9 @@
             return;
         }
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-method-access"
-        [[ self delegate ] handleChangedText: [[ aNotification object ] string ]
+        [(id)[ self delegate ] handleChangedText: [[ aNotification object ] string ]
                 forTable: self
                 column: column ];
-#pragma clang diagnostic pop
         [[ self window ] endEditingFor: self ];
         [[ self window ] makeFirstResponder: self ];
         [ self reloadData ];
@@ -393,8 +349,7 @@
         return;
     }
     
-    column = [[[ NSTableColumn alloc ] initWithIdentifier: identifier ]
-                                        autorelease ];
+    column = [[ NSTableColumn alloc ] initWithIdentifier: identifier ];
                                         
     [[ column headerCell ] setStringValue: title ];
     [ column setMinWidth: ( width / 2 ) ];

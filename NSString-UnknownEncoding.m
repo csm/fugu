@@ -55,7 +55,7 @@
         }
     }
 
-    return(( NSString * )convertedString );
+    return( (__bridge_transfer NSString *)convertedString );
 }
 
 + ( NSString * )stringWithBytesOfUnknownEncoding: ( char * )bytes
@@ -82,15 +82,10 @@
     }
 
     if ( convertedString == NULL ) {
-        convertedString = ( CFStringRef )[ NSString stringWithBytesOfUnknownExternalEncoding: bytes
-                                            length: len ];
+        return [ NSString stringWithBytesOfUnknownExternalEncoding: bytes length: len ];
     }
-    
-    if ( convertedString != NULL ) {
-        [ ( NSString * )convertedString autorelease ];
-    }
-                                    
-    return(( NSString * )convertedString );
+
+    return( (__bridge_transfer NSString *)convertedString );
 }
 
 @end

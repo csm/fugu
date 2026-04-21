@@ -50,16 +50,7 @@ int		master = 0;
 /* accessor methods */
 - ( void )setCurrentTransferName: ( NSString * )name
 {
-    if ( _currentTransferName != nil ) {
-	[ _currentTransferName release ];
-	_currentTransferName = nil;
-    }
-    
-    if ( name != nil ) {
-	_currentTransferName = [[ NSString alloc ] initWithString: name ];
-    } else {
-	_currentTransferName = name;
-    }
+    _currentTransferName = name ? [[ NSString alloc ] initWithString: name ] : nil;
 }
 
 - ( NSString * )currentTransferName
@@ -74,15 +65,11 @@ int		master = 0;
 
 - ( void )setRemoteObjectList: ( id )objectList
 {
-    if ( _sftpRemoteObjectList ) {
-        [ _sftpRemoteObjectList release ];
-        _sftpRemoteObjectList = nil;
-    }
     if ( ! objectList ) {
+        _sftpRemoteObjectList = nil;
         return;
     }
-    
-    _sftpRemoteObjectList = [ objectList retain ];
+    _sftpRemoteObjectList = objectList;
 }
 /* end accessor methods */
 
@@ -473,11 +460,10 @@ int		master = 0;
         [ infoDictionary setObject: nameAsRawBytes forKey: @"NameAsRawBytes" ];
     }
     
-    return( [ infoDictionary autorelease ] );
+    return( infoDictionary );
     
 DOT_OR_DOTDOT:
     if ( infoDictionary ) {
-        [ infoDictionary release ];
     }
     return( nil );
 }
@@ -513,7 +499,6 @@ DOT_OR_DOTDOT:
     argv = [ argv arrayByAddingObjectsFromArray: passedInArgs ];
     rc = [ argv createArgv: &execargs ];
 
-    [ passedInArgs release ];
 
     connecting = 1;
     {
@@ -559,7 +544,6 @@ DOT_OR_DOTDOT:
     }
     
     for ( ;; ) {
-        NSAutoreleasePool		*p = [[ NSAutoreleasePool alloc ] init ];
         remoteDirBuf = @"";
             
         FD_ZERO( &readmask );
@@ -800,8 +784,6 @@ DOT_OR_DOTDOT:
             }
         }
 
-        [ p drain ];
-        p = nil;
         if ( cancelflag ) break;
     }
     
@@ -809,7 +791,6 @@ DOT_OR_DOTDOT:
     
     free( execargs );
     [ self setCurrentTransferName: nil ];
-    [ remoteDirBuf release ];
     connected = 0;
     ( void )close( master );
 
@@ -906,7 +887,7 @@ DOT_OR_DOTDOT:
             
             if (( object = [ self remoteObjectFromSFTPLine: buf ] ) != nil ) {
                 if ( items == nil ) {
-                    items = [[[ NSMutableArray alloc ] init ] autorelease ];
+                    items = [[ NSMutableArray alloc ] init ];
                 }
                 [ items addObject: object ];
             }

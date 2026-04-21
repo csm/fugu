@@ -40,17 +40,15 @@
                                                     @"activate\r"
                                                     @"do script \"%@ %@ \\\"%@\\\" \\\"%@\\\"; exit\"\r"
                                                 @"end tell", exed, editor, path,
-                                                            ( NSString * )contextInfo ];
+                                                            ( __bridge NSString * )contextInfo ];
     
     as = [[ NSAppleScript alloc ] initWithSource: scriptSource ];
     if ( [ as executeAndReturnError: &errorDictionary ] == nil ) {
         NSLog( @"Failed to open terminal with AppleScript: %@",
                 [ errorDictionary objectForKey: @"NSAppleScriptErrorMessage" ] );
-        [ as release ];
         return( NO );
     }
     
-    [ as release ];
     return( YES );
 }
 

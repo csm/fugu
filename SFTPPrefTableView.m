@@ -22,7 +22,6 @@ static NSColor			*sStripeColor = nil;
     for ( i = 0; i < [ columns count ]; i++ ) {
         [[ columns objectAtIndex: i ] setDataCell: cell ];
     }
-    [ cell release ];
 }
 
 /* stripe table rows. gleaned from code posted to cocoadev.com */
@@ -44,10 +43,10 @@ static NSColor			*sStripeColor = nil;
     stripeRect.size.height = fullRowHeight;
 
     if ( sStripeColor == nil ) {
-        sStripeColor = [[ NSColor colorWithCalibratedRed: ( 237.0 / 255.0 )
+        sStripeColor = [ NSColor colorWithCalibratedRed: ( 237.0 / 255.0 )
                            green: ( 243.0 / 255.0 )
                            blue: ( 254.0 / 255.0 )
-                           alpha: 1.0 ] retain ];
+                           alpha: 1.0 ];
     }
     
     [ sStripeColor set ];

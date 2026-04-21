@@ -17,7 +17,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "4737"
             endingLineNumber = "4737"
-            landmarkName = "-netServiceBrowser:didFindService:moreComing:"
+            landmarkName = "-netServiceBrowser:didRemoveService:moreComing:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -25,7 +25,6 @@
             @"You will not lose any of your settings if you choose to reinstall." ];
         [ alert addButtonWithTitle: @"OK" ];
         [ alert runModal ];
-        [ alert release ];
     }
 }
 

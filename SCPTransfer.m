@@ -193,8 +193,7 @@ int		scpconnecting = 0;
         setvbuf( mfp, NULL, _IONBF, 0 );
         
         for ( ;; ) {
-            NSAutoreleasePool	*pool = [[ NSAutoreleasePool alloc ] init ];
-	    FD_ZERO( &readmask );
+            FD_ZERO( &readmask );
             FD_SET( masterfd, &readmask );
             if ( select( masterfd + 1, &readmask, NULL, NULL, NULL ) < 0 ) {
                 NSLog( @"select() returned a value less than zero" );
@@ -274,7 +273,6 @@ int		scpconnecting = 0;
                 NSString *_line = [ NSString stringWithUTF8String: ( char * )buf ];
                 dispatch_async( dispatch_get_main_queue(), ^{ [ controller addToLog: _line ]; });
                 memset(( char * )buf, '\0', strlen(( char * )buf ));
-                [ pool drain ];
                 if ( noscp ) break;
             }
         }

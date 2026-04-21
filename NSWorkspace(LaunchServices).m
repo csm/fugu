@@ -43,7 +43,7 @@
     }
     NSWorkspaceOpenConfiguration *config = [ NSWorkspaceOpenConfiguration configuration ];
     if ( params ) config.appleEvent = params;
-    [ self openURL: fileURL withApplicationAtURL: appURL
+    [ self openURLs: @[ fileURL ] withApplicationAtURL: appURL
        configuration: config
    completionHandler: ^( NSRunningApplication *app, NSError *err ) {
         if ( handler ) {

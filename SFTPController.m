@@ -301,7 +301,7 @@ NSComparisonResult
 
 - ( void )toolbarSetup
 {
-  NSToolbar *sftptbar = [[[ NSToolbar alloc ] initWithIdentifier:  @"RXTranscript tbar" ] autorelease ];
+  NSToolbar *sftptbar = [[ NSToolbar alloc ] initWithIdentifier:  @"RXTranscript tbar" ];
   
   [ sftptbar setAllowsUserCustomization: YES ];
   [ sftptbar setAutosavesConfiguration: YES ];
@@ -317,8 +317,8 @@ NSComparisonResult
 
 - ( NSToolbarItem * )toolbar: ( NSToolbar * )toolbar itemForItemIdentifier: ( NSString * )itemIdent willBeInsertedIntoToolbar: ( BOOL )flag
 {
-  NSToolbarItem *sftptbarItem = [[[ NSToolbarItem alloc ]
-                                  initWithItemIdentifier: itemIdent ] autorelease ];
+  NSToolbarItem *sftptbarItem = [[ NSToolbarItem alloc ]
+                                  initWithItemIdentifier: itemIdent ];
   
   if ( [ itemIdent isEqualToString: SFTPToolbarLocalHomeIdentifier ] ) {
     [ sftptbarItem setLabel:
@@ -666,7 +666,6 @@ NSComparisonResult
     
     launcher = [[ UMFileLauncher alloc ] init ];
     [ launcher openFile: path withApplication: nil ];
-    [ launcher release ];
   }
 }
 
@@ -680,11 +679,11 @@ NSComparisonResult
   NSUInteger      i, count;
   
   /* get images for display */
-  dirImage = [[[ NSWorkspace sharedWorkspace ] iconForFileType: @"'fldr'" ] retain ];
+  dirImage = [[ NSWorkspace sharedWorkspace ] iconForFileType: @"'fldr'" ];
   [ dirImage setSize: NSMakeSize( 16.0, 16.0 ) ];
-  fileImage = [[[ NSWorkspace sharedWorkspace ] iconForFileType: @"'doc '" ] retain ];
+  fileImage = [[ NSWorkspace sharedWorkspace ] iconForFileType: @"'doc '" ];
   [ fileImage setSize: NSMakeSize( 16.0, 16.0 ) ];
-  linkImage = [[ NSImage imageNamed: @"symlink" ] retain ];
+  linkImage = [ NSImage imageNamed: @"symlink" ];
   
   [ localBox setContentView: localView ];
   [ localView setNeedsDisplay: YES ];
@@ -693,7 +692,7 @@ NSComparisonResult
   [ logField setEditable: NO ];
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
+    [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ]];
   }
   [ mainWindow setFrameUsingName: @"SFTPWindow" ];
   [ mainWindow setFrameAutosaveName: @"SFTPWindow" ];
@@ -733,7 +732,6 @@ NSComparisonResult
   [ remoteHost setCompletes: YES ];
   [ addToFavButton setEnabled: NO ];
   [ popUpFavs removeAllItems ];
-  [ remoteProgBar retain ];
   [ remoteProgBar removeFromSuperview ];
   
   remoteHistoryMenu = [[ NSMenu alloc ] init ];
@@ -844,7 +842,6 @@ NSComparisonResult
   [[[ remoteBrowser tableColumns ]
     objectAtIndex: 0 ]
    setDataCell: cell ];
-  [ cell release ];
   
   [ localBrowser registerForDraggedTypes:
    [ NSArray arrayWithObjects: NSFileContentsPboardType, nil ]];
@@ -1059,7 +1056,6 @@ NSComparisonResult
       [ alert addButtonWithTitle: NSLocalizedString( @"Disconnect", @"Disconnect" ) ];
       [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
       rc = [ alert runModal ];
-      [ alert release ];
     }
     switch ( rc ) {
       case NSAlertFirstButtonReturn:
@@ -1079,7 +1075,7 @@ NSComparisonResult
   if ( [ downloadSheet isVisible ] )
     [ self finishedDownload ];
   
-  [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"\nCaught request to cancel connection. Ending....\n" ] autorelease ]];
+  [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ] initWithString: @"\nCaught request to cancel connection. Ending....\n" ]];
   cancelflag = 1;
   
   if ( [ verifyConnectSheet isVisible ] ) {
@@ -1091,7 +1087,6 @@ NSComparisonResult
                                                       @"Write failed: Did not write correct number of bytes!" ) ];
         [ alert addButtonWithTitle: NSLocalizedString( @"Quit", @"Quit" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       exit( 2 );
     }
@@ -1100,7 +1095,7 @@ NSComparisonResult
   }
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
+    [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ]];
   }
   
   if ( ! connected && ! connecting ) return;
@@ -1109,9 +1104,9 @@ NSComparisonResult
     if ( kill( sftppid, SIGINT ) != 0 ) {
       if ( errno == ESRCH ) NSLog( @"kill: sftp process %d: %s", sftppid, strerror( errno ));
     } else {
-      [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ]
+      [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ]
           initWithString: [ NSString stringWithFormat: @"sftp process with pid %d killed.\n", sftppid ]
-          ] autorelease ]];
+          ]];
       connecting = 0;
       connected = 0;
     }
@@ -1223,7 +1218,6 @@ NSComparisonResult
   [ remoteBrowser scrollRowToVisible: 0 ];
   [ remoteMsgField setStringValue: @"" ];
   [ remoteProgBar stopAnimation: nil ];
-  [ remoteProgBar retain ];
   [ remoteProgBar removeFromSuperview ];
   if ( ![[ remoteColumnFooter stringValue ] length ] ) {
     [ remoteColumnFooter setStringValue: [ remoteHost stringValue ]];
@@ -1245,7 +1239,6 @@ NSComparisonResult
   NSImage		*slashImage;
   NSMenuItem		*item;
   
-  [ remoteDirPath release ];
   remoteDirPath = [ pwd copy ];
   
   if ( remoteHome == nil ) {
@@ -1256,14 +1249,13 @@ NSComparisonResult
     for ( i = 0; i < strlen( p ); i++ ) {
       if ( p[ i ] == '\r' ) p[ i ] = '\0';
     }
-    if ( p != NULL ) remoteHome = [[ NSString stringWithUTF8String: p ] retain ];
+    if ( p != NULL ) remoteHome = [ NSString stringWithUTF8String: p ];
   }
   
   for ( i = ([ tmp count ] - 1 ); i > 0; i-- ) {
     if ( [[ tmp objectAtIndex: i ] isEqualToString: @"" ] ) continue;
     [ rPathComponents addObject: [ tmp objectAtIndex: i ]];
   }
-  [ tmp release ];
   
   [ rPathPopUp removeAllItems ];
   [ rPathComponents addObject: @"/" ];
@@ -1273,13 +1265,11 @@ NSComparisonResult
                                  keyEquivalent: @"" ];
     [ item setImage: dirImage ];
     [[ rPathPopUp menu ] addItem: item ];
-    [ item release ];
   }
   slashImage = [[ NSWorkspace sharedWorkspace ] iconForFile: @"/" ];
   [ slashImage setSize: NSMakeSize( 16, 16 ) ];
   [[ rPathPopUp lastItem ] setImage: slashImage ];
   [ rPathPopUp selectItemWithTitle: [ rPathComponents objectAtIndex: 0 ]];
-  [ rPathComponents release ];
   
   /* setup remote history menu; don't add path if we're reloading */
   if ( [ remoteHistoryMenu numberOfItems ] == 0
@@ -1366,7 +1356,6 @@ NSComparisonResult
   [ commandButton setEnabled: YES ];
   [ rPathPopUp setEnabled: YES ];
   [ lPathPopUp setEnabled: YES ];
-  [ remoteProgBar retain ];
   [ remoteProgBar removeFromSuperview ];
   
   [ self writeCommand: "pwd" ];
@@ -1388,7 +1377,6 @@ WRITE_ERR:
                                               @"Write failed: Did not write correct number of bytes!" ) ];
     [ alert addButtonWithTitle: @"Exit" ];
     [ alert runModal ];
-    [ alert release ];
   }
   exit( 2 );
 }
@@ -1415,7 +1403,6 @@ WRITE_ERR:
       [ alert addButtonWithTitle: NSLocalizedString( @"Disconnect", @"Disconnect" ) ];
       [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
       rc = [ alert runModal ];
-      [ alert release ];
     }
     switch ( rc ) {
       case NSAlertFirstButtonReturn:
@@ -1428,7 +1415,7 @@ WRITE_ERR:
   }
   
   if ( [ mainWindow setTitleToLocalHostName ] < 0 ) {
-    [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ] autorelease ]];
+    [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ] initWithString: @"Could not get hostname. Using default name \"localhost.\"" ]];
   }
   
   if ( connected ) {
@@ -1436,7 +1423,6 @@ WRITE_ERR:
   }
   
   if ( [ self cachedPreviews ] != nil ) {
-    [ cachedPreviews release ];
     cachedPreviews = nil;
   }
   
@@ -1520,18 +1506,15 @@ WRITE_ERR:
           fullpath, strerror( errno )]];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     }
     return;
   }
   
   if ( localDirPath != nil ) {
-    [ localDirPath release ];
     localDirPath = nil;
   }
   localDirPath = [ fullpath copy ];
   lpath = [[ NSMutableArray alloc ] init ];
-  [ fullpath retain ];
   
   /* setup path popup button */
   bits = [ fullpath componentsSeparatedByString: @"/" ];
@@ -1556,7 +1539,6 @@ WRITE_ERR:
                                  keyEquivalent: @"" ];
     [ item setImage: img ];
     [[ lPathPopUp menu ] addItem: item ];
-    [ item release ];
     img = nil;
     componentpath = [ componentpath stringByDeletingLastPathComponent ];
   }
@@ -1564,7 +1546,6 @@ WRITE_ERR:
   [ img setSize: NSMakeSize( 16, 16 ) ];
   [[ lPathPopUp lastItem ] setImage: img ];
   [ lPathPopUp selectItemWithTitle: [ lpath objectAtIndex: 0 ]];
-  [ lpath release ];
   
   /* add path to history menu; don't add if we're reloading */
   if ( [ localHistoryMenu numberOfItems ] == 0
@@ -1582,7 +1563,6 @@ WRITE_ERR:
     }
   }
   
-  [ localDirContents release ];
   localDirContents = nil;
   
   [ dotlessLDir removeAllObjects ];
@@ -1638,8 +1618,6 @@ WRITE_ERR:
   
   [ dotlessLDir addObjectsFromArray: [ localDirContents visibleItems ]];
   
-  [ node release ];
-  [ fullpath release ];
   
   [ localBrowser reloadData ];
 }
@@ -1722,7 +1700,6 @@ WRITE_ERR:
         [ marray addObject: [ dict objectForKey: @"name" ]];
       }];
   [ self uploadFiles: marray toDirectory: @"." ];
-  [ marray release ];
 }
 
 - ( IBAction )remoteBrowserSingleClick: ( id )browser
@@ -1754,7 +1731,6 @@ WRITE_ERR:
         [ alert addButtonWithTitle: NSLocalizedString( @"Download", @"Download" ) ];
         [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
         rc = [ alert runModal ];
-        [ alert release ];
       }
       switch ( rc ) {
         case NSAlertFirstButtonReturn:
@@ -1769,7 +1745,6 @@ WRITE_ERR:
     [ marray addObject: d ];
   }];
   [ self downloadFiles: marray toDirectory: localDirPath ];
-  [ marray release ];
 }
 
 - ( IBAction )remoteBrowserDoubleClick: ( id )browser
@@ -1874,7 +1849,6 @@ WRITE_ERR:
             [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite", @"Overwrite" ) ];
             [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite All", @"Overwrite All" ) ];
             rc = [ alert runModal ];
-            [ alert release ];
           }
           switch ( rc ) {
             default:
@@ -1943,7 +1917,6 @@ WRITE_ERR:
             [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite", @"Overwrite" ) ];
             [ alert addButtonWithTitle: NSLocalizedString( @"Overwrite All", @"Overwrite All" ) ];
             rc = [ alert runModal ];
-            [ alert release ];
           }
           switch ( rc ) {
             case NSAlertFirstButtonReturn:
@@ -2073,7 +2046,6 @@ WRITE_ERR:
   
   switch ( [ items count ] ) {
     case 0:
-      [ items release ];
       return;
     case 1:
       fn = [ items objectAtIndex: 0 ];
@@ -2094,7 +2066,6 @@ WRITE_ERR:
     [ alert addButtonWithTitle: NSLocalizedString( @"Delete", @"Delete" ) ];
     [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
     rc = [ alert runModal ];
-    [ alert release ];
   }
   switch ( rc ) {
     default:
@@ -2125,16 +2096,12 @@ WRITE_ERR:
               NSLocalizedString( @"Couldn't delete %@.", @"Couldn't delete %@." ), displayName ]];
           [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
           [ alert runModal ];
-          [ alert release ];
         }
         [ self localBrowserReloadForPath: reloadPath ];
         [ localBrowser reloadData ];
-        [ displayName release ];
-        [ reloadPath release ];
       });
     }];
   }
-  [ items release ];
 }
 
 - ( IBAction )deleteRemoteFile: ( id )sender
@@ -2157,7 +2124,6 @@ WRITE_ERR:
   
   switch ( [ items count ] ) {
     case 0:
-      [ items release ];
       return;
     case 1:
       fn = [[ items objectAtIndex: 0 ] objectForKey: @"name" ];
@@ -2179,7 +2145,6 @@ WRITE_ERR:
     [ alert addButtonWithTitle: NSLocalizedString( @"Delete", @"Delete" ) ];
     [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
     rc = [ alert runModal ];
-    [ alert release ];
   }
   switch ( rc ) {
     default:
@@ -2217,7 +2182,6 @@ WRITE_ERR:
   [ removeQueue removeObjectAtIndex: 0 ];
   switch ( count ) {
     case 0:
-      [ removeQueue release ];
       removeQueue = nil;
       break;
     case 1:
@@ -2300,7 +2264,6 @@ WRITE_ERR:
       [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"Couldn't create %@: %s", @"Couldn't create %@: %s" ), lpath, strerror( errno ) ]];
       [ alert addButtonWithTitle: @"OK" ];
       [ alert runModal ];
-      [ alert release ];
     }
   }
   
@@ -2345,7 +2308,6 @@ CHOWN_ERROR: {
   [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a numeric uid for this action.", @"SFTPInfoPanel", @"You must provide a numeric uid for this action." ) ];
   [ alert addButtonWithTitle: @"OK" ];
   [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
-  [ alert release ];
 }
 }
 
@@ -2380,7 +2342,6 @@ CHGRP_ERROR: {
   [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a numeric gid for this operation.", @"SFTPInfoPanel", @"You must provide a numeric gid for this operation." ) ];
   [ alert addButtonWithTitle: @"OK" ];
   [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
-  [ alert release ];
 }
 }
 
@@ -2437,7 +2398,6 @@ CHMOD_ERROR: {
   [ alert setInformativeText: NSLocalizedStringFromTable( @"You must provide a four-digit octal permissions set for this operation.", @"SFTPInfoPanel", @"You must provide a four-digit octal permissions set for this operation." ) ];
   [ alert addButtonWithTitle: @"OK" ];
   [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
-  [ alert release ];
 }
 }
 
@@ -2462,7 +2422,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: [ NSString stringWithFormat: @"chown %@: %s", [ whereField stringValue ], strerror( errno ) ]];
       [ alert addButtonWithTitle: @"OK" ];
       [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
-      [ alert release ];
     }
     return;
   }
@@ -2486,7 +2445,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: [ NSString stringWithFormat: @"chmod %@: %s", [ infoPathField stringValue ], strerror( errno ) ]];
       [ alert addButtonWithTitle: @"OK" ];
       [ alert beginSheetModalForWindow: infoPanel completionHandler: nil ];
-      [ alert release ];
     }
     return;
   }
@@ -2766,7 +2724,6 @@ CHMOD_ERROR: {
 - ( void )setSpringLoadedRootPathInTable: ( NSTableView * )table
 {
   if ( _springLoadedRootPath != nil ) {
-    [ _springLoadedRootPath release ];
     _springLoadedRootPath = nil;
   }
   
@@ -2798,7 +2755,6 @@ CHMOD_ERROR: {
   }
   
   if ( _springLoadedRootPath != nil ) {
-    [ _springLoadedRootPath release ];
     _springLoadedRootPath = nil;
   }
 }
@@ -2837,7 +2793,7 @@ CHMOD_ERROR: {
 
 - ( id )nextSFTPCommandFromQueue
 {
-  id                  command = [[[ _sftpCommandQueue lastObject ] copy ] autorelease ];
+  id                  command = [[ _sftpCommandQueue lastObject ] copy ];
   
   if ( [ _sftpCommandQueue count ] ) {
     [ _sftpCommandQueue removeLastObject ];
@@ -2859,7 +2815,6 @@ CHMOD_ERROR: {
 - ( void )prepareDirUpload: ( NSString * )directoryPath
 {
   NSString		*pfb = nil;
-  NSAutoreleasePool	*p = [[ NSAutoreleasePool alloc ] init ];
   FTS                 *tree = NULL;
   FTSENT              *item = NULL;
   char		dirpath[ MAXPATHLEN ];
@@ -2915,7 +2870,6 @@ CHMOD_ERROR: {
     NSLog( @"fts_close: %s", strerror( errno ));
   }
   
-  [ p drain ];
 }
 
 - ( void )showUploadProgress
@@ -2997,7 +2951,6 @@ CHMOD_ERROR: {
     timer = nil;
     
     /* update remote display to show newly uploaded items */
-    [ remoteDirContents release ];
     remoteDirContents = nil;
     remoteDirContents = [[ NSMutableArray alloc ] init ];
     [ remoteBrowser reloadData ];
@@ -3046,7 +2999,7 @@ CHMOD_ERROR: {
 
 - ( void )addToLog: ( NSString * )text
 {
-  [[ logField textStorage ] appendAttributedString: [[[ NSAttributedString alloc ] initWithString: text ] autorelease ]];
+  [[ logField textStorage ] appendAttributedString: [[ NSAttributedString alloc ] initWithString: text ]];
 }
 
 - ( void )updateHostList
@@ -3073,7 +3026,6 @@ CHMOD_ERROR: {
   [ alert setMessageText: errmsg ];
   [ alert addButtonWithTitle: @"OK" ];
   [ alert runModal ];
-  [ alert release ];
 }
 
 - ( void )sessionError: ( NSString * )errmsg
@@ -3082,7 +3034,6 @@ CHMOD_ERROR: {
   [ alert setMessageText: errmsg ];
   [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
   [ alert runModal ];
-  [ alert release ];
 }
 
 - ( IBAction )showConnectingInterface: ( id )sender
@@ -3100,7 +3051,6 @@ CHMOD_ERROR: {
 
 - ( void )getContinueQueryForUnknownHost: ( NSDictionary * )hostInfo
 {
-  [ hostInfo retain ];
   
   [ unauthHostInfo setStringValue: [ hostInfo objectForKey: @"msg" ]];
   [ unauthHostInfo setEditable: NO ];
@@ -3153,7 +3103,6 @@ CHMOD_ERROR: {
       [ alert addButtonWithTitle: defaultButton ];
       [ alert addButtonWithTitle: alternateButton ];
       rc = [ alert runModal ];
-      [ alert release ];
     }
 
     switch ( rc ) {
@@ -3172,7 +3121,6 @@ CHMOD_ERROR: {
                 [ errAlert setInformativeText: @"Couldn't open Keychain Access" ];
                 [ errAlert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
                 [ errAlert runModal ];
-                [ errAlert release ];
               });
             }
           }];
@@ -3185,7 +3133,6 @@ CHMOD_ERROR: {
   }
   
   [ authProgBar stopAnimation: nil ];
-  [ authProgBar retain ];
   [ authProgBar removeFromSuperview ];
   [ passAuthButton setEnabled: YES ];
   [ passWord setEnabled: YES ];
@@ -3244,7 +3191,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: NSLocalizedString( @"Password is too long.", @"Password is too long." ) ];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     }
     [ passWord setStringValue: @"" ];
     return;
@@ -3491,7 +3437,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: [ NSString stringWithFormat: @"mkdir: %s", strerror( errno ) ]];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     }
     return;
   }
@@ -3553,8 +3498,7 @@ CHMOD_ERROR: {
       }
     }
     [ image setSize: NSMakeSize( 128.0, 128.0 ) ];
-    [ image retain ];
-  } else {
+    } else {
     image = [[ NSImage alloc ] initWithContentsOfFile: [ self previewedImage ]];
     
     if ( image == nil ) {
@@ -3564,7 +3508,6 @@ CHMOD_ERROR: {
         [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"Couldn't create preview of %@", @"Couldn't create preview of %@" ), [[ self previewedImage ] lastPathComponent ] ]];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       return;
     }
@@ -3591,7 +3534,6 @@ CHMOD_ERROR: {
                               toRect: originalPanelFrame ];
     [ imagePreviewBox setContentView: imagePreviewView ];
   }
-  [ image release ];
   [ self setPreviewedImage: nil ];
 }
 
@@ -3611,7 +3553,6 @@ CHMOD_ERROR: {
   
   [ launcher openFile: [[ dsrc objectAtIndex: row ] objectForKey: @"name" ]
       withApplication: nil ];
-  [ launcher release ];
 }
 
 /* open in Editor */
@@ -3659,7 +3600,6 @@ CHMOD_ERROR: {
         editor, [ filepath lastPathComponent ]]];
     [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
     [ alert runModal ];
-    [ alert release ];
     return;
   }
 
@@ -3688,7 +3628,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: [ NSString stringWithFormat: @"mkdir: %s", strerror( errno ) ]];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     }
     return;
   }
@@ -3754,7 +3693,6 @@ CHMOD_ERROR: {
                         contextInfo: ( void * )remotePath ] ) {
       NSLog( @"FAILED" );
     }
-    [ launch release ];
     return;
   }
 
@@ -3768,7 +3706,6 @@ CHMOD_ERROR: {
         appname, [ filepath lastPathComponent ]]];
     [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
     [ alert runModal ];
-    [ alert release ];
     return;
   }
 
@@ -3830,7 +3767,6 @@ CHMOD_ERROR: {
           @"Failed to open %@ with %@.", [ filepath lastPathComponent ], appname ]];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     });
   }];
 }
@@ -3873,8 +3809,8 @@ CHMOD_ERROR: {
     return;
   }
 
-  filename = [[ NSURL URLWithString: [[[ NSString alloc ] initWithData: [ fssDesc data ]
-                                                            encoding: NSUTF8StringEncoding ] autorelease ]] path ];
+  filename = [[ NSURL URLWithString: [[ NSString alloc ] initWithData: [ fssDesc data ]
+                                                            encoding: NSUTF8StringEncoding ]] path ];
   NSLog( @"filename: %@", filename );
 }
 
@@ -3906,8 +3842,8 @@ CHMOD_ERROR: {
     }
   }
 
-    filename = [[ NSURL URLWithString: [[[ NSString alloc ] initWithData: [ fssDesc data ]
-                                                             encoding: NSUTF8StringEncoding ] autorelease ]] path ];
+    filename = [[ NSURL URLWithString: [[ NSString alloc ] initWithData: [ fssDesc data ]
+                                                             encoding: NSUTF8StringEncoding ]] path ];
   [ self performSelector: @selector( removeFromEditedDocuments: )
               withObject: filename afterDelay: 1.0 ];
   
@@ -3958,14 +3894,13 @@ CHMOD_ERROR: {
     return;
   }
   
-  fileURL = ( NSURL * )CFURLCreateWithBytes( kCFAllocatorDefault,
+  fileURL = (__bridge_transfer NSURL *)CFURLCreateWithBytes( kCFAllocatorDefault,
                                             [ descdata bytes ], [ descdata length ],
                                             kCFStringEncodingUTF8, NULL );
   if ( ! fileURL ) {
     NSLog( @"CFURLCreateWithBytes failed." );
     return;
   }
-  [ fileURL autorelease ];
   filename = [ fileURL path ];
   
   if (( desc = [ inEvent descriptorForKeyword: keySenderToken ] ) == nil ) {
@@ -4087,7 +4022,6 @@ CHMOD_ERROR: {
     [ rIcon setImage: nil ];
     [ rIcon setImage: [[ NSWorkspace sharedWorkspace ] iconForFileType: @"'fldr'" ]];
   }
-  [ rAttribDict release ];
 }
 
 - ( void )localCheckSetup: ( NSString * )octalmode
@@ -4224,7 +4158,6 @@ CHMOD_ERROR: {
         [ alert setInformativeText: NSLocalizedString( @"Invalid port number.", @"Invalid port number." ) ];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       goto INVALID_CONNECTION_SETTINGS;
     }
@@ -4242,7 +4175,6 @@ CHMOD_ERROR: {
       [ alert setInformativeText: NSLocalizedString( @"You must provide a username and server address to continue.", @"You must provide a username and server address to continue." ) ];
       [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
       [ alert runModal ];
-      [ alert release ];
     }
     goto INVALID_CONNECTION_SETTINGS;
   }
@@ -4290,7 +4222,6 @@ CHMOD_ERROR: {
         [ alert setInformativeText: @"Unsupported version of sftp." ];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       goto INVALID_CONNECTION_SETTINGS;
       break;
@@ -4377,7 +4308,6 @@ INVALID_CONNECTION_SETTINGS:
         [ alert setInformativeText: [ NSString stringWithFormat: NSLocalizedString( @"rename %@ to %@: %s", @"rename %@ to %@: %s" ), [ dict objectForKey: @"name" ], newpath, strerror( errno ) ]];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       return( NO );
     }
@@ -4400,7 +4330,6 @@ INVALID_CONNECTION_SETTINGS:
         [ alert setInformativeText: @"snprintf string exceeds bounds." ];
         [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
         [ alert runModal ];
-        [ alert release ];
       }
       return( NO );
     }
@@ -4497,7 +4426,6 @@ INVALID_CONNECTION_SETTINGS:
 - ( void )clearTypeAheadString
 {
   if ( typeAheadString != nil ) {
-    [ typeAheadString release ];
   }
   typeAheadString = nil;
 }
@@ -4578,7 +4506,6 @@ INVALID_CONNECTION_SETTINGS:
             [ alert setInformativeText: [ NSString stringWithFormat: @"unlink %@: %s", localpath, strerror( errno ) ]];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
             [ alert runModal ];
-            [ alert release ];
           }
           return;
         }
@@ -4591,7 +4518,6 @@ INVALID_CONNECTION_SETTINGS:
             [ alert setInformativeText: [ NSString stringWithFormat: @"unlink %@: %s", localpath, strerror( errno ) ]];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" ) ];
             [ alert runModal ];
-            [ alert release ];
           }
           return;
         }
@@ -4606,7 +4532,6 @@ INVALID_CONNECTION_SETTINGS:
 - ( void )setPreviewedImage: ( NSString * )imagepath
 {
   if ( previewedImage != nil ) {
-    [ previewedImage release ];
     previewedImage = nil;
   }
   
@@ -4791,7 +4716,6 @@ INVALID_CONNECTION_SETTINGS:
 {
   NSMutableArray	    *a = nil;
   NSArray		    *promisedNames = nil;
-  NSAutoreleasePool	    *pool;
   NSString		    *name;
   id			    plist = nil;
   int			    i;
@@ -4807,7 +4731,6 @@ INVALID_CONNECTION_SETTINGS:
   
   plist = [ plists objectAtIndex: 0 ];
   
-  pool = [[ NSAutoreleasePool alloc ] init ];
   a = [[ NSMutableArray alloc ] initWithCapacity: [ plist count ]];
   for ( i = 0; i < [ plist count ]; i++ ) {
     name = [[ plist objectAtIndex: i ] objectForKey: @"name" ];
@@ -4817,12 +4740,10 @@ INVALID_CONNECTION_SETTINGS:
     
     [ a addObject: name ];
   }
-  [ pool drain ];
   
   if ( [ a count ] ) {
     promisedNames = [ NSArray arrayWithArray: a ];
   }
-  [ a release ];
   
   return( promisedNames );
 }
@@ -4895,7 +4816,6 @@ didClickTableColumn: ( NSTableColumn * )tableColumn
     image = [ NSImage imageNamed: @"NSAscendingSortIndicator" ];
     sortdirection = 0;
   }
-  [ image retain ];
   
   for ( i = 0; i < [ columns count ]; i++ ) {
     [ table setIndicatorImage: nil
@@ -4948,7 +4868,6 @@ didClickTableColumn: ( NSTableColumn * )tableColumn
   [ table setHighlightedTableColumn: tableColumn ];
   [ table setIndicatorImage: image
               inTableColumn: tableColumn ];
-  [ image release ];
   [ table reloadData ];
 }
 
@@ -5028,7 +4947,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
       
       [ cell setImage: image ];
       [ cell setEditable: YES ];
-      attrString = [[[ NSAttributedString alloc ] initWithString: name ] autorelease ];
+      attrString = [[ NSAttributedString alloc ] initWithString: name ];
       
       attrString = [ attrString ellipsisAbbreviatedStringForWidth: width ];
       
@@ -5101,7 +5020,7 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
       [ cell setImage: image ];
       [ cell setEditable: YES ];
       
-      attrString = [[[ NSAttributedString alloc ] initWithString: name ] autorelease ];
+      attrString = [[ NSAttributedString alloc ] initWithString: name ];
       attrString = [ attrString ellipsisAbbreviatedStringForWidth: width ];
       
       return( attrString );
@@ -5165,7 +5084,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   /* clear spring-loaded root path */
   if ( _springLoadedRootPath != nil ) {
-    [ _springLoadedRootPath release ];
     _springLoadedRootPath = nil;
   }
   
@@ -5192,7 +5110,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
         [ alert addButtonWithTitle: NSLocalizedString( @"Download", @"Download" ) ];
         [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" ) ];
         rc = [ alert runModal ];
-        [ alert release ];
       }
       switch ( rc ) {
         case NSAlertFirstButtonReturn:
@@ -5249,10 +5166,8 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
       
       if ( [[[ dsrc objectAtIndex: row ]
              objectForKey: @"perm" ] characterAtIndex: 0 ] == 'd' ) {
-        [ dsrc release ];
         return( NSDragOperationCopy );
       }
-      [ dsrc release ];
     } else {
       BOOL	isDir;
       
@@ -5262,10 +5177,8 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
       if ( [[ NSFileManager defaultManager ] fileExistsAtPath:
             [[ dsrc objectAtIndex: row ] objectForKey: @"name" ]
                                                   isDirectory: &isDir ] && isDir ) {
-        [ dsrc release ];
         return( NSDragOperationCopy );
       }
-      [ dsrc release ];
     }
   }
   
@@ -5332,7 +5245,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
 #endif /* notdef */
   }
   
-  [ dsrc release ];
   
   return( YES );
 }
@@ -5347,36 +5259,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   [ prefs showPreferencePanel ];
 }
 
-- ( void )dealloc
-{
-  if ( prefs != nil ) {
-    [ prefs release ];
-  }
-  [ dirImage release ];
-  [ fileImage release ];
-  [ remoteDirBuf release ];
-  [ uploadQueue release ];
-  [ remoteDirContents release ];
-  [ dotlessRDir release ];
-  [ dotlessLDir release ];
-  [ remoteDirPath release ];
-  [ userParameters release ];
-  [ rSwitchArray release ];
-  
-  if ( sshServiceBrowser != nil ) {
-    [ sshServiceBrowser release ];
-  }
-  
-  if ( services != nil ) {
-    [ services release ];
-  }
-  
-  if ( scp != nil ) {
-    [ scp release ];
-  }
-  
-  [ super dealloc ];
-}
 
 - ( void )applicationDidFinishLaunching: ( NSNotification * )aNotification
 {
@@ -5428,7 +5310,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   [[ NSUserDefaults standardUserDefaults ] setObject: columnArray
                                               forKey: @"VisibleColumns" ];
-  [ columnArray release ];
 }
 
 - ( IBAction )checkForUpdates: ( id )sender
@@ -5436,7 +5317,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   UMVersionCheck      *check = [[ UMVersionCheck alloc ] init ];
   
   [ check checkForUpdates ];
-  [ check release ];
 }
 
 - ( IBAction )newSSHTunnel: ( id )sender
@@ -5445,7 +5325,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   [[NSBundle mainBundle] loadNibNamed: @"SSHTunnel" owner: t topLevelObjects: nil ];
   [ t displayWindow ];
-  [ t autorelease ];
 }
 
 - ( IBAction )secureCopy: ( id )sender
@@ -5589,7 +5468,6 @@ objectValueForTableColumn: ( NSTableColumn * )aTableColumn
   
   [[NSBundle mainBundle] loadNibNamed: @"SSHTunnel" owner: ssht topLevelObjects: nil ];
   [ ssht displayWindow ];
-  [ ssht autorelease ];
 }
 
 @end

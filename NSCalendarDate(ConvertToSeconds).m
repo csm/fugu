@@ -64,8 +64,6 @@
 
     NSCalendar *cal = [ NSCalendar currentCalendar ];
     NSDate     *d   = [ cal dateFromComponents: comps ];
-    [ comps release ];
-
     secs = ( off_t )[ d timeIntervalSince1970 ];
     return( secs );
 }

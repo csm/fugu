@@ -47,15 +47,12 @@
     }
 
     NSDraggingItem *dragItem = [[ NSDraggingItem alloc ] initWithPasteboardWriter: pbItem ];
-    [ pbItem release ];
     [ dragItem setDraggingFrame: NSMakeRect( point.x, point.y,
                                             [ scaledImage size ].width,
                                             [ scaledImage size ].height )
                        contents: dragImage ];
-    [ dragImage release ];
 
     [ self beginDraggingSessionWithItems: @[ dragItem ] event: theEvent source: self ];
-    [ dragItem release ];
 }
 
 - ( BOOL )needsPanelToBecomeKey
@@ -79,11 +76,6 @@
 
 - ( void )setImageLocationPath: ( NSString * )path
 {
-    if ( _imageLocationPath_ != nil ) {
-        [ _imageLocationPath_ release ];
-        _imageLocationPath_ = nil;
-    }
-    
     if ( path == nil || [ path isEqualToString: @"" ] ) {
         return;
     }

@@ -26,7 +26,7 @@
         }
     }
     
-    return( [ vis autorelease ] );
+    return( vis );
 }
 
 - ( void )reverse
@@ -45,7 +45,6 @@
     }
 
     [ self setArray: rev ];
-    [ rev release ];
 }
 
 @end

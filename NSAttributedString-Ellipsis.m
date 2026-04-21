@@ -10,7 +10,7 @@
 - ( NSAttributedString * )ellipsisAbbreviatedStringForWidth: ( double )width
 {
     NSAttributedString *attrString = [[ NSAttributedString alloc ] initWithString: [ self string ]];
-    return( [ attrString autorelease ] );
+    return( attrString );
 }
 
 @end

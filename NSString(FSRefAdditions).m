@@ -13,7 +13,7 @@
     NSError *error = nil;
     NSURL *resolved = [ NSURL URLByResolvingAliasFileAtURL: url
                               options: NSURLBookmarkResolutionWithoutUI
-                              relativeTo: nil error: &error ];
+                              error: &error ];
     if ( error || !resolved ) {
         return self;
     }

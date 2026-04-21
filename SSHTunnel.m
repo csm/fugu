@@ -32,9 +32,7 @@ extern int		mfd;
 
     [ self setFirstPasswordPrompt: YES ];
     [ self setGotPasswordFromKeychain: NO ];
-    [ connectProgBar retain ];
     [ connectProgBar removeFromSuperview ];
-    [ connectMsg retain ];
     [ connectMsg removeFromSuperview ];
     [ sshtunnelSheet setContentView: tunnelCreationView ];
     defaults = [ NSUserDefaults standardUserDefaults ];
@@ -50,8 +48,6 @@ extern int		mfd;
      */
     for ( i = 0; i < [ favs count ]; i++ ) {
         id			favobj = nil;
-        NSAutoreleasePool	*p = [[ NSAutoreleasePool alloc ] init ];
-        
         if ( [[ favs objectAtIndex: i ] isKindOfClass: [ NSDictionary class ]] ) {
             favobj = [[ favs objectAtIndex: i ] objectForKey: @"host" ];
         } else if ( [[ favs objectAtIndex: i ] isKindOfClass: [ NSString class ]] ) {
@@ -60,7 +56,6 @@ extern int		mfd;
             continue;
         }
         [ tunnelHostField addItemWithObjectValue: favobj ];
-        [ p drain ];
     }
 
     if ( defhost == nil || [ defhost isEqualToString: @"" ] ) {
@@ -154,9 +149,7 @@ extern int		mfd;
 {
     [ connectProgBar stopAnimation: nil ];
     [ authProgBar stopAnimation: nil ];
-    [ authProgBar retain ];
     [ authProgBar removeFromSuperview ];
-    [ authProgMsg retain ];
     [ authProgMsg removeFromSuperview ];
     
     if ( [ self firstPasswordPrompt ] && [ self retrievePasswordFromKeychain ] == YES ) {
@@ -179,8 +172,7 @@ extern int		mfd;
                 NSLocalizedString( @"Open Keychain Access", @"Open Keychain Access" )];
             [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
             NSModalResponse rc = [ alert runModal ];
-            [ alert release ];
-            if ( rc == NSAlertFirstButtonReturn ) {
+                if ( rc == NSAlertFirstButtonReturn ) {
                 NSURL *kcURL = [ NSURL fileURLWithPath:
                     @"/Applications/Utilities/Keychain Access.app" ];
                 [[ NSWorkspace sharedWorkspace ] openURL: kcURL ];
@@ -213,7 +205,6 @@ WRITE_ERR:
                                @"Wrote %ld bytes to file descriptor" ), ( long )wr ]];
         [ alert addButtonWithTitle: NSLocalizedString( @"Exit", @"Exit" )];
         [ alert runModal ];
-        [ alert release ];
     }
     exit( 2 );
 }
@@ -249,7 +240,6 @@ WRITE_ERR:
     [ alert setInformativeText: errmsg ];
     [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
     [ alert runModal ];
-    [ alert release ];
     [ sshtunnelSheet close ];
 }
 
@@ -274,8 +264,7 @@ NSLog( @"%d", sshpid );
                 sshpid, strerror( errno )]];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
             [ alert runModal ];
-            [ alert release ];
-            return;
+                return;
         }
     }
     [ sshtunnelSheet close ];
@@ -302,7 +291,6 @@ NSLog( @"%d", sshpid );
             NSLocalizedStringFromTable( @"Close Tunnel", @"SSHTunnel", @"Close Tunnel" )];
         [ alert addButtonWithTitle: NSLocalizedString( @"Cancel", @"Cancel" )];
         NSModalResponse rc = [ alert runModal ];
-        [ alert release ];
         if ( rc != NSAlertFirstButtonReturn ) return;
     }
 
@@ -314,8 +302,7 @@ NSLog( @"%d", sshpid );
                 sshpid, strerror( errno )]];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
             [ alert runModal ];
-            [ alert release ];
-            return;
+                return;
         }
     }
     [ sshtunnelWindow close ];
@@ -342,8 +329,7 @@ NSLog( @"%d", sshpid );
                     @"SSHTunnel", @"You must fill in all fields. Please try again." )];
             [ alert addButtonWithTitle: NSLocalizedString( @"OK", @"OK" )];
             [ alert runModal ];
-            [ alert release ];
-        }
+            }
         return;
     }
 
@@ -437,7 +423,6 @@ NSLog( @"%d", sshpid );
     
     [ defaults setObject: newts forKey: @"tunneledhosts" ];
     [ defaults synchronize ];
-    [ newts release ];
 }
 
 - ( void )tunnelCreated

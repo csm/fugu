@@ -100,8 +100,6 @@ int		mfd = 0;
         }
         
         for ( ;; ) {
-            NSAutoreleasePool	*pool = [[ NSAutoreleasePool alloc ] init ];
-            
             FD_SET( mfd, &readmask );
             if ( select( mfd + 1, &readmask, NULL, NULL, NULL ) < 0 ) {
                 NSLog( @"select() returned a value less than zero" );
@@ -171,7 +169,6 @@ int		mfd = 0;
 
                 memset( buf, '\0', strlen( buf ));
             }
-            [ pool drain ];
         }
         if ( threestrikes == 3 ) {
             dispatch_async( dispatch_get_main_queue(), ^{
