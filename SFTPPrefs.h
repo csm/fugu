@@ -26,8 +26,8 @@
     
     IBOutlet NSView		*prefFilesView;   
     IBOutlet NSPopUpButton	*prefTextEditorPopUp;
-    IBOutlet NSMatrix		*prefPostEditMatrix;
-    IBOutlet NSMatrix		*prefSortingMatrix;
+    IBOutlet NSSegmentedControl	*prefPostEditMatrix;
+    IBOutlet NSSegmentedControl	*prefSortingMatrix;
 	IBOutlet NSComboBox		*prefSSHPath;
     
     IBOutlet NSView		*prefTransfersView;

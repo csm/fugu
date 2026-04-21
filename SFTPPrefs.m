@@ -392,13 +392,13 @@ static NSMutableArray	*knownHosts = nil;
         num = [ NSNumber numberWithInt: 0 ];
     }
     row = [ num intValue ];
-    [ prefPostEditMatrix selectCellAtRow: row column: 0 ];
-    
+    [ prefPostEditMatrix setSelectedSegment: row ];
+
     if ( [[ NSUserDefaults standardUserDefaults ]
                         boolForKey: @"ASCIIOrderSorting" ] == YES ) {
-        [ prefSortingMatrix selectCellAtRow: 1 column: 0 ];
+        [ prefSortingMatrix setSelectedSegment: 1 ];
     } else {
-        [ prefSortingMatrix selectCellAtRow: 0 column: 0 ];
+        [ prefSortingMatrix setSelectedSegment: 0 ];
     }
     
     sshPath = [[ NSUserDefaults standardUserDefaults ]
@@ -474,7 +474,7 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( IBAction )setPostEditBehaviour: ( id )sender
 {
-    NSInteger			row = [ prefPostEditMatrix selectedRow ];
+    NSInteger			row = (NSInteger)[ prefPostEditMatrix selectedSegment ];
     
     [[ NSUserDefaults standardUserDefaults ] setObject: [ NSNumber numberWithLong: row ]
                                                 forKey: @"PostEditBehaviour" ];
@@ -482,7 +482,7 @@ static NSMutableArray	*knownHosts = nil;
 
 - ( IBAction )setSortingBehaviour: ( id )sender
 {
-    NSInteger			row = [ prefSortingMatrix selectedRow ];
+    NSInteger			row = (NSInteger)[ prefSortingMatrix selectedSegment ];
     
     [[ NSUserDefaults standardUserDefaults ] setBool: ( BOOL )row
                                                 forKey: @"ASCIIOrderSorting" ];
