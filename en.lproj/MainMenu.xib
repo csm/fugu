@@ -23,26 +23,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="839" height="595"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <progressIndicator autoresizesSubviews="NO" wantsLayer="YES" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="522">
+                    <progressIndicator autoresizesSubviews="NO" wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="522">
                         <rect key="frame" x="19" y="20" width="46" height="12"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="12" id="9KK-Nn-jcM"/>
-                            <constraint firstAttribute="width" constant="46" id="DXA-kt-QVm"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </progressIndicator>
-                    <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="523">
+                    <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="523">
                         <rect key="frame" x="86" y="20" width="506" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="502" id="I46-uU-9eT"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" alignment="left" id="1729">
                             <font key="font" metaFont="label"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <splitView dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1223" customClass="SFTPSplitView">
+                    <splitView wantsLayer="YES" fixedFrame="YES" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1223" customClass="SFTPSplitView">
                         <rect key="frame" x="20" y="42" width="799" height="542"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" fixedFrame="YES" borderType="none" title="Box" titlePosition="noTitle" id="912">
                                 <rect key="frame" x="0.0" y="0.0" width="405" height="542"/>
@@ -72,17 +68,6 @@
                         </connections>
                     </splitView>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="522" firstAttribute="bottom" secondItem="523" secondAttribute="bottom" id="B5P-G2-Z7S"/>
-                    <constraint firstAttribute="trailing" secondItem="1223" secondAttribute="trailing" constant="20" symbolic="YES" id="Ms7-8S-hct"/>
-                    <constraint firstItem="523" firstAttribute="top" secondItem="1223" secondAttribute="bottom" constant="8" symbolic="YES" id="VuO-Ud-tKd"/>
-                    <constraint firstItem="522" firstAttribute="top" secondItem="1223" secondAttribute="bottom" constant="10" id="YmS-Vz-1qW"/>
-                    <constraint firstItem="1223" firstAttribute="top" secondItem="2" secondAttribute="top" constant="11" id="cSM-ST-KAo"/>
-                    <constraint firstItem="523" firstAttribute="leading" secondItem="522" secondAttribute="trailing" constant="23" id="eNW-Tq-6vi"/>
-                    <constraint firstItem="1223" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" symbolic="YES" id="u0J-tb-k3q"/>
-                    <constraint firstItem="522" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="19" id="v08-CM-el8"/>
-                    <constraint firstAttribute="bottom" secondItem="522" secondAttribute="bottom" constant="20" symbolic="YES" id="yt4-sf-Qwb"/>
-                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="209" id="1544"/>

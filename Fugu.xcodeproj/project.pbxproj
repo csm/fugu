@@ -223,69 +223,11 @@
 		09FFFC7B03FC3CA600A8002B /* remotehistory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remotehistory.png; sourceTree = "<group>"; };
 		09FFFC7C03FC3CA600A8002B /* remotehome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remotehome.png; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1D1CF95325629CAA0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF95425629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF95625629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF95725629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF95825629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF95925629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF95A25629CAB0001C0ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF95D25629CB60001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF95E25629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF96025629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF96125629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF96225629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF96325629CB70001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF96425629CB80001C0ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF96625629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF96725629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF96925629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF96A25629CBB0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF96B25629CBC0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF96C25629CBC0001C0ED /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF96D25629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF96E25629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF97025629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF97125629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF97225629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF97325629CBF0001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF97425629CC00001C0ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF97725629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF97825629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF97A25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF97B25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF97C25629CC70001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF97D25629CC80001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF97E25629CC80001C0ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF98825629CCE0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF98925629CCE0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF98B25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF98C25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF98D25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF98E25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF98F25629CCF0001C0ED /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF99025629CD10001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF99125629CD10001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF99325629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF99425629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF99525629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPPrefToolbar.strings; sourceTree = "<group>"; };
-		1D1CF99625629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF99725629CD20001C0ED /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
-		1D1CF99F25629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/HelpMenu.strings; sourceTree = "<group>"; };
-		1D1CF9A025629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		1D1CF9A225629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SCP.strings; sourceTree = "<group>"; };
-		1D1CF9A325629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SFTPInfoPanel.strings; sourceTree = "<group>"; };
-		1D1CF9A425629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SFTPToolbar.strings; sourceTree = "<group>"; };
-		1D1CF9A525629CD80001C0ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SSHTunnel.strings; sourceTree = "<group>"; };
 		1D41C1AF2F9530330039999E /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		1DD51AE82F95F79E00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/Prefs.xib; sourceTree = "<group>"; };
-		1DD51AEB2F95F7AC00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1DD51AEE2F95F7B300CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
 		1DD51AF12F95F7BC00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SCP.xib; sourceTree = "<group>"; };
 		1DD51AF52F96B24C00CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1DD51AF62F96B29200CD3273 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Prefs.xib; sourceTree = "<group>"; };
-		1DD51AF72F96B2A200CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SSHTunnel.xib; sourceTree = "<group>"; };
-		1DD51AF92F973C8B00CD3273 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/SCP.xib; sourceTree = "<group>"; };
 		238577620392BB76FED5EA79 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
 		238577660392BFBCFED5EA79 /* fugu.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = fugu.icns; sourceTree = "<group>"; };
 		239A5C18038C2294FED5EA79 /* favorites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorites.png; sourceTree = "<group>"; };
@@ -458,14 +400,7 @@
 				0985D5CC074A9A2A00B8ED3B /* ODBEditors.plist */,
 				F558B96301E3994C01D5E771 /* Images */,
 				238577660392BFBCFED5EA79 /* fugu.icns */,
-				0971F3FA03F2DFC700A8002B /* SCP.strings */,
-				0960E33703F063A700A8002B /* HelpMenu.strings */,
 				1DD51AF22F95F7BC00CD3273 /* SCP.xib */,
-				09448C5E03F052C200A8002B /* Localizable.strings */,
-				096A883B03F1B71700A8002B /* SFTPInfoPanel.strings */,
-				0960E33403F05A2800A8002B /* SFTPToolbar.strings */,
-				09FFFC6303F992BE00A8002B /* SSHTunnel.strings */,
-				09B7ACF90507596B00000106 /* SFTPPrefToolbar.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -795,113 +730,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		09448C5E03F052C200A8002B /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95425629CAB0001C0ED /* en */,
-				1D1CF95E25629CB70001C0ED /* nl */,
-				1D1CF96725629CBB0001C0ED /* it */,
-				1D1CF96E25629CBF0001C0ED /* de */,
-				1D1CF97825629CC70001C0ED /* fr */,
-				1D1CF98925629CCE0001C0ED /* fi */,
-				1D1CF99125629CD10001C0ED /* es */,
-				1D1CF9A025629CD80001C0ED /* ja */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		0960E33403F05A2800A8002B /* SFTPToolbar.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95925629CAB0001C0ED /* en */,
-				1D1CF96325629CB70001C0ED /* nl */,
-				1D1CF96B25629CBC0001C0ED /* it */,
-				1D1CF97325629CBF0001C0ED /* de */,
-				1D1CF97D25629CC80001C0ED /* fr */,
-				1D1CF98E25629CCF0001C0ED /* fi */,
-				1D1CF99625629CD20001C0ED /* es */,
-				1D1CF9A425629CD80001C0ED /* ja */,
-			);
-			name = SFTPToolbar.strings;
-			sourceTree = "<group>";
-		};
-		0960E33703F063A700A8002B /* HelpMenu.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95325629CAA0001C0ED /* en */,
-				1D1CF95D25629CB60001C0ED /* nl */,
-				1D1CF96625629CBB0001C0ED /* it */,
-				1D1CF96D25629CBF0001C0ED /* de */,
-				1D1CF97725629CC70001C0ED /* fr */,
-				1D1CF98825629CCE0001C0ED /* fi */,
-				1D1CF99025629CD10001C0ED /* es */,
-				1D1CF99F25629CD80001C0ED /* ja */,
-			);
-			name = HelpMenu.strings;
-			sourceTree = "<group>";
-		};
-		096A883B03F1B71700A8002B /* SFTPInfoPanel.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95725629CAB0001C0ED /* en */,
-				1D1CF96125629CB70001C0ED /* nl */,
-				1D1CF96A25629CBB0001C0ED /* it */,
-				1D1CF97125629CBF0001C0ED /* de */,
-				1D1CF97B25629CC70001C0ED /* fr */,
-				1D1CF98C25629CCF0001C0ED /* fi */,
-				1D1CF99425629CD20001C0ED /* es */,
-				1D1CF9A325629CD80001C0ED /* ja */,
-			);
-			name = SFTPInfoPanel.strings;
-			sourceTree = "<group>";
-		};
-		0971F3FA03F2DFC700A8002B /* SCP.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95625629CAB0001C0ED /* en */,
-				1D1CF96025629CB70001C0ED /* nl */,
-				1D1CF96925629CBB0001C0ED /* it */,
-				1D1CF97025629CBF0001C0ED /* de */,
-				1D1CF97A25629CC70001C0ED /* fr */,
-				1D1CF98B25629CCF0001C0ED /* fi */,
-				1D1CF99325629CD20001C0ED /* es */,
-				1D1CF9A225629CD80001C0ED /* ja */,
-			);
-			name = SCP.strings;
-			sourceTree = "<group>";
-		};
-		09B7ACF90507596B00000106 /* SFTPPrefToolbar.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95825629CAB0001C0ED /* en */,
-				1D1CF96225629CB70001C0ED /* nl */,
-				1D1CF97225629CBF0001C0ED /* de */,
-				1D1CF97C25629CC70001C0ED /* fr */,
-				1D1CF98D25629CCF0001C0ED /* fi */,
-				1D1CF99525629CD20001C0ED /* es */,
-			);
-			name = SFTPPrefToolbar.strings;
-			sourceTree = "<group>";
-		};
-		09FFFC6303F992BE00A8002B /* SSHTunnel.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1D1CF95A25629CAB0001C0ED /* en */,
-				1D1CF96425629CB80001C0ED /* nl */,
-				1D1CF96C25629CBC0001C0ED /* it */,
-				1D1CF97425629CC00001C0ED /* de */,
-				1D1CF97E25629CC80001C0ED /* fr */,
-				1D1CF98F25629CCF0001C0ED /* fi */,
-				1D1CF99725629CD20001C0ED /* es */,
-				1D1CF9A525629CD80001C0ED /* ja */,
-			);
-			name = SSHTunnel.strings;
-			sourceTree = "<group>";
-		};
 		1DD51AE92F95F79E00CD3273 /* Prefs.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DD51AE82F95F79E00CD3273 /* de */,
 				1DD51AF62F96B29200CD3273 /* en */,
 			);
 			name = Prefs.xib;
@@ -910,7 +741,6 @@
 		1DD51AEC2F95F7AC00CD3273 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DD51AEB2F95F7AC00CD3273 /* de */,
 				1DD51AF52F96B24C00CD3273 /* en */,
 			);
 			name = MainMenu.xib;
@@ -920,7 +750,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AEE2F95F7B300CD3273 /* en */,
-				1DD51AF72F96B2A200CD3273 /* de */,
 			);
 			name = SSHTunnel.xib;
 			sourceTree = "<group>";
@@ -929,7 +758,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DD51AF12F95F7BC00CD3273 /* en */,
-				1DD51AF92F973C8B00CD3273 /* de */,
 			);
 			name = SCP.xib;
 			sourceTree = "<group>";
