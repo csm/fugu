@@ -808,17 +808,7 @@ DQ
                 <outlet property="initialFirstResponder" destination="564" id="575"/>
             </connections>
         </window>
-        <drawer trailingOffset="15" id="584" userLabel="uploadQDrawer">
-            <size key="contentSize" width="200" height="200"/>
-            <size key="minContentSize" width="50" height="50"/>
-            <size key="maxContentSize" width="600" height="400"/>
-            <connections>
-                <outlet property="contentView" destination="587" id="589"/>
-                <outlet property="delegate" destination="209" id="591"/>
-                <outlet property="parentWindow" destination="21" id="590"/>
-            </connections>
-        </drawer>
-        <customView autoresizesSubviews="NO" id="587" userLabel="DrawContentView1">
+        <customView autoresizesSubviews="NO" id="587" userLabel="DrawContentView1" hidden="YES">
             <rect key="frame" x="0.0" y="0.0" width="251" height="300"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
