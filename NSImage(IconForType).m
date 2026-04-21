@@ -9,6 +9,7 @@
   */
 
 #import "NSImage(IconForType).h"
+#import "NSMutableDictionary(Fugu).h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #include <sys/types.h>
 #include <sys/stat.h>

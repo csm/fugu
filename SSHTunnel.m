@@ -385,7 +385,7 @@ NSLog( @"%d", sshpid );
                                             [ tunnelHostField stringValue ]] UTF8String ] );
         char *_tport = strdup( tport );
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
-            [ ssh sshTunnelLocalPort: _lport remoteHost: _rhost remotePort: _rport
+            [ self->ssh sshTunnelLocalPort: _lport remoteHost: _rhost remotePort: _rport
                     tunnelUserAndHost: _uah tunnelPort: _tport fromController: self ];
             free( _lport );
             free( _rhost );

@@ -63,6 +63,8 @@ static NSColor			*sStripeColor = nil;
     [ super highlightSelectionInClipRect: rect ];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( void )textDidEndEditing: ( NSNotification * )aNotification
 {
     NSNotification		*notification = nil;
@@ -88,5 +90,6 @@ static NSColor			*sStripeColor = nil;
         [[ self window ] makeFirstResponder: self ];
     }
 }
+#pragma clang diagnostic pop
 
 @end

@@ -27,7 +27,7 @@ extern char		**environ;
 
 @implementation SCPController
 
-static int		SCPTYPE = 0;
+static NSInteger	SCPTYPE = 0;
 
 + ( SCPController * )sharedInstance
 {
@@ -368,10 +368,10 @@ WRITE_ERR:
         char *_item = strdup( SCPTYPE == DOWNLOAD ?
                                 ( char * )[[ destPathField stringValue ] UTF8String ]
                                 : ( char * )[ scpFileName UTF8String ] );
-        int   _type = SCPTYPE;
+        NSInteger _type = SCPTYPE;
         dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
-            [ scp scpConnect: _uah toPort: _port forItem: _item
-                            scpType: _type fromController: self ];
+            [ self->scp scpConnect: _uah toPort: _port forItem: _item
+                            scpType: (int)_type fromController: self ];
             free( _uah );
             free( _port );
             free( _item );
@@ -519,10 +519,10 @@ WRITE_ERR:
         if ( result != NSModalResponseOK ) return;
         NSURL   *url  = [[ op URLs ] objectAtIndex: 0 ];
         NSString *path = [ url path ];
-        [ localFileField setStringValue: path ];
-        [ localFileImageView setImage:
+        [ self->localFileField setStringValue: path ];
+        [ self->localFileImageView setImage:
             [[ NSWorkspace sharedWorkspace ] iconForFile: path ]];
-        scpFileName = path;
+        self->scpFileName = path;
     }];
 }
 

@@ -63,7 +63,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="90">
-                                <rect key="frame" x="88" y="129" width="83" height="16"/>
+                                <rect key="frame" x="88" y="127" width="83" height="16"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="SFTP Server:" id="306">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -71,7 +71,7 @@
                                 </textFieldCell>
                             </textField>
                             <comboBox autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="91">
-                                <rect key="frame" x="176" y="125" width="325" height="24"/>
+                                <rect key="frame" x="176" y="123" width="325" height="24"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="307">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +79,7 @@
                                 </comboBoxCell>
                             </comboBox>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="92">
-                                <rect key="frame" x="57" y="100" width="114" height="18"/>
+                                <rect key="frame" x="57" y="98" width="114" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="34g-Mq-i0F"/>
                                 </constraints>
@@ -90,7 +90,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="93">
-                                <rect key="frame" x="176" y="99" width="108" height="22"/>
+                                <rect key="frame" x="176" y="97" width="108" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="108" id="G6p-fw-pfp"/>
                                     <constraint firstAttribute="height" constant="22" id="XjT-DA-hvc"/>
@@ -102,7 +102,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="94">
-                                <rect key="frame" x="294" y="99" width="34" height="18"/>
+                                <rect key="frame" x="294" y="97" width="34" height="18"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Port:" id="310">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -110,7 +110,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="95">
-                                <rect key="frame" x="333" y="99" width="79" height="22"/>
+                                <rect key="frame" x="333" y="97" width="79" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="79" id="qXN-FZ-yGg"/>
                                 </constraints>
@@ -121,7 +121,7 @@
                                 </textFieldCell>
                             </textField>
                             <box autoresizesSubviews="NO" horizontalHuggingPriority="249" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="96">
-                                <rect key="frame" x="420" y="102" width="81" height="16"/>
+                                <rect key="frame" x="420" y="100" width="81" height="16"/>
                                 <view key="contentView" id="9s7-d8-oHH">
                                     <rect key="frame" x="0.0" y="0.0" width="81" height="2"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -129,7 +129,7 @@
                                 <font key="titleFont" metaFont="system"/>
                             </box>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="118">
-                                <rect key="frame" x="48" y="70" width="123" height="18"/>
+                                <rect key="frame" x="48" y="68" width="123" height="18"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Server-Startordner:" id="312">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -137,7 +137,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="119">
-                                <rect key="frame" x="176" y="69" width="318" height="22"/>
+                                <rect key="frame" x="176" y="67" width="318" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="313">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -145,7 +145,7 @@
                                 </textFieldCell>
                             </textField>
                             <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="152">
-                                <rect key="frame" x="430" y="7" width="69" height="28"/>
+                                <rect key="frame" x="430" y="5" width="69" height="28"/>
                                 <buttonCell key="cell" type="push" title="Wählen..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" inset="2" id="314">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
@@ -158,7 +158,7 @@
                                 </connections>
                             </button>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="125">
-                                <rect key="frame" x="176" y="39" width="318" height="22"/>
+                                <rect key="frame" x="176" y="37" width="318" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="318" id="3fQ-5G-pWg"/>
                                     <constraint firstAttribute="height" constant="22" id="Y8M-Tc-2e4"/>
@@ -170,7 +170,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="148">
-                                <rect key="frame" x="47" y="40" width="125" height="18"/>
+                                <rect key="frame" x="47" y="38" width="125" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="k1Z-vp-8oe"/>
                                 </constraints>
@@ -460,7 +460,7 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
-                                    <tableColumn identifier="key" width="214" minWidth="23.055999755859375" maxWidth="1000" id="179">
+                                    <tableColumn identifier="key" width="185" minWidth="23.055999755859375" maxWidth="1000" id="179">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Schlüssel">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -533,12 +533,11 @@
             <point key="canvasLocation" x="-144" y="610"/>
         </customView>
         <customView autoresizesSubviews="NO" id="212" userLabel="Files">
-            <rect key="frame" x="0.0" y="0.0" width="639" height="168"/>
+            <rect key="frame" x="0.0" y="0.0" width="643" height="168"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <popUpButton autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="236">
-                    <rect key="frame" x="343" y="124" width="178" height="26"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                <popUpButton autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="236">
+                    <rect key="frame" x="348" y="124" width="82" height="26"/>
                     <popUpButtonCell key="cell" type="push" title="Item1" bezelStyle="rounded" lineBreakMode="clipping" state="on" borderStyle="borderAndBezel" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" selectedItem="237" id="301">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="message"/>
@@ -554,27 +553,28 @@
                         <action selector="setODBTextEditor:" target="-2" id="250"/>
                     </connections>
                 </popUpButton>
-                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="239">
-                    <rect key="frame" x="169" y="130" width="172" height="17"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="239">
+                    <rect key="frame" x="217" y="130" width="124" height="16"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Externer Texteditor:" id="302">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="275">
+                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="275">
                     <rect key="frame" x="17" y="93" width="324" height="17"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="hFx-N8-uIi"/>
+                        <constraint firstAttribute="height" constant="17" id="hXX-dA-vpV"/>
+                    </constraints>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Wenn der Texteditor die Datei schließt, soll Fugu:" id="303">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <matrix autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="276">
+                <matrix autoresizesSubviews="NO" verticalHuggingPriority="750" allowsEmptySelection="NO" autosizesCells="NO" translatesAutoresizingMaskIntoConstraints="NO" id="276">
                     <rect key="frame" x="344" y="72" width="215" height="38"/>
-                    <autoresizingMask key="autoresizingMask"/>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     <size key="cellSize" width="215" height="18"/>
                     <size key="intercellSpacing" width="4" height="2"/>
@@ -598,9 +598,8 @@
                         <action selector="setPostEditBehaviour:" target="-2" id="279"/>
                     </connections>
                 </matrix>
-                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="286">
-                    <rect key="frame" x="17" y="39" width="324" height="17"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="286">
+                    <rect key="frame" x="17" y="40" width="324" height="16"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Dateinamen-Sortierung:" id="304">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -634,6 +633,23 @@
                     </connections>
                 </matrix>
             </subviews>
+            <constraints>
+                <constraint firstItem="276" firstAttribute="leading" secondItem="275" secondAttribute="trailing" constant="5" id="Bea-1k-4J7"/>
+                <constraint firstItem="275" firstAttribute="trailing" secondItem="239" secondAttribute="trailing" id="Ddt-aq-ar1"/>
+                <constraint firstItem="286" firstAttribute="top" secondItem="275" secondAttribute="bottom" constant="37" id="DsT-Cy-N6m"/>
+                <constraint firstItem="275" firstAttribute="leading" secondItem="286" secondAttribute="leading" id="HEr-Jz-BWj"/>
+                <constraint firstItem="276" firstAttribute="top" secondItem="236" secondAttribute="bottom" constant="14" id="Kf6-nb-CxN"/>
+                <constraint firstItem="236" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="239" secondAttribute="trailing" symbolic="YES" id="OsW-sq-w8t"/>
+                <constraint firstAttribute="trailing" secondItem="236" secondAttribute="trailing" constant="213" id="VrW-oY-hsB"/>
+                <constraint firstItem="275" firstAttribute="leading" secondItem="212" secondAttribute="leading" constant="19" id="bFV-lE-tAV"/>
+                <constraint firstItem="275" firstAttribute="trailing" secondItem="286" secondAttribute="trailing" id="cOV-W3-U6D"/>
+                <constraint firstItem="275" firstAttribute="top" secondItem="239" secondAttribute="bottom" constant="20" id="dMg-qj-efa"/>
+                <constraint firstItem="275" firstAttribute="top" secondItem="212" secondAttribute="top" constant="58" id="qPB-7N-sFj"/>
+                <constraint firstItem="239" firstAttribute="leading" secondItem="212" secondAttribute="leading" constant="219" id="tOt-W2-3ne"/>
+                <constraint firstItem="236" firstAttribute="top" secondItem="212" secondAttribute="top" constant="18" id="uoQ-ZP-ZIp"/>
+                <constraint firstItem="275" firstAttribute="top" secondItem="276" secondAttribute="top" id="zYK-sU-zA8"/>
+            </constraints>
+            <point key="canvasLocation" x="-1558" y="603"/>
         </customView>
         <customView autoresizesSubviews="NO" id="254" userLabel="Transfers">
             <rect key="frame" x="0.0" y="0.0" width="640" height="54"/>

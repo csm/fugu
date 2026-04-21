@@ -10,7 +10,8 @@
 - ( int )createArgv: ( char *** )argv
 {
     char			**av;
-    int				i, ac = 0, actotal;
+    NSUInteger			actotal;
+    int				i, ac = 0;
     
     if ( self == nil || [ self count ] == 0 ) {
         *argv = NULL;

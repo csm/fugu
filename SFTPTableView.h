@@ -51,6 +51,8 @@ float		WidthForColumnWithIdentifier( NSString *identifier );
 - ( NSMenu * )menuForTable: ( SFTPTableView * )table
             column: ( NSInteger )column
             row: ( NSInteger )row;
+- ( void )performSpringLoadedActionInTable: ( SFTPTableView * )table;
+- ( void )springLoadedActionCancelledInTable: ( SFTPTableView * )table;
 
 @end
 

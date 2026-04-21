@@ -387,7 +387,6 @@
 - ( void )requestPasswordWithPrompt: ( char * )header;
 - ( void )enableFavButton: ( NSNotification * )aNotification;
 - ( void )awakeFromNib;
-- ( void )dealloc;
 
 - ( IBAction )showPrefs: ( id )sender;
 

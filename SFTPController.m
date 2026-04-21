@@ -2098,7 +2098,7 @@ WRITE_ERR:
           [ alert runModal ];
         }
         [ self localBrowserReloadForPath: reloadPath ];
-        [ localBrowser reloadData ];
+        [ self->localBrowser reloadData ];
       });
     }];
   }
@@ -4250,7 +4250,7 @@ CHMOD_ERROR: {
   {
     NSArray *_params = params;
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^{
-        [ tServer connectToServerWithParams: _params fromController: self ];
+        [ self->tServer connectToServerWithParams: _params fromController: self ];
     });
   }
 

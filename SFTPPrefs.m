@@ -161,10 +161,13 @@ static NSMutableArray	*knownHosts = nil;
     return( preftbarItem );
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - ( BOOL )validateToolbarItem: ( NSToolbarItem * )tItem
 {
     return( YES );
 }
+#pragma clang diagnostic pop
 
 - ( NSArray * )toolbarDefaultItemIdentifiers: ( NSToolbar * )toolbar
 {
@@ -733,7 +736,7 @@ static NSMutableArray	*knownHosts = nil;
 
     [ op beginSheetModalForWindow: prefPanel completionHandler: ^( NSModalResponse rc ) {
         if ( rc != NSModalResponseOK ) return;
-        [ prefDefaultLDir setStringValue: [[[ op URLs ] objectAtIndex: 0 ] path ]];
+        [ self->prefDefaultLDir setStringValue: [[[ op URLs ] objectAtIndex: 0 ] path ]];
     }];
 }
 
