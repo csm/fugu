@@ -47,6 +47,8 @@ static NSInteger	SCPTYPE = 0;
 {
     [ localFileImageView setDelegate: self ];
     [ localFileField setDelegate: self ];
+    [copyType setLabel:@"Upload to Remote Host" forSegment:0];
+    [copyType setLabel:@"Download from Remote Host" forSegment:1];
 }
 
 - ( id )delegate

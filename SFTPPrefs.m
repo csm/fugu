@@ -80,6 +80,11 @@ static NSMutableArray	*knownHosts = nil;
     [ self showGeneralPreferences: nil ];
     [ prefPanel center ];
     [ prefPanel makeKeyAndOrderFront: nil ];
+    
+    [prefPostEditMatrix setLabel:@"Reopen in Fugu" forSegment:0];
+    [prefPostEditMatrix setLabel:@"Leave Hidden" forSegment:1];
+    [prefSortingMatrix setLabel:@"Alphabetical" forSegment:0];
+    [prefSortingMatrix setLabel:@"ASCII Order" forSegment:1];
 }
 
 /**/

@@ -30,7 +30,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Fugu Einstellungen" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="prefs" customClass="NSPanel">
+        <window title="Fugu Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="prefs" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="24" y="304" width="545" height="398"/>
@@ -56,7 +56,7 @@
             <rect key="frame" x="0.0" y="0.0" width="652" height="247"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <box autoresizesSubviews="NO" title="Verbindungs-Voreinstellungen" translatesAutoresizingMaskIntoConstraints="NO" id="88">
+                <box autoresizesSubviews="NO" title="Connection Preferences" translatesAutoresizingMaskIntoConstraints="NO" id="88">
                     <rect key="frame" x="70" y="60" width="512" height="180"/>
                     <view key="contentView" id="eGM-E4-e4W">
                         <rect key="frame" x="0.0" y="0.0" width="512" height="166"/>
@@ -83,7 +83,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="34g-Mq-i0F"/>
                                 </constraints>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Benutzername:" id="308">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Username:" id="308">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -130,7 +130,7 @@
                             </box>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="118">
                                 <rect key="frame" x="48" y="70" width="123" height="18"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Server-Startordner:" id="312">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Server Start Folder:" id="312">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -145,8 +145,8 @@
                                 </textFieldCell>
                             </textField>
                             <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="152">
-                                <rect key="frame" x="430" y="7" width="69" height="28"/>
-                                <buttonCell key="cell" type="push" title="Wählen..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" inset="2" id="314">
+                                <rect key="frame" x="429" y="7" width="70" height="28"/>
+                                <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" inset="2" id="314">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
@@ -170,11 +170,11 @@
                                 </textFieldCell>
                             </textField>
                             <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="148">
-                                <rect key="frame" x="47" y="40" width="125" height="18"/>
+                                <rect key="frame" x="52" y="40" width="115" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="k1Z-vp-8oe"/>
                                 </constraints>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Lokaler Startordner:" id="316">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Local Start Folder:" id="316">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -223,8 +223,8 @@
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="273">
-                    <rect key="frame" x="393" y="12" width="195" height="32"/>
-                    <buttonCell key="cell" type="push" title="Voreinstellungen verwenden" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="296">
+                    <rect key="frame" x="487" y="12" width="101" height="32"/>
+                    <buttonCell key="cell" type="push" title="Use Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="296">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -236,8 +236,8 @@
                     </connections>
                 </button>
                 <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="162">
-                    <rect key="frame" x="189" y="12" width="176" height="32"/>
-                    <buttonCell key="cell" type="push" title="Voreinstellungen löschen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="295">
+                    <rect key="frame" x="189" y="12" width="110" height="32"/>
+                    <buttonCell key="cell" type="push" title="Clear Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="295">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -279,7 +279,7 @@
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn identifier="nick" width="105" minWidth="10" maxWidth="1000" id="166">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Kurzname">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Nickname">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -303,7 +303,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
                                     <tableColumn identifier="user" width="71" minWidth="10" maxWidth="1000" id="86">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Benutzer">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="User">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -327,7 +327,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
                                     <tableColumn identifier="fdir" width="176" minWidth="52.800998687744141" maxWidth="1000" id="87">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Ordner">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Folder">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -449,7 +449,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
                                     <tableColumn identifier="keytype" width="70" minWidth="40" maxWidth="1000" id="176">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Schlüsselart">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Key Type">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298563957214" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
@@ -461,7 +461,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                     </tableColumn>
                                     <tableColumn identifier="key" width="185" minWidth="23.055999755859375" maxWidth="1000" id="179">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Schlüssel">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Key">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -495,8 +495,8 @@
                     </tableHeaderView>
                 </scrollView>
                 <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="180">
-                    <rect key="frame" x="541" y="12" width="85" height="32"/>
-                    <buttonCell key="cell" type="push" title="Speichern" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="299">
+                    <rect key="frame" x="573" y="12" width="53" height="32"/>
+                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="299">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -508,8 +508,8 @@
                     </connections>
                 </button>
                 <button autoresizesSubviews="NO" imageHugsTitle="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="181">
-                    <rect key="frame" x="466" y="12" width="75" height="32"/>
-                    <buttonCell key="cell" type="push" title="Löschen" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="300">
+                    <rect key="frame" x="509" y="12" width="64" height="32"/>
+                    <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="300">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -554,8 +554,8 @@
                     </connections>
                 </popUpButton>
                 <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="239">
-                    <rect key="frame" x="217" y="130" width="124" height="16"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Externer Texteditor:" id="302">
+                    <rect key="frame" x="217" y="130" width="124" height="32"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="External Text Editor:" id="302">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -567,7 +567,7 @@
                         <constraint firstAttribute="width" constant="320" id="hFx-N8-uIi"/>
                         <constraint firstAttribute="height" constant="17" id="hXX-dA-vpV"/>
                     </constraints>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Wenn der Texteditor die Datei schließt, soll Fugu:" id="303">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="When the text editor closes the file, Fugu should:" id="303">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -588,7 +588,7 @@
                 </segmentedControl>
                 <textField autoresizesSubviews="NO" focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="286">
                     <rect key="frame" x="17" y="40" width="324" height="16"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Dateinamen-Sortierung:" id="304">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Filename Sorting:" id="304">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -634,7 +634,7 @@
                 <button autoresizesSubviews="NO" imageHugsTitle="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="269">
                     <rect key="frame" x="78" y="18" width="487" height="18"/>
                     <autoresizingMask key="autoresizingMask"/>
-                    <buttonCell key="cell" type="check" title="Zeitstempel und Zugriffsrechte beim Übertragen von Dateien beibehalten" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="305">
+                    <buttonCell key="cell" type="check" title="Preserve timestamps and permissions when transferring files" bezelStyle="regularSquare" imagePosition="leading" alignment="left" inset="2" id="305">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
