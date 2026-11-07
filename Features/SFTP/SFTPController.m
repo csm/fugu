@@ -16,7 +16,7 @@
 
 #import "NSAttributedString-Ellipsis.h"
 #import "NSCalendarDate(ConvertToSeconds).h"
-#import "NSFileManager(mktemp).h"
+#import "Fugu-Swift.h"
 #import "NSImage(IconForType).h"
 #import "NSMutableArray(Extensions).h"
 #import "NSSet(ImageExtensions).h"
@@ -3144,11 +3144,13 @@ CHMOD_ERROR: {
 
 - ( BOOL )retrievePasswordFromKeychain
 {
-  char		*password;
+  NSString		*password;
   OSStatus		error;
   
-  if (( password = getpwdfromkeychain( [[ remoteHost stringValue  ] UTF8String ],
-                                      [[ userName stringValue ] UTF8String ], &error )) == NULL ) {
+  password = [ FuguKeychain passwordForService: [ remoteHost stringValue ]
+                                       account: [ userName stringValue ]
+                                         error: &error ];
+  if ( password == nil ) {
     if ( error == errSecItemNotFound ) {
       NSLog( @"Keychain item not found" );
     } else {
@@ -3158,16 +3160,15 @@ CHMOD_ERROR: {
   }
   
   [ self setGotPasswordFromKeychain: YES ];
-  [ self writeCommand: password ];
-  free( password );
+  [ self writeCommand: ( char * )[ password UTF8String ]];
   return( YES );
 }
 
 - ( void )addPasswordToKeychain
 {
-  addpwdtokeychain( [[ remoteHost stringValue ] UTF8String ],
-                   [[ userName stringValue ] UTF8String ],
-                   [[ passWord stringValue ] UTF8String ] );
+  [ FuguKeychain addPassword: [ passWord stringValue ]
+                     service: [ remoteHost stringValue ]
+                     account: [ userName stringValue ]];
 }
 
 - ( void )setGotPasswordFromKeychain: ( BOOL )rp
@@ -3427,8 +3428,7 @@ CHMOD_ERROR: {
     return;
   }
   
-  tmppath = [[ NSFileManager defaultManager ]
-             makeTemporaryDirectoryWithMode: ( mode_t )0700 ];
+  tmppath = [ FuguTemporaryDirectory makeWithMode: ( mode_t )0700 ];
   
   if ( tmppath == nil ) {
     {
@@ -3618,8 +3618,7 @@ CHMOD_ERROR: {
   NSString            *objcFilepath = nil;
   char                filepath[ MAXPATHLEN ], name[ MAXPATHLEN ] = { 0 };
   
-  tmppath = [[ NSFileManager defaultManager ]
-             makeTemporaryDirectoryWithMode: ( mode_t )0700 ];
+  tmppath = [ FuguTemporaryDirectory makeWithMode: ( mode_t )0700 ];
   
   if ( tmppath == nil ) {
     {

@@ -6,6 +6,7 @@
 #import "SCPController.h"
 #import "SCPTransfer.h"
 #import "NSString(SSHAdditions).h"
+#import "Fugu-Swift.h"
 
 #include <sys/types.h>
 #include <sys/file.h>
@@ -181,11 +182,13 @@ static NSInteger	SCPTYPE = 0;
 
 - ( BOOL )retrievePasswordFromKeychain
 {
-    char	*password;
+    NSString	*password;
     OSStatus	error;
     
-    if (( password = getpwdfromkeychain( [[ destServerField stringValue ] UTF8String ],
-                            [[ destUserNameField stringValue ] UTF8String ], &error )) == NULL ) {
+    password = [ FuguKeychain passwordForService: [ destServerField stringValue ]
+                                        account: [ destUserNameField stringValue ]
+                                          error: &error ];
+    if ( password == nil ) {
         if ( error == errSecItemNotFound ) {
             NSLog( @"Keychain item not found" );
         } else {
@@ -195,8 +198,7 @@ static NSInteger	SCPTYPE = 0;
     }
     
     [ self setGotPasswordFromKeychain: YES ];
-    [ self write: password ];
-    free( password );
+    [ self write: ( char * )[ password UTF8String ]];
     return( YES );
 }
 
@@ -274,8 +276,9 @@ WRITE_ERR:
     bcopy( [[ passwordField stringValue ] UTF8String ], pass,
             strlen( [[ passwordField stringValue ] UTF8String ] ));
     if ( [ addToKeychainSwitch state ] == NSControlStateValueOn ) {
-        addpwdtokeychain( [[ destServerField stringValue ] UTF8String ],
-                [[ destUserNameField stringValue ] UTF8String ], pass );
+        [ FuguKeychain addPassword: [ NSString stringWithUTF8String: pass ]
+                           service: [ destServerField stringValue ]
+                           account: [ destUserNameField stringValue ]];
     }
     [ self write: pass ];
     [ passwordField setStringValue: @"" ];

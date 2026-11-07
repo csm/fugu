@@ -38,7 +38,6 @@
 		09682FC307C5528A00210847 /* NSSet(ImageExtensions).h in Headers */ = {isa = PBXBuildFile; fileRef = 09D21DC604EC1C7C00D5EACC /* NSSet(ImageExtensions).h */; };
 		09682FC407C5528A00210847 /* SFTPImagePreviewPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 09D21DCA04EDA06700D5EACC /* SFTPImagePreviewPanel.h */; };
 		09682FC507C5528A00210847 /* SFTPImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 09BCC14004EECC1500D5EACC /* SFTPImageView.h */; };
-		09682FC607C5528A00210847 /* NSFileManager(mktemp).h in Headers */ = {isa = PBXBuildFile; fileRef = 09D38E8F04F5A20000000102 /* NSFileManager(mktemp).h */; };
 		09682FC707C5528A00210847 /* NSImage(IconForType).h in Headers */ = {isa = PBXBuildFile; fileRef = 09D38E9304F5AE1400000102 /* NSImage(IconForType).h */; };
 		09682FC807C5528A00210847 /* NSWorkspace(SystemVersionNumber).h in Headers */ = {isa = PBXBuildFile; fileRef = 095D2AE2051946B500E73D04 /* NSWorkspace(SystemVersionNumber).h */; };
 		09682FC907C5528A00210847 /* NSArray(CreateArgv).h in Headers */ = {isa = PBXBuildFile; fileRef = 09DA7588051B891000D5E7DF /* NSArray(CreateArgv).h */; };
@@ -109,7 +108,6 @@
 		0968301B07C5528A00210847 /* NSSet(ImageExtensions).m in Sources */ = {isa = PBXBuildFile; fileRef = 09D21DC704EC1C7C00D5EACC /* NSSet(ImageExtensions).m */; };
 		0968301C07C5528A00210847 /* SFTPImagePreviewPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 09D21DCB04EDA06700D5EACC /* SFTPImagePreviewPanel.m */; };
 		0968301D07C5528A00210847 /* SFTPImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09BCC14104EECC1500D5EACC /* SFTPImageView.m */; };
-		0968301E07C5528A00210847 /* NSFileManager(mktemp).m in Sources */ = {isa = PBXBuildFile; fileRef = 09D38E9004F5A20000000102 /* NSFileManager(mktemp).m */; };
 		0968301F07C5528A00210847 /* NSImage(IconForType).m in Sources */ = {isa = PBXBuildFile; fileRef = 09D38E9404F5AE1400000102 /* NSImage(IconForType).m */; };
 		0968302007C5528A00210847 /* NSWorkspace(SystemVersionNumber).m in Sources */ = {isa = PBXBuildFile; fileRef = 095D2AE3051946B500E73D04 /* NSWorkspace(SystemVersionNumber).m */; };
 		0968302107C5528A00210847 /* NSArray(CreateArgv).m in Sources */ = {isa = PBXBuildFile; fileRef = 09DA7589051B891000D5E7DF /* NSArray(CreateArgv).m */; };
@@ -128,6 +126,9 @@
 		1DD51AED2F95F7AC00CD3273 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AEC2F95F7AC00CD3273 /* MainMenu.xib */; };
 		1DD51AF02F95F7B300CD3273 /* SSHTunnel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AEF2F95F7B300CD3273 /* SSHTunnel.xib */; };
 		1DD51AF32F95F7BC00CD3273 /* SCP.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD51AF22F95F7BC00CD3273 /* SCP.xib */; };
+		A1B1C1D12F96000100CE2B02 /* FuguSwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B1C1D12F96000100CE2B01 /* FuguSwiftBridge.swift */; };
+		A1B1C1D12F96000200CE2B02 /* FuguTemporaryDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B1C1D12F96000200CE2B01 /* FuguTemporaryDirectory.swift */; };
+		A1B1C1D12F96000200CE2B04 /* FuguKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B1C1D12F96000200CE2B03 /* FuguKeychain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -205,8 +206,6 @@
 		09D21DCB04EDA06700D5EACC /* SFTPImagePreviewPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFTPImagePreviewPanel.m; sourceTree = "<group>"; };
 		09D2776A061A835D00EE17C7 /* NSString-UnknownEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString-UnknownEncoding.h"; sourceTree = "<group>"; };
 		09D2776B061A835D00EE17C7 /* NSString-UnknownEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString-UnknownEncoding.m"; sourceTree = "<group>"; };
-		09D38E8F04F5A20000000102 /* NSFileManager(mktemp).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager(mktemp).h"; sourceTree = "<group>"; };
-		09D38E9004F5A20000000102 /* NSFileManager(mktemp).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager(mktemp).m"; sourceTree = "<group>"; };
 		09D38E9304F5AE1400000102 /* NSImage(IconForType).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage(IconForType).h"; sourceTree = "<group>"; };
 		09D38E9404F5AE1400000102 /* NSImage(IconForType).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage(IconForType).m"; sourceTree = "<group>"; };
 		09D38E9D04F6A0A800000102 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
@@ -238,6 +237,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		A1B1C1D12F96000100CE2B01 /* FuguSwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuguSwiftBridge.swift; sourceTree = "<group>"; };
+		A1B1C1D12F96000200CE2B01 /* FuguTemporaryDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuguTemporaryDirectory.swift; sourceTree = "<group>"; };
+		A1B1C1D12F96000200CE2B03 /* FuguKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuguKeychain.swift; sourceTree = "<group>"; };
+		A1B1C1D12F96000100CE2B03 /* Fugu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fugu-Bridging-Header.h"; sourceTree = "<group>"; };
 		F517810B03083F4A01A8002B /* COPYRIGHT.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = COPYRIGHT.txt; sourceTree = "<group>"; };
 		F517DFB00312A0A901A8002B /* NSString(SSHAdditions).m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString(SSHAdditions).m"; sourceTree = "<group>"; };
 		F517DFB10312A0A901A8002B /* NSString(SSHAdditions).h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSString(SSHAdditions).h"; sourceTree = "<group>"; };
@@ -308,6 +311,7 @@
 				F57214240307199D01A8002B /* SFTPPrefs.m */,
 			);
 			name = SFTP;
+			path = Features/SFTP;
 			sourceTree = "<group>";
 		};
 		0991811C03F02D7700A8002B /* Misc Classes */ = {
@@ -317,8 +321,11 @@
 				0923B08903E846EE00A8002B /* UMFileLauncher.m */,
 				0991811803F0262300A8002B /* UMVersionCheck.h */,
 				0991811903F0262300A8002B /* UMVersionCheck.m */,
+				A1B1C1D12F96000200CE2B01 /* FuguTemporaryDirectory.swift */,
+				A1B1C1D12F96000200CE2B03 /* FuguKeychain.swift */,
 			);
 			name = "Misc Classes";
+			path = Core/Support;
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -352,6 +359,7 @@
 		29B97314FDCFA39411CA2CEA /* ScruFTP */ = {
 			isa = PBXGroup;
 			children = (
+				A1B1C1D12F96000100CE2B04 /* App */,
 				F517810B03083F4A01A8002B /* COPYRIGHT.txt */,
 				1D41C1AF2F9530330039999E /* LICENSE.txt */,
 				F5FC36BB036A333C01E16655 /* Subclasses */,
@@ -379,7 +387,6 @@
 				23A1B7410389BD23FED5EA79 /* sshversion.h */,
 				F57EF22A023D053C01A8002B /* argcargv.c */,
 				F57EF22B023D053C01A8002B /* argcargv.h */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
 				F585904F02D2393A01D5EA79 /* typeforchar.c */,
 				F585905002D2393A01D5EA79 /* typeforchar.h */,
 				F5D6EBAC0316911201A8002B /* fdwrite.c */,
@@ -389,6 +396,7 @@
 				09E0A0F804C091C000D5EA79 /* ODBEditorSuite.h */,
 			);
 			name = "Other Sources";
+			path = Core/C;
 			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
@@ -402,7 +410,7 @@
 				238577660392BFBCFED5EA79 /* fugu.icns */,
 				1DD51AF22F95F7BC00CD3273 /* SCP.xib */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -412,6 +420,16 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1B1C1D12F96000100CE2B04 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				A1B1C1D12F96000100CE2B01 /* FuguSwiftBridge.swift */,
+				A1B1C1D12F96000100CE2B03 /* Fugu-Bridging-Header.h */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		F517DFB70312A17501A8002B /* Categories */ = {
@@ -431,8 +449,6 @@
 				09D38E9404F5AE1400000102 /* NSImage(IconForType).m */,
 				09D21DC604EC1C7C00D5EACC /* NSSet(ImageExtensions).h */,
 				09D21DC704EC1C7C00D5EACC /* NSSet(ImageExtensions).m */,
-				09D38E8F04F5A20000000102 /* NSFileManager(mktemp).h */,
-				09D38E9004F5A20000000102 /* NSFileManager(mktemp).m */,
 				09DA7588051B891000D5E7DF /* NSArray(CreateArgv).h */,
 				09DA7589051B891000D5E7DF /* NSArray(CreateArgv).m */,
 				099BE67705222CDA0038D787 /* NSCalendarDate(ConvertToSeconds).h */,
@@ -445,6 +461,7 @@
 				09D2776B061A835D00EE17C7 /* NSString-UnknownEncoding.m */,
 			);
 			name = Categories;
+			path = Core/Categories;
 			sourceTree = "<group>";
 		};
 		F517DFBA0312C97A01A8002B /* SSHTunnel */ = {
@@ -456,6 +473,7 @@
 				F5D6EBBD03199D2901A8002B /* SSHTunnelAuth.h */,
 			);
 			name = SSHTunnel;
+			path = Features/SSHTunnel;
 			sourceTree = "<group>";
 		};
 		F538D7A2030CB30701A8002B /* SCP */ = {
@@ -467,6 +485,7 @@
 				F538D7A4030CB33A01A8002B /* SCPTransfer.h */,
 			);
 			name = SCP;
+			path = Features/SCP;
 			sourceTree = "<group>";
 		};
 		F558B96301E3994C01D5E771 /* Images */ = {
@@ -500,7 +519,7 @@
 				0934448B0524CAB600D5E7DF /* remotetrash.png */,
 				094AF260054772B6006D53C9 /* info.png */,
 			);
-			name = Images;
+			path = Images;
 			sourceTree = "<group>";
 		};
 		F5FC36BB036A333C01E16655 /* Subclasses */ = {
@@ -526,6 +545,7 @@
 				09BCC14104EECC1500D5EACC /* SFTPImageView.m */,
 			);
 			name = Subclasses;
+			path = Features/Browser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -566,7 +586,6 @@
 				09682FC307C5528A00210847 /* NSSet(ImageExtensions).h in Headers */,
 				09682FC407C5528A00210847 /* SFTPImagePreviewPanel.h in Headers */,
 				09682FC507C5528A00210847 /* SFTPImageView.h in Headers */,
-				09682FC607C5528A00210847 /* NSFileManager(mktemp).h in Headers */,
 				09682FC707C5528A00210847 /* NSImage(IconForType).h in Headers */,
 				09682FC807C5528A00210847 /* NSWorkspace(SystemVersionNumber).h in Headers */,
 				09682FC907C5528A00210847 /* NSArray(CreateArgv).h in Headers */,
@@ -683,6 +702,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B1C1D12F96000100CE2B02 /* FuguSwiftBridge.swift in Sources */,
+				A1B1C1D12F96000200CE2B02 /* FuguTemporaryDirectory.swift in Sources */,
+				A1B1C1D12F96000200CE2B04 /* FuguKeychain.swift in Sources */,
 				09682FFF07C5528A00210847 /* main.m in Sources */,
 				0968300007C5528A00210847 /* SFTPMainWindow.m in Sources */,
 				0968300107C5528A00210847 /* SFTPController.m in Sources */,
@@ -714,7 +736,6 @@
 				0968301B07C5528A00210847 /* NSSet(ImageExtensions).m in Sources */,
 				0968301C07C5528A00210847 /* SFTPImagePreviewPanel.m in Sources */,
 				0968301D07C5528A00210847 /* SFTPImageView.m in Sources */,
-				0968301E07C5528A00210847 /* NSFileManager(mktemp).m in Sources */,
 				0968301F07C5528A00210847 /* NSImage(IconForType).m in Sources */,
 				0968302007C5528A00210847 /* NSWorkspace(SystemVersionNumber).m in Sources */,
 				0968302107C5528A00210847 /* NSArray(CreateArgv).m in Sources */,
@@ -908,6 +929,7 @@
 				CPLUSPLUS = "/usr/bin/g++";
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -925,9 +947,11 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.fugu;
+				PRODUCT_MODULE_NAME = Fugu;
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/Fugu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (
@@ -955,6 +979,7 @@
 				CPLUSPLUS = "/usr/bin/g++";
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
@@ -966,9 +991,11 @@
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.fugu;
+				PRODUCT_MODULE_NAME = Fugu;
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/Fugu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (
@@ -995,6 +1022,7 @@
 				CPLUSPLUS = "/usr/bin/g++";
 				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
@@ -1006,9 +1034,11 @@
 				"OTHER_CFLAGS[arch=*]" = "-DNOTDEF=1";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.umich.fugu;
+				PRODUCT_MODULE_NAME = Fugu;
 				PRODUCT_NAME = Fugu;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "App/Fugu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
 				WARNING_CFLAGS = (

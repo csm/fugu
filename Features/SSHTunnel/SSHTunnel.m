@@ -6,6 +6,7 @@
 #import "SSHTunnel.h"
 #import "SSHTunnelAuth.h"
 #import "NSString(SSHAdditions).h"
+#import "Fugu-Swift.h"
 
 #include <sys/types.h>
 #include <sys/param.h>
@@ -126,11 +127,13 @@ extern int		mfd;
 
 - ( BOOL )retrievePasswordFromKeychain
 {
-    char	*password;
+    NSString	*password;
     OSStatus	error;
     
-    if (( password = getpwdfromkeychain( [[ tunnelHostField stringValue ] UTF8String ],
-                            [[ usernameField stringValue ] UTF8String ], &error )) == NULL ) {
+    password = [ FuguKeychain passwordForService: [ tunnelHostField stringValue ]
+                                        account: [ usernameField stringValue ]
+                                          error: &error ];
+    if ( password == nil ) {
         if ( error == errSecItemNotFound ) {
             NSLog( @"Keychain item not found" );
         } else {
@@ -140,8 +143,7 @@ extern int		mfd;
     }
     
     [ self setGotPasswordFromKeychain: YES ];
-    [ self write: password ];
-    free( password );
+    [ self write: ( char * )[ password UTF8String ]];
     return( YES );
 }
 
@@ -221,8 +223,9 @@ WRITE_ERR:
     bcopy( [[ passwordField stringValue ] UTF8String ], pass,
             strlen( [[ passwordField stringValue ] UTF8String ] ));
     if ( [ addToKeychainSwitch state ] == NSControlStateValueOn ) {
-        addpwdtokeychain( [[ tunnelHostField stringValue ] UTF8String ],
-                [[ usernameField stringValue ] UTF8String ], pass );
+        [ FuguKeychain addPassword: [ NSString stringWithUTF8String: pass ]
+                           service: [ tunnelHostField stringValue ]
+                           account: [ usernameField stringValue ]];
     }
     [ self write: pass ];
     [ passwordField setStringValue: @"" ];
